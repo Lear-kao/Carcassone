@@ -4,7 +4,7 @@
 // ----Game manager fonctions----
 // ------------------------------
 
-struct Tile **create_tile_array(FILE *stream); // A FAIRE
+struct Tile **create_tile_array(FILE *stream) // A FAIRE
 /*
     Crée la liste des tuiles à partir d'un fichier csv. AUTRE OPTION : hard code à la main la liste
 */
@@ -26,13 +26,13 @@ struct Tile **create_tile_array(FILE *stream); // A FAIRE
             {
                 // voir bib standard je pense
             }
-            indeex++;
+            index++;
         }
     }
 
     fclose(CSV_TILE);
-    return
-}
+    return;
+};
 
 struct Player **create_players_array(char nbPlayers); // A FAIRE
 /*

@@ -1,7 +1,7 @@
 #ifndef CARCASSONNE_H
 #define CARCASSONNE_H
 
-#define CSV_TILE tuiles_base_simplifiees.csv
+#define CSV_TILE "tuiles_base_simplifiees.csv"
 #define NBTILE 72
 
 #include <stddef.h>
