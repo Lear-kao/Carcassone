@@ -9,7 +9,7 @@ struct Stack *stack_push(struct Stack *stack, struct Tile *tile)
     stack : La pile
     tile : Un pointer sur un espace mémoire ou se trouve une tile à push sur la stack
 
-    return : La stack actualisé 
+    return : La stack actualisé
 
 */
 {

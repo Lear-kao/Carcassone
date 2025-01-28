@@ -34,6 +34,7 @@ struct Tile **create_tile_array(FILE *stream) // A FAIRE
     return;
 };
 
+
 struct Player **create_players_array(char nbPlayers); // A FAIRE
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
