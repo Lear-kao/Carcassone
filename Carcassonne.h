@@ -161,7 +161,7 @@ struct Player **create_players_array(char nbPlayers); // A FAIRE
     les iterations sur la liste (condition d'arrêt)
 */
 
-void shuffle(struct Tile **tileArray, char size); // c'est peut-être mieux si size est une macro A FAIRE
+void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
