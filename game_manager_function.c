@@ -27,7 +27,7 @@ struct Tile **create_tile_array(char *csv_tile) // A FAIRE
             {
                 // voir bib standard je pense
             }
-            // créer une struct Tile et lui associer les 5 tokens
+            // créer une struct Tile et lui associer les 5 tokens 
             index++;
         }
     fclose(file);
