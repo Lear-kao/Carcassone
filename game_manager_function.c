@@ -42,12 +42,19 @@ struct Player **create_players_array(char nbPlayers); // A FAIRE
     les iterations sur la liste (condition d'arrêt)
 */
 
-void shuffle(struct Tile **tileArray, char size){//Valentin c'est peut-être mieux si size est une macro A FAIRE
-    srand(time(NULL));
+void shuffle(struct Tile **tileArray, char size)//Valentin c'est peut-être mieux si size est une macro A FAIRE
+/*
+    tileArray : Une liste de pointeurs sur Tile.
+    size : La taille de la liste (normalement 72)
+
+    Mélange les tuiles
+*/
+{
+    srand(time(NULL));//initialisation de la seed pour la generation de nombre aléatoire
     short i,rand1,rand2;
     struct Tile *temp;
 
-    for(i=0;i<10000;i++){
+    for(i=0;i<size*size;i++){
         rand1=rand()%size;
         rand2=rand()%size;
         if(rand1!=rand2){
@@ -56,13 +63,9 @@ void shuffle(struct Tile **tileArray, char size){//Valentin c'est peut-être mie
             tileArray[rand2]=temp;
         }
     }
-} 
-/*
-    tileArray : Une liste de pointeurs sur Tile.
-    size : La taille de la liste (normalement 72)
 
-    Mélange les tuiles
-*/
+}//la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
+
 
 void array_to_stack(struct Tile **tileArray, struct Stack *stack); // A FAIRE
 /*
