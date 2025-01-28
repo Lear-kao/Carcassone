@@ -4,21 +4,22 @@
 // ----Game manager fonctions----
 // ------------------------------
 
-struct Tile **create_tile_array(FILE *stream) // A FAIRE
+size_t nb_line_in_csv(char *csv_tile ); // j'aurais pu faire plusieurs allocations (doublé chaque fois) sinon
+
+struct Tile **create_tile_array(char *csv_tile) // A FAIRE
 /*
     Crée la liste des tuiles à partir d'un fichier csv. AUTRE OPTION : hard code à la main la liste
 */
 {
-    char *filename = CSV_TILE;
+    char *filename = csv_tile;
     FILE *file = fopen(filename, "r");
-    char buff[2048]; // sp plus pourquoi il faut mettre une puissance de 2 mais un ACU m'a dit que c'était mieux
+    char buff[2048]; // jsp plus pourquoi il faut mettre une puissance de 2 mais un ACU m'a dit que c'était mieux
     struct Tile **tileArray = malloc(sizeof(struct Tile) * NBTILE + 1);
     tileArray[NBTILE] = NULL; // Pour pouvoir itérer sur la liste en sachant quand s'arrêter (sur le NULL)
     size_t index = 0;
     size_t indexTmp = 0;
 
-    while(fgets(buff, 2048, file) != EOF) // on utilise fgets parce que flemme d'optimiser le buffer moi même afin d'éviter trop de syscall
-    {
+    while(fgets(buff, 2048, file)) // revoir condition d'arrêt
         while(*(buff + index) != '\0') // si problème soit remplacer par un do while soit copier coller le contenu en dehors
         {
             indexTmp = index;
@@ -26,12 +27,11 @@ struct Tile **create_tile_array(FILE *stream) // A FAIRE
             {
                 // voir bib standard je pense
             }
+            // créer une struct Tile et lui associer les 5 tokens
             index++;
         }
-    }
-
-    fclose(CSV_TILE);
-    return;
+    fclose(file);
+    return NULL;
 };
 
 

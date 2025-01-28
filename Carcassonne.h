@@ -1,7 +1,7 @@
 #ifndef CARCASSONNE_H
 #define CARCASSONNE_H
 
-#define CSV_TILE "tuiles_base_simplifiees.csv"
+//#define CSV_TILE "tuiles_base_simplifiees.csv"
 #define NBTILE 72
 
 #include <stddef.h>
@@ -147,7 +147,9 @@ char is_meeple_on_player(struct Player *player); // FAIT
 // ----Game manager fonctions----
 // ------------------------------
 
-struct Tile **create_tile_array(FILE *stream); // A FAIRE
+size_t nb_line_in_csv(char *csv_tile ); // Theo A FAIRE 
+
+struct Tile **create_tile_array(char *csv_tile); // Theo A FAIRE
 /*
     Crée la liste des tuiles à partir d'un fichier csv. AUTRE OPTION : hard code à la main la liste
 */
