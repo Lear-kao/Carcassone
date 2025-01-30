@@ -88,7 +88,7 @@ struct Tile
         X X X
           X 
     */
-    struct Player* meeple;
+    struct Player *meeple;
     enum types right;
     enum types left;
     enum types top;
