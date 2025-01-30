@@ -108,10 +108,17 @@ void shuffle(struct Tile **tileArray, char size)//Valentin c'est peut-être mieu
 }//la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
 
 
-void array_to_stack(struct Tile **tileArray, struct Stack *stack); // A FAIRE
+void array_to_stack(struct Tile **tileArray, struct Stack *stack) // A FAIRE
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
+    On considère que l'utilisateur donne le parametre stack non allouer
 */
+{
+
+    for(short i=0;i<NBTILE;i++){
+        stack=stack_push(stack,tileArray[i]);
+    }
+}
 void reset_points(struct Player *player) //Valentin A FAIRE
 /*
     Réinitialise les points du joueur
@@ -125,7 +132,7 @@ void reset_meeples(struct Player *player) // A FAIRE
     Réinitialise le compteur de Meeple du joueur
 */
 {
-    player->nbMeeple=NBMEEPLE_default;
+    player->nbMeeple=NBMEEPLE_DEFAULT;
 }
 
 void next_turn(char nbPlayers, char actualPlayerTurn); // A FAIRE

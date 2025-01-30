@@ -9,7 +9,7 @@ void init_player(struct Player *player)
     /*
         Innitialise l'objet player
     */
-    player->nbMeeple = 8;
+    player->nbMeeple = NBMEEPLE_DEFAULT;
     player->points = 0;
 }
 char is_meeple_on_player(struct Player *player)
