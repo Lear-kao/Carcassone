@@ -3,6 +3,7 @@
 
 //#define CSV_TILE "tuiles_base_simplifiees.csv"
 #define NBTILE 72
+#define NBMEEPLE_default 8 
 
 #include <stddef.h>
 #include <stdio.h>
@@ -125,7 +126,7 @@ struct Player
         points : Nombre de points du joueur
      */
     char nbMeeple;
-    char points; 
+    short points; 
 };
 
 // ----PLayers fonctions----
@@ -174,12 +175,13 @@ void array_to_stack(struct Tile **tileArray, struct Stack *stack); // A FAIRE
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
 */
-void reset_points(struct Player *player); // A FAIRE
+void reset_points(struct Player *player); //Valentin A FAIRE
 /*
     Réinitialise les points du joueur
 */
 
-void reset_meeples(struct Player *player); // A FAIRE
+
+void reset_meeples(struct Player *player);//Valentin A FAIRE
 /*
     Réinitialise le compteur de Meeple du joueur
 */
