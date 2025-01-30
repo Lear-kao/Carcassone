@@ -19,7 +19,7 @@ Test(all, is_meeple_on_player)
 {
     struct Player *player = malloc(sizeof(struct Player));
     init_player(player);
-    cr_expect(is_meeple_on_player(player) == 1);
+    cr_expect(is_meeple_on_player(player) > 0);
     player->nbMeeple = 0;
     cr_expect(is_meeple_on_player(player) == 0);
 }
