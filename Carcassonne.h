@@ -88,7 +88,7 @@ struct Tile
         X X X
           X 
     */
-    enum meeplePlace meeple;
+    struct Player* meeple;
     enum types right;
     enum types left;
     enum types top;
@@ -118,6 +118,11 @@ char is_meeple_on_tile(struct Tile *tile); // FAIT
 // ---------------
 // ----Player-----
 // ---------------
+struct meeple
+{
+    struct tile* tuile = NULL;
+    struct meeple* suiv = NULL;
+}
 
 struct Player
 {
@@ -125,6 +130,7 @@ struct Player
         nbMeeple : Nombre de Meeple du joueur
         points : Nombre de points du joueur
      */
+    
     char nbMeeple;
     short points; 
 };
@@ -171,17 +177,19 @@ void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être m
     Mélange les tuiles
 */
 
-void array_to_stack(struct Tile **tileArray, struct Stack *stack); // A FAIRE
+void array_to_stack(struct Tile **tileArray, struct Stack *stack); // Fait
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
 */
+
 void reset_points(struct Player *player); //Valentin A FAIRE
+
 /*
     Réinitialise les points du joueur
 */
 
-
 void reset_meeples(struct Player *player);//Valentin A FAIRE
+
 /*
     Réinitialise le compteur de Meeple du joueur
 */
