@@ -3,7 +3,6 @@
 
 #define CSV_TILE "tuiles_base_simplifiees.csv"
 #define NBTILE 72
-
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 5
