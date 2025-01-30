@@ -10,7 +10,8 @@ void init_tile(struct Tile *tile, enum types right, enum types top, enum types l
     tile : Un pointer vers un espace mémoire déjà alloué à sizeof(struct Tile)
     right, left ... middle : les différent type des bordes de la tuile
      */
-    tile->meeple = NO_MEEPLE;
+    tile->meeple = NULL;
+    tile->meeplePlace = NO_MEEPLE;
     tile->right = right;
     tile->top = top;
     tile->left = left;
