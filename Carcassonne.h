@@ -7,7 +7,7 @@
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 5
-#define NBMEEPLE_default 8 
+#define NBMEEPLE_DEFAULT 8 
 
 #include <stddef.h>
 #include <stdio.h>
