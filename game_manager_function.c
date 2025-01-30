@@ -4,38 +4,77 @@
 // ----Game manager fonctions----
 // ------------------------------
 
-size_t nb_line_in_csv(char *csv_tile ); // j'aurais pu faire plusieurs allocations (doublé chaque fois) sinon
 
-struct Tile **create_tile_array(char *csv_tile) // A FAIRE
+
+char token_to_enum_types(char *token, char *tokenArray[]) // si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
 /*
-    Crée la liste des tuiles à partir d'un fichier csv. AUTRE OPTION : hard code à la main la liste
+    La fonction effectue une bijection entre l'enum types et tokenArray
+    
+    token : la chaine de charactère à annalyser
+    tokenArray : La liste des différents tokens possible
+
+    return: 
+    Le type de la case associé au token.
 */
 {
-    char *filename = csv_tile;
-    FILE *file = fopen(filename, "r");
-    char buff[2048]; // jsp plus pourquoi il faut mettre une puissance de 2 mais un ACU m'a dit que c'était mieux
-    struct Tile **tileArray = malloc(sizeof(struct Tile) * NBTILE + 1);
-    tileArray[NBTILE] = NULL; // Pour pouvoir itérer sur la liste en sachant quand s'arrêter (sur le NULL)
-    size_t index = 0;
-    size_t indexTmp = 0;
-
-    while(fgets(buff, 2048, file)) // revoir condition d'arrêt
-        while(*(buff + index) != '\0') // si problème soit remplacer par un do while soit copier coller le contenu en dehors
+    char i = 0;
+    char find = 0;
+    while (find != 0)
+    {
+        if (strcmp((*tokenArray + i), token) == 0)
         {
-            indexTmp = index;
-            while(*(buff + indexTmp) != ',')
-            {
-                // voir bib standard je pense
-            }
-            // créer une struct Tile et lui associer les 5 tokens 
-            index++;
+            find = i;
         }
-    fclose(file);
-    return NULL;
+        i++;
+    }
+    return find;
 };
 
+struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize) // A FAIRE
+/*
+    Crée la liste des tuiles à partir d'un fichier csv.
 
-struct Player **create_players_array(char nbPlayers); // A FAIRE 
+    csvTile : Le nom du fichier .csv à ouvrir (utiliser la macro CSV_TILE).
+    tokenArray : La liste des token correspondant 1 à 1 aux éléments de la macro types 
+
+    return : 
+    Une tileArray contenant les objets Tile innitialisé
+
+    Attention ne pas allouez la mémoire pour struct tile **tileArray
+*/
+{
+    char *filename = csvTile;
+    FILE *file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        return NULL; // error case
+    }
+    char buff[BUFF_DEFAULT_SIZE];
+    struct Tile **tileArray = malloc(sizeof(struct Tile *) * (NBTILE + 1));
+    *(tileArray + NBTILE) = NULL;
+    tileArray[NBTILE] = NULL; // Pour pouvoir itérer sur la liste en sachant quand s'arrêter (sur le NULL)
+    char *token = malloc(sizeof(char) * maxTokenSize);
+    size_t index = 0;
+    char *typesArray = malloc(sizeof(char) * NB_TOKEN_TYPE); // liste de NB_TOKEN_TYPE token de "types enum"
+
+    while (fgets(buff, BUFF_DEFAULT_SIZE, file) != NULL && index <= NBTILE)
+    {
+        token = strtok(buff, ",");
+        for (char i = 0; i < NB_TOKEN_TYPE && token != NULL; i++)
+        {
+            token = strtok(NULL, ",");
+            token_to_enum_types(token, tokenArray);
+
+        }
+        tileArray[index] = malloc(sizeof(struct Tile));
+        init_tile(tileArray[index], typesArray[0], typesArray[1], typesArray[2], typesArray[3], typesArray[4]);// créer une struct Tile et lui associer les 5 tokens
+        index++;
+    }
+    fclose(file);
+    return tileArray;
+};
+
+struct Player **create_players_array(char nbPlayers); // A FAIRE
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
@@ -103,9 +142,9 @@ void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FA
 */
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
-                                                                           /*
-                                                                               grid : la case de départ
-                                                                               nbPLayers : Le nombre de joueurs
-                                                                           
-                                                                               return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
-                                                                           */
+/*
+    grid : la case de départ
+    bPLayers : Le nombre de joueurs
+                                                                       
+    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+*/

@@ -1,15 +1,19 @@
 #ifndef CARCASSONNE_H
 #define CARCASSONNE_H
 
-//#define CSV_TILE "tuiles_base_simplifiees.csv"
+#define CSV_TILE "tuiles_base_simplifiees.csv"
 #define NBTILE 72
+#define BUFF_DEFAULT_SIZE 1024
+#define MAX_TOKEN_SIZE 7
+#define NB_TOKEN_TYPE 5
 
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-enum types { ROUTE, VILLE, ABBAYES, PRÉS, VILLAGE };
+enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE };
 enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
+
 
 //-----------------------
 // ----Data structure----
@@ -123,7 +127,7 @@ struct Player
         nbMeeple : Nombre de Meeple du joueur
         points : Nombre de points du joueur
      */
-    char nbMeeple;
+    char nbMeeple; // nombre de meeple qui reste au joueurs
     char points; 
 };
 
@@ -147,11 +151,28 @@ char is_meeple_on_player(struct Player *player); // FAIT
 // ----Game manager fonctions----
 // ------------------------------
 
-size_t nb_line_in_csv(char *csv_tile ); // Theo A FAIRE 
-
-struct Tile **create_tile_array(char *csv_tile); // Theo A FAIRE
+char token_to_enum_types(char *token, char *tokenArray[]); // si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
 /*
-    Crée la liste des tuiles à partir d'un fichier csv. AUTRE OPTION : hard code à la main la liste
+    La fonction effectue une bijection entre l'enum types et tokenArray
+    
+    token : la chaine de charactère à annalyser
+    tokenArray : La liste des différents tokens possible
+
+    return: 
+    Le type de la case associé au token.
+*/
+
+struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize); // Theo A FAIRE
+/*
+    Crée la liste des tuiles à partir d'un fichier csv.
+
+    csvTile : Le nom du fichier .csv à ouvrir (utiliser la macro CSV_TILE).
+    tokenArray : La liste des token correspondant 1 à 1 aux éléments de la macro types 
+
+    return : 
+    Une tileArray contenant les objets Tile innitialisé
+
+    Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
 struct Player **create_players_array(char nbPlayers); // A FAIRE
