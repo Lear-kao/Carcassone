@@ -15,6 +15,18 @@ Test(all, init_player)
     cr_expect(player->points == 0);
 }
 
+Test(all, init_player_list)
+{
+    char nbPlayer = 8;
+    struct Player **list_player = init_player_list(nbPlayer);
+    int i = 0;
+    while( list_player[i] != NULL)
+    {
+        i++;
+    }
+    cr_expect(i == 8);
+}
+
 Test(all, is_meeple_on_player)
 {
     struct Player *player = malloc(sizeof(struct Player));

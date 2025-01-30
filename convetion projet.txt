@@ -1,0 +1,6 @@
+Convention:
+	- On ne push pas ce qui ne compile pas.
+	- Les fonctions finies doivent être accompagnées du nom  de la personne.
+	- Ne pas modiffier le pont csv.
+	- Ne pas commit de fichier les executables.
+	
