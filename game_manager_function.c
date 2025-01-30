@@ -125,7 +125,7 @@ void reset_meeples(struct Player *player) // A FAIRE
     Réinitialise le compteur de Meeple du joueur
 */
 {
-    player->nbMeeple=NBMEEPLE_default;
+    player->nbMeeple=NBMEEPLE_DEFAULT;
 }
 
 void next_turn(char nbPlayers, char actualPlayerTurn); // A FAIRE
