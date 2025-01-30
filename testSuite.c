@@ -92,3 +92,12 @@ Test(all, is_stack_not_empty)
     cr_assert(is_stack_not_empty(stackEmpty) == 0);
 
 }
+
+Test(all, create_tile_array)
+{
+    struct Tile **tileArray;
+    char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", ""};
+    tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
+    printf("debug : %d\n", tileArray[0]->right);
+    cr_assert(tileArray[71]->middle == PRE);
+}
