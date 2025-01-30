@@ -101,3 +101,19 @@ Test(all, create_tile_array)
     printf("debug : %d\n", tileArray[0]->right);
     cr_assert(tileArray[71]->middle == PRE);
 }
+
+Test(all, reset_points)
+{
+    struct Player *player=(struct Player *)malloc(sizeof(struct Player));
+    player->points=380;
+    reset_points(player);
+    cr_assert(player->points==0);
+}
+
+Test(all, reset_meeples)
+{
+    struct Player *player=(struct Player *)malloc(sizeof(struct Player));
+    player->nbMeeple=8;
+    reset_points(player);
+    cr_assert(player->points==0);
+}

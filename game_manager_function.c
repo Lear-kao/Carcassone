@@ -119,7 +119,7 @@ void array_to_stack(struct Tile **tileArray, struct Stack *stack) // A FAIRE
         stack=stack_push(stack,tileArray[i]);
     }
 }
-void reset_points(struct Player *player) //Valentin A FAIRE
+void reset_points(struct Player *player) //Fait
 /*
     Réinitialise les points du joueur
 */
@@ -127,7 +127,7 @@ void reset_points(struct Player *player) //Valentin A FAIRE
     player->points=0;
 }
 
-void reset_meeples(struct Player *player) // A FAIRE
+void reset_meeples(struct Player *player) //Fait
 /*
     Réinitialise le compteur de Meeple du joueur
 */
