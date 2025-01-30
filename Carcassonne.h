@@ -3,13 +3,16 @@
 
 #define CSV_TILE "tuiles_base_simplifiees.csv"
 #define NBTILE 72
+
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 5
+#define NBMEEPLE_default 8 
 
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE };
 enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
@@ -90,7 +93,7 @@ struct Tile
         X X X
           X 
     */
-    enum meeplePlace meeple;
+    struct Player* meeple;
     enum types right;
     enum types left;
     enum types top;
@@ -120,15 +123,20 @@ char is_meeple_on_tile(struct Tile *tile); // FAIT
 // ---------------
 // ----Player-----
 // ---------------
+struct meeple
+{
+    struct tile* tuile = NULL;
+    struct meeple* suiv = NULL;
+}
 
 struct Player
 {
      /*
         nbMeeple : Nombre de Meeple du joueur
         points : Nombre de points du joueur
-     */
-    char nbMeeple; // nombre de meeple qui reste au joueurs
-    char points; 
+     */  
+    char nbMeeple;
+    short points; 
 };
 
 // ----PLayers fonctions----
@@ -182,7 +190,7 @@ struct Player **create_players_array(char nbPlayers); // A FAIRE
     les iterations sur la liste (condition d'arrêt)
 */
 
-void shuffle(struct Tile **tileArray, char size); // c'est peut-être mieux si size est une macro A FAIRE
+void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
@@ -190,16 +198,19 @@ void shuffle(struct Tile **tileArray, char size); // c'est peut-être mieux si s
     Mélange les tuiles
 */
 
-void array_to_stack(struct Tile **tileArray, struct Stack *stack); // A FAIRE
+void array_to_stack(struct Tile **tileArray, struct Stack *stack); // Fait
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
 */
-void reset_points(struct Player *player); // A FAIRE
+
+void reset_points(struct Player *player); //Valentin A FAIRE
+
 /*
     Réinitialise les points du joueur
 */
 
-void reset_meeples(struct Player *player); // A FAIRE
+void reset_meeples(struct Player *player);//Valentin A FAIRE
+
 /*
     Réinitialise le compteur de Meeple du joueur
 */

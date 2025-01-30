@@ -74,34 +74,59 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     return tileArray;
 };
 
-struct Player **create_players_array(char nbPlayers); // A FAIRE
+
+
+struct Player **create_players_array(char nbPlayers); // Axel 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
 */
 
-void shuffle(struct Tile **tileArray, char size); // c'est peut-être mieux si size est une macro A FAIRE
+void shuffle(struct Tile **tileArray, char size)//Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
 
     Mélange les tuiles
 */
+{
+    srand(time(NULL));//initialisation de la seed pour la generation de nombre aléatoire
+    short i,rand1,rand2;
+    struct Tile *temp;
+
+    for(i=0;i<size*size;i++){
+        rand1=rand()%size;
+        rand2=rand()%size;
+        if(rand1!=rand2){
+            temp=tileArray[rand1];
+            tileArray[rand1]=tileArray[rand2];
+            tileArray[rand2]=temp;
+        }
+    }
+
+}//la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
+
 
 void array_to_stack(struct Tile **tileArray, struct Stack *stack); // A FAIRE
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
 */
-void reset_points(struct Player *player); // A FAIRE
+void reset_points(struct Player *player) //Valentin A FAIRE
 /*
     Réinitialise les points du joueur
 */
+{
+    player->points=0;
+}
 
-void reset_meeples(struct Player *player); // A FAIRE
+void reset_meeples(struct Player *player) // A FAIRE
 /*
     Réinitialise le compteur de Meeple du joueur
 */
+{
+    player->nbMeeple=NBMEEPLE_default;
+}
 
 void next_turn(char nbPlayers, char actualPlayerTurn); // A FAIRE
 /*
