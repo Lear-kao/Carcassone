@@ -20,14 +20,7 @@ char is_meeple_on_player(struct Player *player)
     - 0 si le joueur n'a aucun Meeple
     - 1 si il reste au moins un Meeple au Joueur
 */
-    if(player->nbMeeple == 0)
-    {
-        return 0;
-    }
-    else 
-    {
-        return 1;
-    }
+    return Player->nbmeeple;
 
 };
 
