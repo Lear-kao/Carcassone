@@ -35,7 +35,7 @@ struct Tile **create_tile_array(char *csv_tile) // A FAIRE
 };
 
 
-struct Player **create_players_array(char nbPlayers); // A FAIRE 
+struct Player **create_players_array(char nbPlayers); // Axel 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
