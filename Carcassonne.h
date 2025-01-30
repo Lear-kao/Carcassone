@@ -123,11 +123,6 @@ char is_meeple_on_tile(struct Tile *tile); // FAIT
 // ---------------
 // ----Player-----
 // ---------------
-struct meeple
-{
-    struct tile* tuile = NULL;
-    struct meeple* suiv = NULL;
-}
 
 struct Player
 {
