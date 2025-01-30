@@ -76,12 +76,18 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
 
 
 
-struct Player **create_players_array(char nbPlayers); // Axel 
+struct Player **init_player_list(char nbPlayers) // Axel 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
 */
+{
+    struct Player **list_players =  (struct Player**)malloc(sizeof(struct Player*)*(nbPlayers+1));
+    for( char i = 0; i < nbPlayers; i++) init_player(list_players[i]);
+    return list_players;
+
+}
 
 void shuffle(struct Tile **tileArray, char size)//Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
