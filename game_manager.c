@@ -1,4 +1,6 @@
 #include "Carcassonne.h"
+/*
+
 
 
 void main()
@@ -68,3 +70,4 @@ void main()
         char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers);
     }
 }
+*/

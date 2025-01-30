@@ -57,14 +57,15 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     size_t index = 0;
     char *typesArray = malloc(sizeof(char) * NB_TOKEN_TYPE); // liste de NB_TOKEN_TYPE token de "types enum"
 
+    fgets(buff, BUFF_DEFAULT_SIZE, file); // On saute la première ligne car il s'agit de la tuile de base
+
     while (fgets(buff, BUFF_DEFAULT_SIZE, file) != NULL && index <= NBTILE)
     {
         token = strtok(buff, ",");
         for (char i = 0; i < NB_TOKEN_TYPE && token != NULL; i++)
         {
             token = strtok(NULL, ",");
-            token_to_enum_types(token, tokenArray);
-
+            typesArray[i] = token_to_enum_types(token, tokenArray);
         }
         tileArray[index] = malloc(sizeof(struct Tile));
         init_tile(tileArray[index], typesArray[0], typesArray[1], typesArray[2], typesArray[3], typesArray[4]);// créer une struct Tile et lui associer les 5 tokens
