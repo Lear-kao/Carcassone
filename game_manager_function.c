@@ -90,33 +90,36 @@ struct Player **init_player_list(char nbPlayers) // Axel
     {
         list_players[i] = (struct Player*)malloc(sizeof(struct Player));
         init_player(list_players[i]);
+    }
     return list_players;
 
 }
 
-void shuffle(struct Tile **tileArray, char size)//Valentin c'est peut-être mieux si size est une macro A FAIRE
+void shuffle(struct Tile **tileArray, char size) //Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
+    la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
 
-    Mélange les tuiles
 */
 {
-    srand(time(NULL));//initialisation de la seed pour la generation de nombre aléatoire
+    srand(time(NULL)); //initialisation de la seed pour la generation de nombre aléatoire
     short i,rand1,rand2;
     struct Tile *temp;
 
-    for(i=0;i<size*size;i++){
+    for(i=0;i<size*size;i++)
+    {
         rand1=rand()%size;
         rand2=rand()%size;
-        if(rand1!=rand2){
+        if(rand1!=rand2)
+        {
             temp=tileArray[rand1];
             tileArray[rand1]=tileArray[rand2];
             tileArray[rand2]=temp;
         }
     }
 
-}//la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
+}
 
 
 void array_to_stack(struct Tile **tileArray, struct Stack *stack) // A FAIRE

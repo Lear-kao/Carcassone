@@ -45,7 +45,7 @@ void main()
         // Fin dans start game
 
         start_game(nbHumanPlayers, nbBotPlayers);
-        struct Player **playersArray = malloc(sizeof(struct Player) * nbPlayers)
+        struct Player **playersArray = malloc(sizeof(struct Player) * nbPlayers);
         playersArray = create_players_array(char nbPlayers);
         
         // ---------------------------
