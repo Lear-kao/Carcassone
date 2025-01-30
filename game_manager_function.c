@@ -115,7 +115,7 @@ void array_to_stack(struct Tile **tileArray, struct Stack *stack) // A FAIRE
 */
 {
 
-    for(short i=0;i<NBTILE;i++){
+    for(short i=0;i<NBTILE-1;i++){
         stack=stack_push(stack,tileArray[i]);
     }
 }
