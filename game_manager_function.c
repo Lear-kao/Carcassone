@@ -126,18 +126,18 @@ void shuffle(struct Tile **tileArray, char size) //Valentin c'est peut-être mie
 }
 
 
-void array_to_stack(struct Tile **tileArray, struct Stack *stack) // A FAIRE
+void array_to_stack(struct Tile **tileArray, struct Stack *stack) //Valentin A FAIRE
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
     On considère que l'utilisateur donne le parametre stack non allouer
 */
 {
 
-    for(short i=0;i<NBTILE;i++){
+    for(short i=0;i<NBTILE-1;i++){
         stack=stack_push(stack,tileArray[i]);
     }
 }
-void reset_points(struct Player *player) //Valentin A FAIRE
+void reset_points(struct Player *player) //Fait
 /*
     Réinitialise les points du joueur
 */
@@ -145,7 +145,7 @@ void reset_points(struct Player *player) //Valentin A FAIRE
     player->points=0;
 }
 
-void reset_meeples(struct Player *player) // A FAIRE
+void reset_meeples(struct Player *player) //Fait
 /*
     Réinitialise le compteur de Meeple du joueur
 */

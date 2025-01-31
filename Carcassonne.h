@@ -199,13 +199,13 @@ void array_to_stack(struct Tile **tileArray, struct Stack *stack); // Fait
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
 */
 
-void reset_points(struct Player *player); //Valentin A FAIRE
+void reset_points(struct Player *player); //Fait
 
 /*
     Réinitialise les points du joueur
 */
 
-void reset_meeples(struct Player *player);//Valentin A FAIRE
+void reset_meeples(struct Player *player);//Fait
 
 /*
     Réinitialise le compteur de Meeple du joueur
