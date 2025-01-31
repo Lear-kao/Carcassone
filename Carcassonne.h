@@ -5,7 +5,7 @@
 #define NBTILE 72
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
-#define NB_TOKEN_TYPE 5
+#define NB_TOKEN_TYPE 6
 #define NBMEEPLE_default 8 
 
 #include <stddef.h>
@@ -93,7 +93,7 @@ struct Tile
           X 
     */
     struct Player* meeple;
-    enum types meeplePlace;
+    enum meeplePlace meeplePlace;
     enum types right;
     enum types left;
     enum types top;

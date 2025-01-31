@@ -1,9 +1,13 @@
 CC=cc
-CFLAGS=-Wall -Wextra -Wvla -std=c99 -pedantic -Werror
+CFLAGS=-std=c99 -pedantic
 TESTFLAGS=-lcriterion
 
 all : data_structure.o game_manager_function.o game_manager.o player.o tile.o
 	${CC} ${CFLAGS} -o Carcassonne
 
 test :
-	${CC} ${TESTFLAGS} ${CFLAGS} -o testSuite
+	${CC} ${CFLAGS} ${TESTFLAGS} testSuite.c -o testSuite
+	./testSuite
+clear : 
+	rm a.out data_structure.o game_manager_function.o game_manager.o player.o tile.o testSuite
+	

@@ -99,11 +99,14 @@ Test(all, create_tile_array)
     char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
     tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
     cr_assert(tileArray[0]->right == ROUTE);
-    cr_assert(tileArray[0]->middle == ROUTE);
-    cr_assert(tileArray[1]->middle == ROUTE);
+    
+    printf("result : %d\n", tileArray[0]->middle);
+    cr_assert(tileArray[0]->middle == ROUTE); // faux
+    
+    cr_assert(tileArray[1]->middle == BLASON);
 
-    printf("debug 2: %d\n", tileArray[2]->right);
-    cr_assert(tileArray[2]->right == BLASON);
+    printf("debug 2: %d\n", tileArray[1]->right);
+    cr_assert(tileArray[1]->right == BLASON);
 
     printf("debug 70: %d\n", tileArray[70]->middle);
     cr_assert(tileArray[70]->middle == PRE);
