@@ -1,5 +1,7 @@
 #include "Carcassonne.h"
 
+#include <string.h>
+
 // ------------------------------
 // ----Game manager fonctions----
 // ------------------------------
@@ -18,17 +20,17 @@ char token_to_enum_types(char *token, char *tokenArray[]) // si qq veut faire un
 */
 {
     char i = 0;
-    char find = 0;
-    while (find != 0)
+    char find = -1;
+    while (find == -1 && i < NB_TOKEN_TYPE)
     {
-        if (strcmp((*tokenArray + i), token) == 0)
+        if (strcmp(tokenArray[i], token) == 0)
         {
             find = i;
         }
         i++;
     }
     return find;
-};
+}
 
 struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize) // A FAIRE
 /*
@@ -55,24 +57,26 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     tileArray[NBTILE] = NULL; // Pour pouvoir itérer sur la liste en sachant quand s'arrêter (sur le NULL)
     char *token = malloc(sizeof(char) * maxTokenSize);
     size_t index = 0;
-    char *typesArray = malloc(sizeof(char) * NB_TOKEN_TYPE); // liste de NB_TOKEN_TYPE token de "types enum"
-
+    char *typesArray = malloc(sizeof(char ) * NB_TOKEN_TYPE); // liste de NB_TOKEN_TYPE token de "types enum"
+    
+    fgets(buff, BUFF_DEFAULT_SIZE, file); // On saute la première ligne car il s'agit de la tuile de base
     while (fgets(buff, BUFF_DEFAULT_SIZE, file) != NULL && index <= NBTILE)
     {
         token = strtok(buff, ",");
         for (char i = 0; i < NB_TOKEN_TYPE && token != NULL; i++)
         {
+            token[strcspn(token, "\n")] = '\0';
+            typesArray[i] = token_to_enum_types(token, tokenArray);
             token = strtok(NULL, ",");
-            token_to_enum_types(token, tokenArray);
-
         }
         tileArray[index] = malloc(sizeof(struct Tile));
+
         init_tile(tileArray[index], typesArray[0], typesArray[1], typesArray[2], typesArray[3], typesArray[4]);// créer une struct Tile et lui associer les 5 tokens
         index++;
     }
     fclose(file);
     return tileArray;
-};
+}
 
 
 
