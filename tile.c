@@ -17,7 +17,7 @@ void init_tile(struct Tile *tile, enum types right, enum types top, enum types l
     tile->left = left;
     tile->bot = bot;
     tile->middle = middle;
-};
+}
 
 char is_meeple_on_tile(struct Tile *tile)
 {
@@ -36,4 +36,4 @@ char is_meeple_on_tile(struct Tile *tile)
     {
         return 1;
     }
-};
+}

@@ -5,15 +5,15 @@
 #define NBTILE 72
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
-#define NB_TOKEN_TYPE 5
-#define NBMEEPLE_DEFAULT 8 
+#define NB_TOKEN_TYPE 6
+#define NBMEEPLE_default 8 
 
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE };
+enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON };
 enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 
@@ -31,7 +31,7 @@ struct Stack
     struct Stack *next;
 };
 
-struct Stack *stack_push(struct Stack *stack, struct Tile *tile); // FAIT
+struct Stack *stack_push(struct Stack *stack, struct Tile *tile); // FAIT theo
 /*
     stack : La pile
     tile : Un pointer sur un espace mémoire ou se trouve une tile à push sur la stack
@@ -40,7 +40,7 @@ struct Stack *stack_push(struct Stack *stack, struct Tile *tile); // FAIT
 */
 // Ne pas oublier de gérer la cas création de stack
 
-struct Stack *stack_pop(struct Stack *stack, struct Tile **tileSlot); // FAIT
+struct Stack *stack_pop(struct Stack *stack, struct Tile **tileSlot); // FAIT theo
 /*
     stack : La pile
     tile : Un pointer sur un espace mémoire ou mettre la tile pop
@@ -93,8 +93,8 @@ struct Tile
           X 
     */
 
-    struct Player *meeple;
-    enum types meeplePlace;
+    struct Player* meeple;
+    enum meeplePlace meeplePlace;
     enum types right;
     enum types left;
     enum types top;
@@ -104,7 +104,7 @@ struct Tile
 
 // ----Tiles fonctions----
 
-void init_tile(struct Tile *tile, enum types right, enum types left, enum types top, enum types bot, enum types middle); // FAIT
+void init_tile(struct Tile *tile, enum types right, enum types left, enum types top, enum types bot, enum types middle); // FAIT theo/Axel
 /*
     tile : Un pointer vers un espace mémoire déjà alloué à sizeof(struct Tile)
     right, left ... middle : les différent type des bordes de la tuile
@@ -112,7 +112,7 @@ void init_tile(struct Tile *tile, enum types right, enum types left, enum types 
     return : 1 en cas d'erreur, 0 sinon
 */
 
-char is_meeple_on_tile(struct Tile *tile); // FAIT
+char is_meeple_on_tile(struct Tile *tile); // FAIT theo
 /*
     tile : Une tile
 
@@ -137,12 +137,12 @@ struct Player
 
 // ----PLayers fonctions----
 
-void init_player(struct Player *player); // FAIT
+void init_player(struct Player *player); // FAIT theo
 /*
     Innitialise l'objet player
 */
 
-char is_meeple_on_player(struct Player *player); // FAIT
+char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
 /*
     Player : L'objet Player
 
@@ -155,7 +155,7 @@ char is_meeple_on_player(struct Player *player); // FAIT
 // ----Game manager fonctions----
 // ------------------------------
 
-char token_to_enum_types(char *token, char *tokenArray[]); // si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
+char token_to_enum_types(char *token, char *tokenArray[]); // theo si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
 /*
     La fonction effectue une bijection entre l'enum types et tokenArray
     
@@ -179,7 +179,7 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
-struct Player **create_players_array(char nbPlayers); // A FAIRE
+struct Player **init_player_list(char nbPlayers); // Fait (Axel) 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter

@@ -1,4 +1,6 @@
 #include "Carcassonne.h"
+/*
+
 
 
 void main()
@@ -45,26 +47,26 @@ void main()
         // Fin dans start game
 
         start_game(nbHumanPlayers, nbBotPlayers);
-        struct Player **playersArray = malloc(sizeof(struct Player) * nbPlayers)
+        struct Player **playersArray = malloc(sizeof(struct Player) * nbPlayers);
         playersArray = create_players_array(char nbPlayers);
         
         // ---------------------------
         // ----Phase 3 : La partie----
         // ---------------------------
         show_grid();
-        while (is_stack_not_empty(stack);)
+        while (is_stack_not_empty(stack))
         {
-            for (char i = 0; i < nbPLayers; i++) 
+            for (char i = 0; i < nbPlayers; i++) 
             {
                 player_turn(i);
-                show_grid(grid);
+                show_grid(Grid);
             }
         }
 
         // -------------------------------
         // ----Phase 4 : Fin de partie----
         // -------------------------------
-        
         char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers);
     }
 }
+*/

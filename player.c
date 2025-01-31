@@ -22,5 +22,5 @@ char is_meeple_on_player(struct Player *player)
 */
     return player->nbMeeple;
 
-};
+}
 

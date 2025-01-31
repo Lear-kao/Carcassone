@@ -1,5 +1,7 @@
 #include "Carcassonne.h"
 
+#include <string.h>
+
 // ------------------------------
 // ----Game manager fonctions----
 // ------------------------------
@@ -18,17 +20,17 @@ char token_to_enum_types(char *token, char *tokenArray[]) // si qq veut faire un
 */
 {
     char i = 0;
-    char find = 0;
-    while (find != 0)
+    char find = -1;
+    while (find == -1 && i < NB_TOKEN_TYPE)
     {
-        if (strcmp((*tokenArray + i), token) == 0)
+        if (strcmp(tokenArray[i], token) == 0)
         {
             find = i;
         }
         i++;
     }
     return find;
-};
+}
 
 struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize) // A FAIRE
 /*
@@ -55,57 +57,73 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     tileArray[NBTILE] = NULL; // Pour pouvoir itérer sur la liste en sachant quand s'arrêter (sur le NULL)
     char *token = malloc(sizeof(char) * maxTokenSize);
     size_t index = 0;
-    char *typesArray = malloc(sizeof(char) * NB_TOKEN_TYPE); // liste de NB_TOKEN_TYPE token de "types enum"
-
+    char *typesArray = malloc(sizeof(char ) * NB_TOKEN_TYPE); // liste de NB_TOKEN_TYPE token de "types enum"
+    
+    fgets(buff, BUFF_DEFAULT_SIZE, file); // On saute la première ligne car il s'agit de la tuile de base
     while (fgets(buff, BUFF_DEFAULT_SIZE, file) != NULL && index <= NBTILE)
     {
         token = strtok(buff, ",");
         for (char i = 0; i < NB_TOKEN_TYPE && token != NULL; i++)
         {
+            token[strcspn(token, "\n")] = '\0';
+            typesArray[i] = token_to_enum_types(token, tokenArray);
             token = strtok(NULL, ",");
-            token_to_enum_types(token, tokenArray);
-
         }
         tileArray[index] = malloc(sizeof(struct Tile));
+
         init_tile(tileArray[index], typesArray[0], typesArray[1], typesArray[2], typesArray[3], typesArray[4]);// créer une struct Tile et lui associer les 5 tokens
         index++;
     }
     fclose(file);
     return tileArray;
-};
+}
 
 
 
-struct Player **create_players_array(char nbPlayers); // Axel 
+struct Player **init_player_list(char nbPlayers) // Axel 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
 */
+{
+    struct Player **list_players =  (struct Player**)malloc(sizeof(struct Player*)*(nbPlayers+1));
+    list_players[nbPlayers] = (struct Player*)malloc(sizeof(struct Player));
+    list_players[nbPlayers] = NULL;
+    for( char i = 0; i < nbPlayers; i++)
+    {
+        list_players[i] = (struct Player*)malloc(sizeof(struct Player));
+        init_player(list_players[i]);
+    }
+    return list_players;
 
-void shuffle(struct Tile **tileArray, char size)//Valentin c'est peut-être mieux si size est une macro A FAIRE
+}
+
+void shuffle(struct Tile **tileArray, char size) //Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
+    la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
 
-    Mélange les tuiles
 */
 {
-    srand(time(NULL));//initialisation de la seed pour la generation de nombre aléatoire
+    srand(time(NULL)); //initialisation de la seed pour la generation de nombre aléatoire
     short i,rand1,rand2;
     struct Tile *temp;
 
-    for(i=0;i<size*size;i++){
+    for(i=0;i<size*size;i++)
+    {
         rand1=rand()%size;
         rand2=rand()%size;
-        if(rand1!=rand2){
+        if(rand1!=rand2)
+        {
             temp=tileArray[rand1];
             tileArray[rand1]=tileArray[rand2];
             tileArray[rand2]=temp;
         }
     }
 
-}//la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
+}
 
 
 void array_to_stack(struct Tile **tileArray, struct Stack *stack) //Valentin A FAIRE

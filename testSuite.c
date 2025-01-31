@@ -15,6 +15,18 @@ Test(all, init_player)
     cr_expect(player->points == 0);
 }
 
+Test(all, init_player_list)
+{
+    char nbPlayer = 8;
+    struct Player **list_player = init_player_list(nbPlayer);
+    int i = 0;
+    while( list_player[i] != NULL )
+    {
+        i++;
+    }
+    cr_expect(i == 8);
+}
+
 Test(all, is_meeple_on_player)
 {
     struct Player *player = malloc(sizeof(struct Player));
@@ -28,7 +40,14 @@ Test(all, init_tile)
 {
     struct Tile *tile = malloc(sizeof(struct Tile));
     init_tile(tile, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    cr_assert(tile->right == VILLE && tile->top == ROUTE && tile->left == ROUTE && tile->bot == VILLE && tile->middle == ROUTE && tile->meeple == NO_MEEPLE);
+    cr_assert(
+        tile->right == VILLE 
+        && tile->top == ROUTE 
+        && tile->left == ROUTE 
+        && tile->bot == VILLE 
+        && tile->middle == ROUTE 
+        && tile->meeple == NO_MEEPLE
+        );
 }
 
 Test(all, is_meeple_on_tile)
@@ -93,14 +112,6 @@ Test(all, is_stack_not_empty)
 
 }
 
-Test(all, create_tile_array)
-{
-    struct Tile **tileArray;
-    char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", ""};
-    tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
-    printf("debug : %d\n", tileArray[0]->right);
-    cr_assert(tileArray[71]->middle == PRE);
-}
 
 Test(all, reset_points)
 {
@@ -116,4 +127,17 @@ Test(all, reset_meeples)
     player->nbMeeple=8;
     reset_points(player);
     cr_assert(player->points==0);
+}
+
+
+Test(all, create_tile_array)
+{
+    struct Tile **tileArray;
+    char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
+    tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
+    cr_assert(tileArray[0]->right == ROUTE);
+    cr_assert(tileArray[0]->middle == ROUTE);
+    cr_assert(tileArray[1]->middle == BLASON);
+    cr_assert(tileArray[1]->right == BLASON);
+    cr_assert(tileArray[70]->middle == PRE);
 }
