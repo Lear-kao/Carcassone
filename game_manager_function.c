@@ -67,9 +67,6 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
         {
             token[strcspn(token, "\n")] = '\0';
             typesArray[i] = token_to_enum_types(token, tokenArray);
-            printf("token : %s\n", token);
-            printf("typesArray : %d\n", typesArray[i]);
-
             token = strtok(NULL, ",");
         }
         tileArray[index] = malloc(sizeof(struct Tile));
