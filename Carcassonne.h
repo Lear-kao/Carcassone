@@ -6,20 +6,49 @@
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 6
-#define NBMEEPLE_default 8 
+#define NBMEEPLE_DEFAULT 8  // PREND CETTE VERSION QUAND TU MERGE
 
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON };
+enum types { RIEN, ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON };
 enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 
 //-----------------------
 // ----Data structure----
 // ----------------------
+
+
+// ----------
+// --LkList-- 
+// ----------
+
+// LkList : Linked list
+
+struct LkList
+{
+    struct Tile *data;
+    struct LkList *next;
+};
+
+
+struct LkList *LkList_push_end(struct LkList *LkList, struct Tile *tile);
+/*
+    LkList : La liste chainé
+    tile : Un pointer sur un espace mémoire ou se trouve une tile à à la fin de la liste chainé
+
+    return : La liste actualisé 
+*/
+struct LkList *LkList_pop(struct LkList *LkList, struct Tile **tileSlot);
+/*
+    LkList : L'élément de la liste chainé à supprimé
+    tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
+
+    return : La liste actualisé 
+*/
 
 // ----------
 // --Stack--
@@ -43,7 +72,7 @@ struct Stack *stack_push(struct Stack *stack, struct Tile *tile); // FAIT theo
 struct Stack *stack_pop(struct Stack *stack, struct Tile **tileSlot); // FAIT theo
 /*
     stack : La pile
-    tile : Un pointer sur un espace mémoire ou mettre la tile pop
+    tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
 
     return : La stack actualisé
 
@@ -166,7 +195,7 @@ char token_to_enum_types(char *token, char *tokenArray[]); // theo si qq veut fa
     Le type de la case associé au token.
 */
 
-struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize); // Theo A FAIRE
+struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize); // fait Theo
 /*
     Crée la liste des tuiles à partir d'un fichier csv.
 
@@ -211,14 +240,35 @@ void reset_meeples(struct Player *player);//Fait
     Réinitialise le compteur de Meeple du joueur
 */
 
-
-
-void next_turn(char nbPlayers,char actualPlayerTurn); // A FAIRE
+struct Tile *rot_tile(struct Tile *tile); //A TESTER theo
 /*
-    Gère les tours de jeu.
+    Tourne la tuile de 90° dans le sens trigo.
 */
 
-void player_turn(char playerNumber); // A FAIRE
+char enum_to_char(enum types type); // A TESTER theo
+/*
+    Convertie un enum en char affichable (V pour ville et v pour village).
+*/
+
+void show_tile(struct Tile *tile); // A TESTER theo
+/*
+    Affiche une tile.
+*/
+
+void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile); // A FAIRE theo
+/*
+    tile : La tile précedement pioché par le joueur à placer
+
+    grid : Un tableau de grid sur laquelle doit être effectué une recherche
+    en fonction de la tile. Les tuiles non posé sont soit des tuiles potentiel 
+    soit des pointeurs sur NULL
+
+    coord : Les coordonnées de l'endroit ou placer la tuile sur ***grid
+
+    Place la tuile à l'emplacement indiqué.
+*/
+
+void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -228,15 +278,24 @@ void player_turn(char playerNumber); // A FAIRE
     avec la fonction where_i_can_play
 */
 
-char *where_i_can_play(struct Tile *tile, struct Grid *grid); // A FAIRE
+struct coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FAIRE theo
 /*
     tile : La tile précedement pioché par le joueur
-    grid : la grid sur laquelle doit être effectué une recherche en fonction de la tile
 
-    return : Une liste de coordonnées sur la grille de ou il est possible de placer sa tuile
+    grid : Un tableau de grid sur laquelle doit être effectué une recherche
+    en fonction de la tile. Les tuiles non posé sont soit des tuiles potentiel 
+    soit des pointeurs sur NULL
+
+    return : Une liste de coordonnées sur la grille de ou il est possible de placer sa tuile se terminant par NULL
+    ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
-void show_grid(struct Grid *grid); // A FAIRE
+char enum_to_char(enum types type); // A TESTER
+/*
+    Convertie un enum en char. 
+*/
+
+void show_grid(struct Grid *grid); // A FAIRE Axel
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
