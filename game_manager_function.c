@@ -227,7 +227,6 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FA
 */
 
 void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
-=======
 //void place_tile(struct Grid *grid, struct Coord *coord, struct Tile *Tile);
 
 /*
@@ -280,12 +279,13 @@ void show_tile(struct Tile *tile)
     printf("    %c    \n", enum_to_char(tile->bot));
 }
 
+/*
 void show_part_tile(enum types a_aff)
 {
     if (a_aff == RIEN)  printf("  ");
     else  printf("%c\n", enum_to_char(a_aff));
 }
-*/
+
 /*
 void choose_w_show(unsigned char y, struct Grid *tab)
 {

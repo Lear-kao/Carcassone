@@ -136,15 +136,11 @@ Test(all, create_tile_array)
 
 Test(all, DLList_push_end)
 {
-    struct Tile *tile1 = malloc(sizeof(struct Tile));
-    init_tile(tile1, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
 
-    struct Tile *tile2 = malloc(sizeof(struct Tile));
-    init_tile(tile2, ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
 
-    struct Tile *tile3 = malloc(sizeof(struct Tile));
-    init_tile(tile3, ROUTE, ROUTE, ROUTE, VILLE, PRE);
-
+    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
     
     struct DLList *db_list=NULL;//initialisation a NULL
 
@@ -155,7 +151,7 @@ Test(all, DLList_push_end)
     cr_assert(db_list->prev==NULL && db_list->next==NULL);
 
     //Test Deuxieme insertion
-    db_list=DLList_push_end(db_list,tile2);
+    db_list = DLList_push_end(db_list,tile2);
     cr_assert(db_list->next != NULL);
     cr_assert(db_list->next->prev == db_list);
     cr_assert(db_list->next->data->right == ROUTE);
@@ -173,14 +169,11 @@ Test(all, DLList_push_end)
 
 Test(all, DLList_pop)
 {
-    struct Tile *tile1 = malloc(sizeof(struct Tile));
-    init_tile(tile1, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
 
-    struct Tile *tile2 = malloc(sizeof(struct Tile));
-    init_tile(tile2, ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
 
-    struct Tile *tile3 = malloc(sizeof(struct Tile));
-    init_tile(tile3, ROUTE, ROUTE, ROUTE, VILLE, PRE);
+    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
 
     struct DLList *db_list=NULL;
 
