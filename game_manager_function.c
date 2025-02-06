@@ -269,10 +269,13 @@ void show_tile(struct Tile *tile)
     printf("    %c    \n", enum_to_char(tile->bot));
 }
 
-void show_grid(struct Grid *grid); // A FAIRE
+void show_grid(struct Grid *grid)
+{// en cours (Axel)
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé
 */
+    return NULL
+}
 
 void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
 /*
