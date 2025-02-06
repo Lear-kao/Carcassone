@@ -28,27 +28,32 @@ enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 // LkList : Linked list
 
-struct LkList
+struct DLList
 {
+    
     struct Tile *data;
-    struct LkList *next;
+    struct DLList *prev;
+    struct DLList *next;
 };
 
 
-struct LkList *LkList_push_end(struct LkList *LkList, struct Tile *tile); // A TESTER Théo
+struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile);
 /*
-    LkList : La liste chainé
+    DLList : La liste chainé
     tile : Un pointer sur un espace mémoire ou se trouve une tile à à la fin de la liste chainé
 
     return : La liste actualisé 
 */
-struct LkList *LkList_pop(struct LkList *LkList, struct Tile **tileSlot); // A TESTER Théo
+
+
+void DLList_pop(struct DLList *DLList, struct Tile **tileSlot);
 /*
-    LkList : L'élément de la liste chainé à supprimé
+    DLList : L'élément de la liste chainé à supprimer
     tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
 
     return : La liste actualisé 
 */
+
 
 // ----------
 // --Stack--

@@ -57,14 +57,6 @@ char is_stack_not_empty(struct Stack *stack)
 
 // DLList : Linked list
 
-struct DLList
-{
-    
-    struct Tile *data;
-    struct DLList *prev;
-    struct DLList *next;
-};
-
 
 struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
 /*
