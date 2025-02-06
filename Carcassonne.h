@@ -23,10 +23,10 @@ enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 
 // ----------
-// --LkList-- 
+// --DLList-- 
 // ----------
 
-// LkList : Linked list
+// DLList : Linked list
 
 struct DLList
 {
@@ -97,8 +97,8 @@ char is_stack_not_empty(struct Stack *stack); // FAIT
 
 struct Coord
 {
-    char x;
-    char y;
+    unsigned int x;
+    unsigned int y;
 };
 
 struct Grid

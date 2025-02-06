@@ -238,6 +238,7 @@ void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
     variable et met à jour la liste doublement chaîné les tuile ptoentiels pour les autres fonctions
 */
 
+
 char enum_to_char(enum types type)
 {
     if (type == RIEN)
