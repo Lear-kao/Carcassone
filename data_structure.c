@@ -57,14 +57,6 @@ char is_stack_not_empty(struct Stack *stack)
 
 // DLList : Linked list
 
-struct DLList
-{
-    
-    struct Tile *data;
-    struct DLList *prev;
-    struct DLList *next;
-};
-
 
 struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
 /*
@@ -143,3 +135,58 @@ void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
 // ------------
 // ----Grid----
 // ------------
+
+
+
+//-------------
+//-plateboard--
+//-------------
+
+struct l_ch
+{
+    struct Grid *place;
+    struct l_ch *col; // droite
+    struct l_ch *line; // bas
+}
+
+struct l_ch *l_ch_push_end_col(struct l_ch *l_ch, struct Grid *grid)
+/*
+    l_ch : La liste chainé
+    grid : Un pointer sur un espace mémoire ou se trouve une grid 
+
+    return : La liste actualisé 
+*/
+{
+    struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
+    struct l_ch *tmp_l_ch = l_ch;
+    new_l_ch->place = grid;
+    new_l_ch->col = NULL;
+    new_l_ch->line = NULL;
+
+    while (tmp_l_ch->col != NULL)
+    {
+        tmp_l_ch = tmp_l_ch->col;
+    }
+    tmp_l_ch->col = new_lc_h;
+}
+
+struct l_ch *l_ch_push_end_line(struct l_ch *l_ch, struct Grid *grid)
+/*
+    l_ch : La liste chainé
+    tile : Un pointer sur un espace mémoire ou se trouve une grid
+
+    return : La liste actualisé 
+*/
+{
+    struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
+    struct l_ch *tmp_l_ch = l_ch;
+    new_l_ch->place = grid;
+    new_l_ch->col = NULL;
+    new_l_ch->line = NULL;
+
+    while (tmp_l_ch->line != NULL)
+    {
+        tmp_l_ch = tmp_l_ch->line;
+    }
+    tmp_l_ch->line = new_lc_h;
+}

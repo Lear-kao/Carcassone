@@ -241,6 +241,7 @@ void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
     variable et met à jour la liste doublement chaîné les tuile ptoentiels pour les autres fonctions
 */
 
+
 char enum_to_char(enum types type)
 {
     if (type == RIEN)
@@ -271,10 +272,66 @@ void show_tile(struct Tile *tile)
     printf("    %c    \n", enum_to_char(tile->bot));
 }
 
-void show_grid(struct Grid *grid); // A FAIRE
+void show_part_tile(enum type a_aff)
+{
+    if (a_aff == NULL)  printf("  ");
+    else  printf("%c\n", enum_to_char(a_aff));
+}
+
+void choose_w_show(unsigned char y, struct Grid *tab)
+{
+    switch case y
+    {
+        case 0:
+            show_part_tile(NULL);
+            show_part_tile(tab->tile->top);
+            show_part_tile(NULL);
+            break;
+        case 1:
+            show_part_tile(tab->tile->left);
+            show_part_tile(tab->tile->middle);
+            show_part_tile(tab->tile->right);
+            break;
+        case 2:
+            show_part_tile(NULL);
+            show_part_tile(tab->tile->bot);
+            show_part_tile(NULL);
+}
+
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
+// en cours (Axel)
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé
 */
+{
+    struct l_ch *temp_y = tab, *temp_x; 
+    unsigned char t_x = 0, t_y = 0;
+    for (,t_x < x; t_x++)
+    {
+        for( int j = 0; j < 3; j++)
+        {
+            temp_y = temp_x;
+            printf("\n");
+            temp_y = temp_x
+            for(, t_y < y; t_y++)
+            {
+                if (t_y->tile == NULL)
+                {
+                    show_part_tile(NULL);
+                    show_part_tile(NULL);
+                    show_part_tile(NULL);
+                }
+                else
+                {
+                    choose_w_show(t_y, temp_y);                    
+                }
+                temp_y = temp_y->right;                
+            }
+            temp_x = temp_x->bot;
+        }
+    }
+    return NULL
+}
 
 void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
 /*

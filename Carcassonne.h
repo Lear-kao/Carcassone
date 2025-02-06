@@ -8,6 +8,7 @@
 #define NB_TOKEN_TYPE 6
 #define NBMEEPLE_DEFAULT 8  // theo 
 
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,32 +24,37 @@ enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 
 // ----------
-// --LkList-- 
+// --DLList-- 
 // ----------
 
-// LkList : Linked list
 
-struct LkList
+// DLList : Linked list
+
+struct DLList
 {
     struct Tile *data;
-    struct LkList *next;
+    struct DLList *prev;
+    struct DLList *next;
 };
 
 
-struct LkList *LkList_push_end(struct LkList *LkList, struct Tile *tile); // A TESTER Théo
+struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile);
 /*
-    LkList : La liste chainé
+    DLList : La liste chainé
     tile : Un pointer sur un espace mémoire ou se trouve une tile à à la fin de la liste chainé
 
     return : La liste actualisé 
 */
-struct LkList *LkList_pop(struct LkList *LkList, struct Tile **tileSlot); // A TESTER Théo
+
+
+void DLList_pop(struct DLList *DLList, struct Tile **tileSlot);
 /*
-    LkList : L'élément de la liste chainé à supprimé
+    DLList : L'élément de la liste chainé à supprimer
     tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
 
     return : La liste actualisé 
 */
+
 
 // ----------
 // --Stack--
@@ -92,8 +98,8 @@ char is_stack_not_empty(struct Stack *stack); // FAIT
 
 struct Coord
 {
-    char x;
-    char y;
+    unsigned char x;
+    unsigned char y;
 };
 
 struct Grid
@@ -109,6 +115,15 @@ struct Grid
     struct Grid *top;
 };
 
+//-------------
+//-plateboard--
+//-------------
+struct l_ch
+{
+    struct Grid *place;
+    struct l_ch *col;
+    struct l_ch *line;
+}
 // ------------
 // ----Tile----
 // ------------
@@ -121,7 +136,6 @@ struct Tile
         X X X
           X 
     */
-
     struct Player* meeple;
     enum meeplePlace meeplePlace;
     enum types right;
