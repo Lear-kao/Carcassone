@@ -84,12 +84,15 @@ struct Player **init_player_list(char nbPlayers) // Axel
 */
 {
     struct Player **list_players = (struct Player **)malloc(sizeof(struct Player *) * (nbPlayers + 1));
-    list_players[nbPlayers] = (struct Player *)malloc(sizeof(struct Player));
-    list_players[nbPlayers] = NULL;
-    for (char i = 0; i < nbPlayers; i++)
-    {
-        list_players[i] = (struct Player *)malloc(sizeof(struct Player));
-        init_player(list_players[i]);
+
+    if(list_players!=NULL){
+        list_players[nbPlayers] = (struct Player *)malloc(sizeof(struct Player));
+        list_players[nbPlayers] = NULL;
+        for (char i = 0; i < nbPlayers; i++)
+        {
+            list_players[i] = (struct Player *)malloc(sizeof(struct Player));
+            init_player(list_players[i]);
+        }
     }
     return list_players;
 }
