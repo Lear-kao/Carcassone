@@ -67,9 +67,8 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
             typesArray[i] = token_to_enum_types(token, tokenArray);
             token = strtok(NULL, ",");
         }
-        tileArray[index] = malloc(sizeof(struct Tile));
 
-        init_tile(tileArray[index], typesArray[0], typesArray[1], typesArray[2], typesArray[3], typesArray[4]); // créer une struct Tile et lui associer les 5 tokens
+        tileArray[index] = init_tile(typesArray[0], typesArray[1], typesArray[2], typesArray[3], typesArray[4]); // créer une struct Tile et lui associer les 5 tokens
         index++;
     }
     fclose(file);
@@ -224,7 +223,7 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FA
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
-void place_tile(struct Grid *grid, struct Coord *coord, struct Tile *Tile);
+//void place_tile(struct Grid *grid, struct Coord *coord, struct Tile *Tile);
 /*
     tile : La tile précedement pioché par le joueur à placer
 
@@ -235,9 +234,14 @@ void place_tile(struct Grid *grid, struct Coord *coord, struct Tile *Tile);
     Place la tuile à l'emplacement indiqué, actualise la grille de taille
     variable et met à jour la liste doublement chaîné les tuile ptoentiels pour les autres fonctions
 */
-//{
-//    init_grid(grid, coord,tile,  struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
-//}
+/*
+{
+    if (grid = NULL)
+    {   
+        init_grid(grid, coord, tile,  NULL, struct Grid *left, NULL, NULL)
+        init_grid(grid, coord, tile,  struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
+    }// initialiser la grid avec grid->tile = NULL pour right left top bot
+}*/
 
 
 char enum_to_char(enum types type)
@@ -270,12 +274,14 @@ void show_tile(struct Tile *tile)
     printf("    %c    \n", enum_to_char(tile->bot));
 }
 
+/*
 void show_part_tile(enum type a_aff)
 {
     if (a_aff == NULL)  printf("  ");
     else  printf("%c\n", enum_to_char(a_aff));
 }
-
+*/
+/*
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
     switch case y
@@ -294,13 +300,15 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             show_part_tile(NULL);
             show_part_tile(tab->tile->bot);
             show_part_tile(NULL);
+    }
 }
-
-void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
+*/
+//void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
 // en cours (Axel)
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé
 */
+/*
 {
     struct l_ch *temp_y = tab, *temp_x; 
     unsigned char t_x = 0, t_y = 0;
@@ -330,7 +338,7 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
     }
     return NULL
 }
-
+*/
 void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
 /*
     Effet :

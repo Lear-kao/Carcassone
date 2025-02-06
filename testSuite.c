@@ -38,8 +38,7 @@ Test(all, is_meeple_on_player)
 
 Test(all, init_tile)
 {
-    struct Tile *tile = malloc(sizeof(struct Tile));
-    init_tile(tile, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     cr_assert(
         tile->right == VILLE 
         && tile->top == ROUTE 
@@ -52,16 +51,14 @@ Test(all, init_tile)
 
 Test(all, is_meeple_on_tile)
 {
-    struct Tile *tile = malloc(sizeof(struct Tile));
-    init_tile(tile, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     cr_assert(tile->meeple == NO_MEEPLE);
 }
 
 Test(all, stack_push_stack_vide)
 {
     struct Stack *stack;
-    struct Tile *tile = malloc(sizeof(struct Tile));
-    init_tile(tile, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile);
     cr_assert(stack->data->right == VILLE);
 }
@@ -69,12 +66,10 @@ Test(all, stack_push_stack_vide)
 Test(all, stack_push_stack_non_vide)
 {
     struct Stack *stack;
-    struct Tile *tile1 = malloc(sizeof(struct Tile));
-    init_tile(tile1, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile1);
 
-    struct Tile *tile2 = malloc(sizeof(struct Tile));
-    init_tile(tile2, ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile2);
     cr_assert(stack->data->right == ROUTE && stack->next->data->right == VILLE);
 }
@@ -82,12 +77,10 @@ Test(all, stack_push_stack_non_vide)
 Test(all, stack_pop)
 {
     struct Stack *stack;
-    struct Tile *tile1 = malloc(sizeof(struct Tile));
-    init_tile(tile1, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile1);
 
-    struct Tile *tile2 = malloc(sizeof(struct Tile));
-    init_tile(tile2, ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile2);
     cr_assert(stack->data->right == ROUTE && stack->next->data->right == VILLE);
     // Attention test peut-être pas assez unitaire ?
@@ -101,8 +94,7 @@ Test(all, stack_pop)
 Test(all, is_stack_not_empty)
 {
     struct Stack *stack;
-    struct Tile *tile1 = malloc(sizeof(struct Tile));
-    init_tile(tile1, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile1);
 
     cr_assert(is_stack_not_empty(stack) == 1);

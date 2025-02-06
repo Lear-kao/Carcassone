@@ -136,26 +136,6 @@ void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
 // ----Grid----
 // ------------
 
-struct Coord
-{
-    unsigned char x;
-    unsigned char y;
-};
-
-struct Grid
-{
-    /*
-        Un morceau de grille permettant de relier les tiles entre elles
-    */
-    struct Coord *coord;
-    struct Tile *tile;
-    /* pour theo */
-    struct Grid *right;
-    struct Grid *left;
-    struct Grid *bot;
-    struct Grid *top;
-};
-
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
 {
     struct Grid *new_grid= malloc(sizeof(struct Grid));
@@ -189,6 +169,7 @@ struct l_ch *l_ch_push_end_col(struct l_ch *l_ch, struct Grid *grid)
 
     return : La liste actualisé 
 */
+/*
 {
     struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
     struct l_ch *tmp_l_ch = l_ch;
@@ -202,14 +183,15 @@ struct l_ch *l_ch_push_end_col(struct l_ch *l_ch, struct Grid *grid)
     }
     tmp_l_ch->col = new_lc_h;
 }
-
-struct l_ch *l_ch_push_end_line(struct l_ch *l_ch, struct Grid *grid)
+*/
+//struct l_ch *l_ch_push_end_line(struct l_ch *l_ch, struct Grid *grid)
 /*
     l_ch : La liste chainé
     tile : Un pointer sur un espace mémoire ou se trouve une grid
 
     return : La liste actualisé 
 */
+/*
 {
     struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
     struct l_ch *tmp_l_ch = l_ch;
