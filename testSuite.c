@@ -141,3 +141,74 @@ Test(all, create_tile_array)
     cr_assert(tileArray[1]->right == BLASON);
     cr_assert(tileArray[70]->middle == PRE);
 }
+
+Test(all, DLList_push_end)
+{
+    struct Tile *tile1 = malloc(sizeof(struct Tile));
+    init_tile(tile1, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+
+    struct Tile *tile2 = malloc(sizeof(struct Tile));
+    init_tile(tile2, ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+
+    struct Tile *tile3 = malloc(sizeof(struct Tile));
+    init_tile(tile3, ROUTE, ROUTE, ROUTE, VILLE, PRE);
+
+    
+    struct DLList *db_list=NULL;//initialisation a NULL
+
+    //Test premiere insertion
+    db_list=DLList_push_end(db_list,tile1);
+    cr_assert(db_list !=NULL);
+    cr_assert(db_list->data->right==VILLE);
+    cr_assert(db_list->prev==NULL && db_list->next==NULL);
+
+    //Test Deuxieme insertion
+    db_list=DLList_push_end(db_list,tile2);
+    cr_assert(db_list->next != NULL);
+    cr_assert(db_list->next->prev == db_list);
+    cr_assert(db_list->next->data->right == ROUTE);
+    cr_assert(db_list->prev == NULL);
+    cr_assert(db_list->next->next == NULL);
+
+    //Test Troisième insertion
+    db_list=DLList_push_end(db_list,tile3);
+    cr_assert(db_list->next->next != NULL);
+    cr_assert(db_list->next->next->prev == db_list->next);
+    cr_assert(db_list->next->next->data->middle == PRE);
+    cr_assert(db_list->prev == NULL);
+    cr_assert(db_list->next->next->next == NULL);
+}
+
+Test(all, DLList_pop)
+{
+    struct Tile *tile1 = malloc(sizeof(struct Tile));
+    init_tile(tile1, VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+
+    struct Tile *tile2 = malloc(sizeof(struct Tile));
+    init_tile(tile2, ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+
+    struct Tile *tile3 = malloc(sizeof(struct Tile));
+    init_tile(tile3, ROUTE, ROUTE, ROUTE, VILLE, PRE);
+
+    struct DLList *db_list=NULL;
+
+    
+    // db_list=DLList_push_end(db_list,tile2);
+    // db_list=DLList_push_end(db_list,tile3);
+
+    //test de supression
+    struct Tile *tileSlot = malloc(sizeof(struct Tile));
+    
+    //cas db_list NULL
+    DLList_pop(db_list,&tileSlot); 
+    cr_assert(db_list == NULL);
+
+
+
+
+
+
+
+
+
+}

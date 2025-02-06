@@ -6,7 +6,8 @@
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 6
-#define NBMEEPLE_DEFAULT 8 
+#define NBMEEPLE_DEFAULT 8  // theo 
+
 
 #include <stddef.h>
 #include <stdio.h>
@@ -97,8 +98,8 @@ char is_stack_not_empty(struct Stack *stack); // FAIT
 
 struct Coord
 {
-    unsigned int x;
-    unsigned int y;
+    unsigned char x;
+    unsigned char y;
 };
 
 struct Grid
@@ -114,6 +115,8 @@ struct Grid
     struct Grid *top;
 };
 
+
+/* NON UTILISE
 //-------------
 //-plateboard--
 //-------------
@@ -123,6 +126,7 @@ struct l_ch
     struct l_ch *col;
     struct l_ch *line;
 }
+*/
 // ------------
 // ----Tile----
 // ------------

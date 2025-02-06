@@ -77,7 +77,7 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
     }
     while (tmp->next != NULL)
     {
-        tmp++;
+        tmp=tmp->next;
     }
     tmp->next = newDLList;
     newDLList->prev = tmp;
@@ -135,3 +135,92 @@ void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
 // ------------
 // ----Grid----
 // ------------
+
+struct Coord
+{
+    unsigned char x;
+    unsigned char y;
+};
+
+struct Grid
+{
+    /*
+        Un morceau de grille permettant de relier les tiles entre elles
+    */
+    struct Coord *coord;
+    struct Tile *tile;
+    /* pour theo */
+    struct Grid *right;
+    struct Grid *left;
+    struct Grid *bot;
+    struct Grid *top;
+};
+
+struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
+{
+    struct Grid *new_grid= malloc(sizeof(struct Grid));
+    new_grid->coord = coord;
+    new_grid->tile = tile;
+    new_grid->right = right;
+    new_grid->left = left;
+    new_grid->bot = bot;
+    new_grid->top = top;
+    return new_grid;
+}
+
+
+
+/* NON UTILISE
+//-------------
+//-plateboard--
+//-------------
+
+struct l_ch
+{
+    struct Grid *place;
+    struct l_ch *col; // droite
+    struct l_ch *line; // bas
+}
+
+struct l_ch *l_ch_push_end_col(struct l_ch *l_ch, struct Grid *grid)
+/*
+    l_ch : La liste chainé
+    grid : Un pointer sur un espace mémoire ou se trouve une grid 
+
+    return : La liste actualisé 
+*/
+{
+    struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
+    struct l_ch *tmp_l_ch = l_ch;
+    new_l_ch->place = grid;
+    new_l_ch->col = NULL;
+    new_l_ch->line = NULL;
+
+    while (tmp_l_ch->col != NULL)
+    {
+        tmp_l_ch = tmp_l_ch->col;
+    }
+    tmp_l_ch->col = new_lc_h;
+}
+
+struct l_ch *l_ch_push_end_line(struct l_ch *l_ch, struct Grid *grid)
+/*
+    l_ch : La liste chainé
+    tile : Un pointer sur un espace mémoire ou se trouve une grid
+
+    return : La liste actualisé 
+*/
+{
+    struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
+    struct l_ch *tmp_l_ch = l_ch;
+    new_l_ch->place = grid;
+    new_l_ch->col = NULL;
+    new_l_ch->line = NULL;
+
+    while (tmp_l_ch->line != NULL)
+    {
+        tmp_l_ch = tmp_l_ch->line;
+    }
+    tmp_l_ch->line = new_lc_h;
+}
+*/

@@ -84,12 +84,15 @@ struct Player **init_player_list(char nbPlayers) // Axel
 */
 {
     struct Player **list_players = (struct Player **)malloc(sizeof(struct Player *) * (nbPlayers + 1));
-    list_players[nbPlayers] = (struct Player *)malloc(sizeof(struct Player));
-    list_players[nbPlayers] = NULL;
-    for (char i = 0; i < nbPlayers; i++)
-    {
-        list_players[i] = (struct Player *)malloc(sizeof(struct Player));
-        init_player(list_players[i]);
+
+    if(list_players!=NULL){
+        list_players[nbPlayers] = (struct Player *)malloc(sizeof(struct Player));
+        list_players[nbPlayers] = NULL;
+        for (char i = 0; i < nbPlayers; i++)
+        {
+            list_players[i] = (struct Player *)malloc(sizeof(struct Player));
+            init_player(list_players[i]);
+        }
     }
     return list_players;
 }
@@ -224,23 +227,23 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FA
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
-<<<<<<< Updated upstream
 void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
 =======
 //void place_tile(struct Grid *grid, struct Coord *coord, struct Tile *Tile);
->>>>>>> Stashed changes
+
 /*
     tile : La tile précedement pioché par le joueur à placer
 
-    grid : Un tableau de grid sur laquelle doit être effectué une recherche
-    en fonction de la tile. Les tuiles non posé sont soit des tuiles potentiel 
-    soit des pointeurs sur NULL
+    grid : La grid originelle TOUJOURS EN HAUT A GAUCHE (NULL si elle n'existe pas encore)
 
     coord : Les coordonnées de l'endroit ou placer la tuile sur ***grid
 
     Place la tuile à l'emplacement indiqué, actualise la grille de taille
     variable et met à jour la liste doublement chaîné les tuile ptoentiels pour les autres fonctions
 */
+//{
+//    init_grid(grid, coord,tile,  struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
+//}
 
 
 char enum_to_char(enum types type)
@@ -297,6 +300,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             show_part_tile(RIEN);
             show_part_tile(tab->tile->bot);
             show_part_tile(RIEN);
+    }
 }
 
 void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
