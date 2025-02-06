@@ -1,3 +1,5 @@
 Règle 1 : On ne push pas un code qui ne compile pas.
 
 Ne pas modifier le .csv il sert pour les test
+
+Il faudrait penser à tester le cas NULL à chaque fois par principe -_-
