@@ -6,7 +6,7 @@
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 6
-#define NBMEEPLE_DEFAULT 8  // PREND CETTE VERSION QUAND TU MERGE
+#define NBMEEPLE_DEFAULT 8 
 
 #include <stddef.h>
 #include <stdio.h>
@@ -23,11 +23,11 @@ enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 
 // ----------
-// --LkList-- 
+// --DLList-- 
 // ----------
 
-// DLLList : Linked list
 
+// DLList : Linked list
 
 struct DLList
 {
@@ -97,8 +97,8 @@ char is_stack_not_empty(struct Stack *stack); // FAIT
 
 struct Coord
 {
-    char x;
-    char y;
+    unsigned int x;
+    unsigned int y;
 };
 
 struct Grid
@@ -136,7 +136,6 @@ struct Tile
         X X X
           X 
     */
-
     struct Player* meeple;
     enum meeplePlace meeplePlace;
     enum types right;
