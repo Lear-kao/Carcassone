@@ -57,7 +57,7 @@ char is_stack_not_empty(struct Stack *stack)
 
 // DLList : Linked list
 
-strcut DLList
+struct DLList
 {
     
     struct Tile *data;
@@ -66,7 +66,7 @@ strcut DLList
 };
 
 
-struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile);
+struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
 /*
     DLList : La liste chainé
     tile : Un pointer sur un espace mémoire ou se trouve une tile à à la fin de la liste chainé
@@ -93,7 +93,7 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile);
     return DLList;
 }
 
-void DLList_pop(struct DLList *DLList, struct Tile **tileSlot);
+void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
 /*
     DLList : L'élément de la liste chainé à supprimer
     tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop

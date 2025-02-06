@@ -169,7 +169,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid) // A FAIRE
+//void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -178,14 +178,15 @@ void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *p
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
 */
+/*
 {
     printf("Tour du joueur %d\n", playerNumber);
     struct Tile *turn_tile = malloc(sizeof(struct Tile *));
     pioche = stack_pop(pioche, &turn_tile);
-    struct coord **play_coord = malloc(sizeof(struct Coord *) * nb_coord);
-    size_t index = 0;
+    struct Coord **play_coord = malloc(sizeof(struct Coord *) * nb_coord);
+    unsigned int index = 0;
     char pose = 0;
-    short token = -1;
+    unsigned int token = -1;
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
         show_tile(turn_tile);
@@ -193,24 +194,25 @@ void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *p
         index = 0;
         while (*(play_coord + index) != NULL)
         {
-            printf("%d- x : %d, y : %d\n", index, play_coord[index]->x, play_coord[index]->y);
+            printf("%u- x : %d, y : %d\n", index, play_coord[index]->x, play_coord[index]->y);
             index++;
         }
         printf("Pour tourner la tuile rentrez 0/n");
         printf("Pour poser la tuile rentrez l'une des valeurs suivante :/n");
-        scanf("%d", token) if (token == 0)
+        scanf("%u", &token);
+        if (token == 0)
         {
             rot_tile(turn_tile);
         }
         else
         {
             pose = 1;
-            place_tile(struct grid * grid, struct coord * coord);
+            //place_tile(struct grid * grid, struct coord * coord);
         }
     }
 }
-
-struct coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FAIRE
+*/
+struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FAIRE
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -222,7 +224,7 @@ struct coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FA
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
-void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile)
+void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
 /*
     tile : La tile précedement pioché par le joueur à placer
 
@@ -234,9 +236,6 @@ void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile)
 
     Place la tuile à l'emplacement indiqué.
 */
-{
-
-}
 
 char enum_to_char(enum types type)
 {

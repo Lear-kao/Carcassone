@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-enum types { RIEN, ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON };
+enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 
@@ -35,14 +35,14 @@ struct LkList
 };
 
 
-struct LkList *LkList_push_end(struct LkList *LkList, struct Tile *tile);
+struct LkList *LkList_push_end(struct LkList *LkList, struct Tile *tile); // A TESTER Théo
 /*
     LkList : La liste chainé
     tile : Un pointer sur un espace mémoire ou se trouve une tile à à la fin de la liste chainé
 
     return : La liste actualisé 
 */
-struct LkList *LkList_pop(struct LkList *LkList, struct Tile **tileSlot);
+struct LkList *LkList_pop(struct LkList *LkList, struct Tile **tileSlot); // A TESTER Théo
 /*
     LkList : L'élément de la liste chainé à supprimé
     tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
@@ -268,7 +268,7 @@ void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile); //
     Place la tuile à l'emplacement indiqué.
 */
 
-void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid); // A FAIRE
+void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -278,7 +278,7 @@ void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *p
     avec la fonction where_i_can_play
 */
 
-struct coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FAIRE theo
+struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FAIRE theo
 /*
     tile : La tile précedement pioché par le joueur
 
