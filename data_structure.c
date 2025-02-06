@@ -85,7 +85,7 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
     }
     while (tmp->next != NULL)
     {
-        tmp++;
+        tmp=tmp->next;
     }
     tmp->next = newDLList;
     newDLList->prev = tmp;
