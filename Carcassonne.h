@@ -115,6 +115,8 @@ struct Grid
     struct Grid *top;
 };
 
+
+/* NON UTILISE
 //-------------
 //-plateboard--
 //-------------
@@ -124,6 +126,7 @@ struct l_ch
     struct l_ch *col;
     struct l_ch *line;
 }
+*/
 // ------------
 // ----Tile----
 // ------------
