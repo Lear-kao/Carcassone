@@ -97,8 +97,8 @@ char is_stack_not_empty(struct Stack *stack); // FAIT
 
 struct Coord
 {
-    unsigned int x;
-    unsigned int y;
+    unsigned char x;
+    unsigned char y;
 };
 
 struct Grid
