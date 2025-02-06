@@ -224,7 +224,11 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FA
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
+<<<<<<< Updated upstream
 void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
+=======
+//void place_tile(struct Grid *grid, struct Coord *coord, struct Tile *Tile);
+>>>>>>> Stashed changes
 /*
     tile : La tile précedement pioché par le joueur à placer
 
@@ -269,20 +273,20 @@ void show_tile(struct Tile *tile)
     printf("    %c    \n", enum_to_char(tile->bot));
 }
 
-void show_part_tile(enum type a_aff)
+void show_part_tile(enum types a_aff)
 {
-    if (a_aff == NULL)  printf("  ");
+    if (a_aff == RIEN)  printf("  ");
     else  printf("%c\n", enum_to_char(a_aff));
 }
 
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
-    switch case y
+    switch (y)
     {
         case 0:
-            show_part_tile(NULL);
+            show_part_tile(RIEN);
             show_part_tile(tab->tile->top);
-            show_part_tile(NULL);
+            show_part_tile(RIEN);
             break;
         case 1:
             show_part_tile(tab->tile->left);
@@ -290,9 +294,9 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             show_part_tile(tab->tile->right);
             break;
         case 2:
-            show_part_tile(NULL);
+            show_part_tile(RIEN);
             show_part_tile(tab->tile->bot);
-            show_part_tile(NULL);
+            show_part_tile(RIEN);
 }
 
 void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
@@ -301,22 +305,22 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé
 */
 {
-    struct l_ch *temp_y = tab, *temp_x; 
+    struct Grid *temp_y = tab, *temp_x; 
     unsigned char t_x = 0, t_y = 0;
-    for (,t_x < x; t_x++)
+    for (; t_x < x; t_x++)
     {
         for( int j = 0; j < 3; j++)
         {
             temp_y = temp_x;
             printf("\n");
-            temp_y = temp_x
-            for(, t_y < y; t_y++)
+            temp_y = temp_x;
+            for(; t_y < y; t_y++)
             {
-                if (t_y->tile == NULL)
+                if (temp_y->tile == NULL)
                 {
-                    show_part_tile(NULL);
-                    show_part_tile(NULL);
-                    show_part_tile(NULL);
+                    show_part_tile(RIEN);
+                    show_part_tile(RIEN);
+                    show_part_tile(RIEN);
                 }
                 else
                 {
@@ -327,7 +331,6 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
             temp_x = temp_x->bot;
         }
     }
-    return NULL
 }
 
 void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
