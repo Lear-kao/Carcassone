@@ -297,6 +297,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             show_part_tile(NULL);
             show_part_tile(tab->tile->bot);
             show_part_tile(NULL);
+    }
 }
 
 void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
