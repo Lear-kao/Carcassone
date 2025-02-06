@@ -26,11 +26,11 @@ enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
 // --DLList-- 
 // ----------
 
+
 // DLList : Linked list
 
 struct DLList
 {
-    
     struct Tile *data;
     struct DLList *prev;
     struct DLList *next;
@@ -108,12 +108,22 @@ struct Grid
     */
     struct Coord *coord;
     struct Tile *tile;
+    /* pour theo */
     struct Grid *right;
     struct Grid *left;
     struct Grid *bot;
     struct Grid *top;
 };
 
+//-------------
+//-plateboard--
+//-------------
+struct l_ch
+{
+    struct Grid *place;
+    struct l_ch *col;
+    struct l_ch *line;
+}
 // ------------
 // ----Tile----
 // ------------
