@@ -159,6 +159,7 @@ struct l_ch *l_ch_push_end_col(struct l_ch *l_ch, struct Grid *grid)
 {
     struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
     struct l_ch *tmp_l_ch = l_ch;
+    new_l_ch->place = grid;
     new_l_ch->col = NULL;
     new_l_ch->line = NULL;
 
@@ -179,6 +180,7 @@ struct l_ch *l_ch_push_end_line(struct l_ch *l_ch, struct Grid *grid)
 {
     struct l_ch *new_lc_h = malloc(sizeof(struct l_ch));
     struct l_ch *tmp_l_ch = l_ch;
+    new_l_ch->place = grid;
     new_l_ch->col = NULL;
     new_l_ch->line = NULL;
 
