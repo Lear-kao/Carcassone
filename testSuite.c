@@ -112,11 +112,32 @@ Test(all, is_stack_not_empty)
 
 }
 
+
+Test(all, reset_points)
+{
+    struct Player *player=(struct Player *)malloc(sizeof(struct Player));
+    player->points=380;
+    reset_points(player);
+    cr_assert(player->points==0);
+}
+
+Test(all, reset_meeples)
+{
+    struct Player *player=(struct Player *)malloc(sizeof(struct Player));
+    player->nbMeeple=8;
+    reset_points(player);
+    cr_assert(player->points==0);
+}
+
+
 Test(all, create_tile_array)
 {
     struct Tile **tileArray;
     char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
     tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
-    printf("debug : %d\n", tileArray[0]->right);
-    cr_assert(tileArray[71]->middle == PRE);
+    cr_assert(tileArray[0]->right == ROUTE);
+    cr_assert(tileArray[0]->middle == ROUTE);
+    cr_assert(tileArray[1]->middle == BLASON);
+    cr_assert(tileArray[1]->right == BLASON);
+    cr_assert(tileArray[70]->middle == PRE);
 }
