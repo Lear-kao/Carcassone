@@ -271,7 +271,8 @@ void show_tile(struct Tile *tile)
 
 void show_part_tile(enum type a_aff)
 {
-
+    if (a_aff == NULL)  printf("  ");
+    else  printf("%c\n", enum_to_char(a_aff));
 }
 
 void choose_w_show(unsigned char y, struct Grid *tab)
