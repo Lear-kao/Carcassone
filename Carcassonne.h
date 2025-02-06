@@ -6,11 +6,7 @@
 #define BUFF_DEFAULT_SIZE 1024
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 6
-<<<<<<< HEAD
 #define NBMEEPLE_DEFAULT 8 
-=======
-#define NBMEEPLE_DEFAULT 8  // PREND CETTE VERSION QUAND TU MERGE
->>>>>>> 3ecb029669455d9f0a2ebbcf1c2b44fa9f417efa
 
 #include <stddef.h>
 #include <stdio.h>
@@ -125,10 +121,6 @@ struct Tile
         X X X
           X 
     */
-<<<<<<< HEAD
-=======
-
->>>>>>> 3ecb029669455d9f0a2ebbcf1c2b44fa9f417efa
     struct Player* meeple;
     enum meeplePlace meeplePlace;
     enum types right;
