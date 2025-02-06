@@ -150,13 +150,11 @@ struct Tile
 
 // ----Tiles fonctions----
 
-void init_tile(struct Tile *tile, enum types right, enum types left, enum types top, enum types bot, enum types middle); // FAIT theo/Axel
-/*
-    tile : Un pointer vers un espace mémoire déjà alloué à sizeof(struct Tile)
+struct Tile *init_tile(enum types right, enum types top, enum types left, enum types bot, enum types middle);
+    /*
+    tile : Un pointer sur Tile
     right, left ... middle : les différent type des bordes de la tuile
-
-    return : 1 en cas d'erreur, 0 sinon
-*/
+     */
 
 char is_meeple_on_tile(struct Tile *tile); // FAIT theo
 /*
