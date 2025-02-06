@@ -108,7 +108,6 @@ struct Grid
     */
     struct Coord *coord;
     struct Tile *tile;
-    /* pour theo */
     struct Grid *right;
     struct Grid *left;
     struct Grid *bot;
