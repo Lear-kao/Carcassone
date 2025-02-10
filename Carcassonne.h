@@ -238,7 +238,7 @@ void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être m
     Mélange les tuiles
 */
 
-void array_to_stack(struct Tile **tileArray, struct Stack *stack); // Fait
+void array_to_stack(struct Tile **tileArray, struct Stack **stack); // Fait
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
 */
