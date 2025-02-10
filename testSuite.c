@@ -280,24 +280,61 @@ Test(all, DLList_push_end_three_insert)
     cr_assert(db_list->next->next->next == NULL);
 }
 
-Test(all, DLList_pop)
+Test(all, DLList_pop_vide)
 {
-    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-
-    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
-
-    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-
     struct DLList *db_list=NULL;
+    struct Tile *tile_rien = init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
 
-    
-    // db_list=DLList_push_end(db_list,tile2);
-    // db_list=DLList_push_end(db_list,tile3);
+    DLList_pop(db_list,&tile_rien);
 
-    //test de supression
-    struct Tile *tileSlot = malloc(sizeof(struct Tile));
-    
-    //cas db_list NULL
-    DLList_pop(db_list,&tileSlot); 
     cr_assert(db_list == NULL);
+    cr_assert(tile_rien->bot == RIEN);
 }
+
+Test(all, DLList_pop_one_item)
+{
+    struct DLList *db_list=NULL;
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *out;
+
+    db_list = DLList_push_end(db_list,tile1);
+    DLList_pop(db_list,&out);
+
+    cr_assert(db_list==NULL);
+    cr_assert(out->right==VILLE);
+
+}
+
+Test(all, DLList_pop_two_item_first_item)
+{
+    struct DLList *db_list=NULL;
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *out;
+
+    db_list = DLList_push_end(db_list,tile1);
+    db_list = DLList_push_end(db_list,tile2);
+    DLList_pop(db_list,&out);
+
+    cr_assert(db_list->prev == NULL && db_list->next == NULL);
+    cr_assert(out->right == VILLE);
+}
+
+Test(all, DLList_pop_two_item_second_item)
+{
+    struct DLList *db_list=NULL;
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *out;
+
+    db_list = DLList_push_end(db_list,tile1);
+    db_list = DLList_push_end(db_list,tile2);
+    DLList_pop(db_list->next,&out);
+
+    cr_assert(db_list->prev == NULL && db_list->next == NULL);
+    cr_assert(out->right == ROUTE);
+}
+
+
+
+//test init_grid
