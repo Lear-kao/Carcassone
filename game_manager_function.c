@@ -75,23 +75,19 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     return tileArray;
 }
 
-struct Player **init_player_list(char nbPlayers) // Axel
+struct list_player *init_player_list(char nbPlayers) // Axel
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
 */
-{
-    struct Player **list_players = (struct Player **)malloc(sizeof(struct Player *) * (nbPlayers + 1));
-
-    if(list_players!=NULL){
-        list_players[nbPlayers] = (struct Player *)malloc(sizeof(struct Player));
-        list_players[nbPlayers] = NULL;
-        for (char i = 0; i < nbPlayers; i++)
-        {
-            list_players[i] = (struct Player *)malloc(sizeof(struct Player));
-            init_player(list_players[i]);
-        }
+{   
+    struct list_player *list_players = malloc(sizeof(struct list_player *));
+    list_players->player = malloc(sizeof(struct *Player)*nbPlayers);
+    for( int i = 0; i < nbPlayers; i++)
+    {
+        list_players->player[i] = (struct Player *)malloc(sizeof(struct Player));
+        list_players->player[i] = NULL;
     }
     return list_players;
 }
@@ -363,7 +359,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
     }
 }
 */
-void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
+void start_game(struct list_player *list_player, char nbPlayer, char *turnTraker, struct Grid *grid){ // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -372,6 +368,16 @@ void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FA
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
+    if (list_player == NULL)
+    {
+        list_player = init_player_list(nbPlayer);
+        for(  int i = 0; i < nbPlayer; i++)
+        {
+            init_player(list_player->player[i]);
+        }
+    }
+
+}
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
 /*
