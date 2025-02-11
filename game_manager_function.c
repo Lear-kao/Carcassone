@@ -81,14 +81,10 @@ struct list_player *init_player_list(char nbPlayers) // Axel
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
 */
-<<<<<<< Updated upstream
-{   
-=======
 {
->>>>>>> Stashed changes
     struct list_player *list_players = malloc(sizeof(struct list_player *));
-    list_players->player = malloc(sizeof(struct *Player)*nbPlayers);
-    for( int i = 0; i < nbPlayers; i++)
+    list_players->player = malloc(sizeof(struct Player*)*nbPlayers);
+    for( int i = 0; i < nbPlayers; i++ )
     {
         list_players->player[i] = (struct Player *)malloc(sizeof(struct Player));
         list_players->player[i] = NULL;
