@@ -17,8 +17,8 @@ Test(all, init_player)
 {
     struct Player *player = malloc(sizeof(struct Player));
     init_player(player);
-    cr_expect(player->nbMeeple == 8);
-    cr_expect(player->points == 0);
+    cr_expect(player->nbMeeple == 8 ,"la fonction init_player n'a pas initialisé nbMeeple");
+    cr_expect(player->points == 0 ,"la fonction init_player n'a pas initialisé les points a 0");
 }
 
 Test(all, is_meeple_on_player)
@@ -45,7 +45,7 @@ Test(all, init_tile)
         && tile->bot == VILLE 
         && tile->middle == ROUTE 
         && tile->meeple == NO_MEEPLE
-        );
+        ,"init_tile na pas bien initialisé la tuile");
 }
 
 Test(all, is_meeple_on_tile)
@@ -85,7 +85,19 @@ Test(all, init_player_list)
     cr_expect(i == 8);
 }
 
-//test shuffle (comme c'est du random un test ne peut pas être conçu)
+Test(all, shuffle)
+{
+    struct Tile **tileArray;
+    char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
+    tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
+
+    shuffle(tileArray,NBTILE-1);
+
+    for(short i = 0;i<NBTILE-1;i++)
+    {
+        cr_assert(tileArray[i] != NULL,"Shuffle has broke array");
+    }
+}
 
 Test(all, array_to_stack)
 {
