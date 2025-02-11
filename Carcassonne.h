@@ -179,6 +179,15 @@ struct Player
     short points; 
 };
 
+struct list_player
+{
+    /* 
+    Contient la liste des joueurs, utilisé  pour lancer la partie, 
+    vas  aussi  permettre d'y ajouer les bots plus tards
+    */
+    struct Player **player;
+};
+
 // ----PLayers fonctions----
 
 void init_player(struct Player *player); // FAIT theo
@@ -223,7 +232,7 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
-struct Player **init_player_list(char nbPlayers); // Fait (Axel) 
+struct list_player *init_player_list(char nbPlayers); // Fait (Axel) 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
@@ -315,7 +324,7 @@ void show_grid(struct Grid *grid); // A FAIRE Axel
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
+void start_game(struct list_player *players, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // arg ? // A FAIRE
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -324,6 +333,9 @@ void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FA
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
+
+void reset_plate( struct Grid *grid);
+/* réinitialise le  plateau */
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
 /*
