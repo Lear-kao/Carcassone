@@ -98,11 +98,14 @@ void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
     {
         return; // ERROR CASE
     }
+    else
+    {
+        *tileSlot = DLList->data;
+    }
     if (DLList->next == NULL)
     {
         if (DLList->prev == NULL)
-        {
-            *tileSlot = DLList->data;
+        {   
             free(DLList);
             return;
         }
