@@ -443,7 +443,7 @@ Test(all, init_grid)
 {
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
-    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
+    struct Tile *tile3 = init_tile(ROUTE, PRE, PRE, ROUTE, ROUTE);
     struct Coord *C1=init_coord(0,0);
     struct Coord *C2=init_coord(1,0);
     struct Coord *C3=init_coord(1,1);
@@ -467,7 +467,15 @@ Test(all, init_grid)
     cr_assert(G->right->tile->right == ROUTE &&
               G->right->tile->left == VILLE ,"Propriete de la tuile incorrect");
     
-    
+    //Test sur une troisieme insertion
+    G->right->top=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
+    cr_assert(G->right->top->coord->x == 1 &&
+              G->right->top->coord->y == 1,"Coordonnee incorrect");
+    cr_assert(G->right->top->right == NULL &&
+              G->right->top->top == NULL &&
+              G->right->top->left == NULL &&
+              G->right->top->bot == G->right,"Cellule voisine incorrect");
+    cr_assert(G->right->top->tile->top == PRE);
 
 
 }
