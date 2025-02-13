@@ -115,6 +115,17 @@ struct Grid
     struct Grid *top;
 };
 
+struct Coord *init_coord(unsigned char x,unsigned char y);
+/*
+    x: coordonnée x
+    y: coordonnee y
+
+    Cette fonction alloue une struct coord et l'initialise
+    avec les coordonnée x et y
+
+    return: un pointeur vers un struct Coord
+*/
+
 
 /* NON UTILISE
 //-------------
