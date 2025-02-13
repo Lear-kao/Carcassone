@@ -432,6 +432,45 @@ Test(all, DLList_pop_three_item_third_item)
     cr_assert(out->middle == PRE,"out->middle != PRE !");
 }
 
+Test(all, init_coord)
+{
+    struct Coord *test=init_coord(14,65);
+
+    cr_assert(test->x==14 && test->y==65);
+}
+
+Test(all, init_grid)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
+    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(1,1);
+
+    //Test sur un seul morceau de grid
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    cr_assert(G->coord->x == 0 && G->coord->y == 0,"Coordonnee incorrect");
+    cr_assert(G->bot == NULL &&
+              G->left == NULL &&
+               G->top == NULL &&
+                G->right == NULL ,"Cellule voisine incorrect");
+    cr_assert(G->tile->right == VILLE,"Propriete de la tuile incorrect");
+
+    //Test sur une deuxieme insertion
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    cr_assert(G->right->coord->x == 1 && G->coord->y == 0,"Coordonnee incorrect");
+    cr_assert(G->right->bot == NULL &&
+              G->right->left == G &&
+              G->right->top == NULL &&
+              G->right->right == NULL,"Cellule voisine incorrect");
+    cr_assert(G->right->tile->right == ROUTE &&
+              G->right->tile->left == VILLE ,"Propriete de la tuile incorrect");
+    
+    
+
+
+}
 
 
 //test init_grid
