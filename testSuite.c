@@ -199,7 +199,7 @@ Test(all, enum_to_char)
 
 Test(all, stack_push_stack_vide)
 {
-    struct Stack *stack;
+    struct Stack *stack=NULL;
     struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile);
     cr_assert(stack->data->right == VILLE);
@@ -207,7 +207,7 @@ Test(all, stack_push_stack_vide)
 
 Test(all, stack_push_stack_non_vide)
 {
-    struct Stack *stack;
+    struct Stack *stack=NULL;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile1);
 
@@ -218,7 +218,7 @@ Test(all, stack_push_stack_non_vide)
 
 Test(all, stack_pop)
 {
-    struct Stack *stack;
+    struct Stack *stack=NULL;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile1);
 
@@ -235,7 +235,7 @@ Test(all, stack_pop)
 
 Test(all, is_stack_not_empty)
 {
-    struct Stack *stack;
+    struct Stack *stack=NULL;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile1);
 
@@ -267,6 +267,7 @@ Test(all, DLList_push_end_two_insert)//Test Deuxieme insertion
     db_list = DLList_push_end(db_list,tile1);
     db_list = DLList_push_end(db_list,tile2);
 
+    cr_assert(db_list != NULL);
     cr_assert(db_list->next != NULL);
     cr_assert(db_list->next->prev == db_list);
     cr_assert(db_list->next->data->right == ROUTE);
@@ -285,6 +286,9 @@ Test(all, DLList_push_end_three_insert)
     db_list = DLList_push_end(db_list,tile2);
     db_list = DLList_push_end(db_list,tile3);
 
+    cr_assert(db_list != NULL);
+    cr_assert(db_list->next != NULL);
+    cr_assert(db_list->next->prev == db_list);
     cr_assert(db_list->next->next != NULL);
     cr_assert(db_list->next->next->prev == db_list->next);
     cr_assert(db_list->next->next->data->middle == PRE);
@@ -444,9 +448,11 @@ Test(all, init_grid)
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
     struct Tile *tile3 = init_tile(ROUTE, PRE, PRE, ROUTE, ROUTE);
+    struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
     struct Coord *C1=init_coord(0,0);
     struct Coord *C2=init_coord(1,0);
     struct Coord *C3=init_coord(1,1);
+    struct Coord *C4=init_coord(0,1);
 
     //Test sur un seul morceau de grid
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
@@ -477,8 +483,14 @@ Test(all, init_grid)
               G->right->top->bot == G->right,"Cellule voisine incorrect");
     cr_assert(G->right->top->tile->top == PRE);
 
+    //Test sur une quatrieme insertion
+    G->top=init_grid(tile4,C4,G->right->top,NULL,G,NULL);
+    cr_assert(G->top->coord->x == 0 && G->top->coord->y == 1,"Coordonnee incorrect");
+    cr_assert(G->top->top == NULL &&
+              G->top->right == G->right->top &&
+              G->top->bot == G && 
+              G->left == NULL,"Cellule voisine incorrect");
+    cr_assert(G->top->tile->right == PRE);
+
 
 }
-
-
-//test init_grid
