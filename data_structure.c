@@ -13,7 +13,6 @@ struct Stack *stack_push(struct Stack *stack, struct Tile *tile)
 
 */
 {
-
     struct Stack *new_stack = malloc(sizeof(struct Stack));
     new_stack->data = tile;
     new_stack->next = stack;
@@ -154,7 +153,6 @@ struct Coord *init_coord(unsigned char x,unsigned char y)
     C->x=x;
     C->y=y;
     return C;
-    
 }
 
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)

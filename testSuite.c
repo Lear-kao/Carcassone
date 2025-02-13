@@ -169,6 +169,7 @@ Test(all, enum_to_char)
     enum types pre=PRE;
     enum types village=VILLAGE;
     enum types blason=BLASON;
+    enum types errorv=45;
 
     cr_assert(enum_to_char(rien) == 'Z' &&
               enum_to_char(route) == 'R' &&
@@ -176,7 +177,8 @@ Test(all, enum_to_char)
               enum_to_char(abbayes) == 'A' &&
               enum_to_char(pre) == 'P' &&
               enum_to_char(village) == 'v' &&
-              enum_to_char(blason) == 'B');
+              enum_to_char(blason) == 'B' &&
+              enum_to_char(errorv) == 'z');
 }
 
 //test show_tile (affichage)
@@ -202,6 +204,7 @@ Test(all, stack_push_stack_vide)
     struct Stack *stack=NULL;
     struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile);
+    cr_assert(stack->next == NULL);
     cr_assert(stack->data->right == VILLE);
 }
 
@@ -213,6 +216,8 @@ Test(all, stack_push_stack_non_vide)
 
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile2);
+
+    cr_assert(stack->next != NULL && stack->next->next == NULL);
     cr_assert(stack->data->right == ROUTE && stack->next->data->right == VILLE);
 }
 
@@ -229,6 +234,8 @@ Test(all, stack_pop)
 
     struct Tile *tileSlot = malloc(sizeof(struct Tile));
     stack = stack_pop(stack, &tileSlot);
+
+    cr_assert(stack->next == NULL);
     cr_assert(tileSlot->right == ROUTE);
     cr_assert(stack->data->right == VILLE);
 }
@@ -237,9 +244,13 @@ Test(all, is_stack_not_empty)
 {
     struct Stack *stack=NULL;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *out;
     stack = stack_push(stack, tile1);
 
     cr_assert(is_stack_not_empty(stack) == 1);
+
+    stack = stack_pop(stack,&out);
+    cr_assert(is_stack_not_empty(stack) == 0);
 
     struct Stack *stackEmpty = NULL;
     cr_assert(is_stack_not_empty(stackEmpty) == 0);
@@ -268,11 +279,12 @@ Test(all, DLList_push_end_two_insert)//Test Deuxieme insertion
     db_list = DLList_push_end(db_list,tile2);
 
     cr_assert(db_list != NULL);
+    cr_assert(db_list->prev == NULL);
     cr_assert(db_list->next != NULL);
+    cr_assert(db_list->next->next == NULL);
     cr_assert(db_list->next->prev == db_list);
     cr_assert(db_list->next->data->right == ROUTE);
-    cr_assert(db_list->prev == NULL);
-    cr_assert(db_list->next->next == NULL);
+    
 }
 
 Test(all, DLList_push_end_three_insert)
@@ -287,13 +299,13 @@ Test(all, DLList_push_end_three_insert)
     db_list = DLList_push_end(db_list,tile3);
 
     cr_assert(db_list != NULL);
+    cr_assert(db_list->prev == NULL);
     cr_assert(db_list->next != NULL);
+    cr_assert(db_list->next->next->next == NULL);
     cr_assert(db_list->next->prev == db_list);
     cr_assert(db_list->next->next != NULL);
     cr_assert(db_list->next->next->prev == db_list->next);
     cr_assert(db_list->next->next->data->middle == PRE);
-    cr_assert(db_list->prev == NULL);
-    cr_assert(db_list->next->next->next == NULL);
 }
 
 Test(all, DLList_pop_vide)
@@ -456,7 +468,8 @@ Test(all, init_grid)
 
     //Test sur un seul morceau de grid
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
-    cr_assert(G->coord->x == 0 && G->coord->y == 0,"Coordonnee incorrect");
+    cr_assert(G->coord->x == 0 && 
+              G->coord->y == 0,"Coordonnee incorrect");
     cr_assert(G->bot == NULL &&
               G->left == NULL &&
                G->top == NULL &&
@@ -465,7 +478,8 @@ Test(all, init_grid)
 
     //Test sur une deuxieme insertion
     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
-    cr_assert(G->right->coord->x == 1 && G->coord->y == 0,"Coordonnee incorrect");
+    cr_assert(G->right->coord->x == 1 && 
+              G->coord->y == 0,"Coordonnee incorrect");
     cr_assert(G->right->bot == NULL &&
               G->right->left == G &&
               G->right->top == NULL &&
@@ -485,12 +499,11 @@ Test(all, init_grid)
 
     //Test sur une quatrieme insertion
     G->top=init_grid(tile4,C4,G->right->top,NULL,G,NULL);
-    cr_assert(G->top->coord->x == 0 && G->top->coord->y == 1,"Coordonnee incorrect");
+    cr_assert(G->top->coord->x == 0 && 
+              G->top->coord->y == 1,"Coordonnee incorrect");
     cr_assert(G->top->top == NULL &&
               G->top->right == G->right->top &&
               G->top->bot == G && 
               G->left == NULL,"Cellule voisine incorrect");
     cr_assert(G->top->tile->right == PRE);
-
-
 }
