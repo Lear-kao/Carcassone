@@ -287,8 +287,8 @@ Test(all, DLList_pop_vide)
 
     DLList_pop(db_list,&tile_rien);
 
-    cr_assert(db_list == NULL);
-    cr_assert(tile_rien->bot == RIEN);
+    cr_assert(db_list == NULL,"db_list != NULL !");
+    cr_assert(tile_rien->bot == RIEN,"tile_rien != RIEN !");
 }
 
 Test(all, DLList_pop_one_item)
@@ -300,8 +300,12 @@ Test(all, DLList_pop_one_item)
     db_list = DLList_push_end(db_list,tile1);
     DLList_pop(db_list,&out);
 
-    cr_assert(db_list==NULL);
-    cr_assert(out->right==VILLE);
+    //comme il n'y y a qu'un element db_list devrait
+    //être a nul
+    cr_assert(db_list==NULL,"db_list != NULL !");
+
+    //test si la tuile a ete extraite
+    cr_assert(out->right==VILLE,"out->right != VILLE");
 
 }
 
@@ -316,8 +320,20 @@ Test(all, DLList_pop_two_item_first_item)
     db_list = DLList_push_end(db_list,tile2);
     DLList_pop(db_list,&out);
 
-    cr_assert(db_list->prev == NULL && db_list->next == NULL);
-    cr_assert(out->right == VILLE);
+    /*
+    ici on veut tester le pop du premier element d'une
+    liste doublement chaine composé de 2 element
+    */
+
+    /*
+    on devrais avoir donc qu'un seul element restant
+    d'ou ce test si il y a qu'un element il devrait avoir
+    db_list->prev et db_list->next egale a NULL
+    */
+    cr_assert(db_list->prev == NULL && db_list->next == NULL,"condition sur les element de la db_list non respecter");
+    
+    //test si la tuile a ete extraite
+    cr_assert(out->right == VILLE,"out->right != VILLE !");
 }
 
 Test(all, DLList_pop_two_item_second_item)
@@ -329,10 +345,79 @@ Test(all, DLList_pop_two_item_second_item)
 
     db_list = DLList_push_end(db_list,tile1);
     db_list = DLList_push_end(db_list,tile2);
+
+    /*
+    ici on veut tester le pop du deuxieme element d'une
+    liste doublement chaine composé de 2 element
+    */
+
+   DLList_pop(db_list->next,&out);
+
+    //meme test on va voir si il y a bien un seul element
+
+    cr_assert(db_list->prev == NULL && db_list->next == NULL,"condition sur les element de la db_list non respecter");
+    cr_assert(out->right == ROUTE ,"out->right != ROUTE !");
+
+}
+
+Test(all, DLList_pop_three_item_first_item)
+{
+    struct DLList *db_list=NULL;
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
+    struct Tile *out;
+
+    db_list = DLList_push_end(db_list,tile1);
+    db_list = DLList_push_end(db_list,tile2);
+    db_list = DLList_push_end(db_list,tile3);
+    DLList_pop(db_list,&out);
+
+    cr_assert(db_list->prev == NULL && db_list->next != NULL,"condition sur les element de la db_list non respecter");
+    cr_assert(out->middle == PRE,"out->middle != PRE");
+
+}
+
+Test(all, DLList_pop_three_item_second_item)
+{
+    struct DLList *db_list=NULL;
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
+    struct Tile *out;
+
+    db_list = DLList_push_end(db_list,tile1);
+    db_list = DLList_push_end(db_list,tile2);
+    db_list = DLList_push_end(db_list,tile3);
     DLList_pop(db_list->next,&out);
 
-    cr_assert(db_list->prev == NULL && db_list->next == NULL);
-    cr_assert(out->right == ROUTE);
+    cr_assert(db_list->prev == NULL &&
+              db_list->next != NULL &&
+              db_list->next->prev != NULL &&
+              db_list->next->next == NULL,"condition sur les element de la db_list non respecter");
+    
+    cr_assert(out->right == ROUTE,"out->right != ROUTE !");
+}
+
+Test(all, DLList_pop_three_item_third_item)
+{
+    struct DLList *db_list=NULL;
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
+    struct Tile *out;
+
+    db_list = DLList_push_end(db_list,tile1);
+    db_list = DLList_push_end(db_list,tile2);
+    db_list = DLList_push_end(db_list,tile3);
+    DLList_pop(db_list->next->next,&out);
+
+    cr_assert(db_list->prev == NULL &&
+              db_list->next != NULL &&
+              db_list->next->prev != NULL && 
+              db_list->next->next == NULL,"condition sur les element de la db_list non respecter");
+    
+    cr_assert(out->middle == PRE,"out->middle != PRE !");
 }
 
 
