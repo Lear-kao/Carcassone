@@ -185,7 +185,7 @@ struct list_player
     Contient la liste des joueurs, utilisé  pour lancer la partie, 
     vas  aussi  permettre d'y ajouer les bots plus tards
     */
-    struct Player **player;
+    struct Player *player;
 };
 
 // ----PLayers fonctions----
