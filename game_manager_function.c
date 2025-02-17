@@ -295,14 +295,12 @@ void show_tile(struct Tile *tile)
     printf("    %c    \n", enum_to_char(tile->bot));
 }
 
-/*
+
 void show_part_tile(enum types a_aff)
 {
     if (a_aff == RIEN)  printf("  ");
     else  printf("%c\n", enum_to_char(a_aff));
 }
-
-/*
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
     switch (y)
@@ -323,24 +321,30 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             show_part_tile(RIEN);
     }
 }
-*/
-//void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
-/*
-    Affiche la grille du jeu en ascii art en minimisant l'espace occupé
-*/
-/*
-{
+
+
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
+// en cours (Axel)
+
+    //Affiche la grille du jeu en ascii art en minimisant l'espace occupé
+
+
+{   
+    printf("1");
     struct Grid *temp_y = tab, *temp_x; 
     unsigned char t_x = 0, t_y = 0;
     for (; t_x < x; t_x++)
     {
+        printf("2");
         for( int j = 0; j < 3; j++)
         {
+            printf("3");
             temp_y = temp_x;
             printf("\n");
             temp_y = temp_x;
             for(; t_y < y; t_y++)
             {
+                printf("4");
                 if (temp_y->tile == NULL)
                 {
                     show_part_tile(RIEN);
@@ -357,8 +361,9 @@ void choose_w_show(unsigned char y, struct Grid *tab)
         }
     }
 }
-*/
+
 struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *turnTraker, struct Grid *grid){ // en cour ( Axel )
+
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
