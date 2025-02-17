@@ -251,7 +251,7 @@ struct list_player *init_player_list(char nbPlayers); // Fait (Axel)
 */
 
 void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être mieux si size est une macro A FAIRE
-/*
+/*S
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
 
@@ -260,7 +260,7 @@ void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être m
 
 void array_to_stack(struct Tile **tileArray, struct Stack **stack); // Fait
 /*
-    Prend en entrée une array et return une pile avec les éléments de l'array dedans.
+    Prend en entrée une array et return une pile avec les éléments de l'array dedans. ya pas de return !!!
 */
 
 void reset_points(struct Player *player); //Fait
