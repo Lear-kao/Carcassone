@@ -120,7 +120,7 @@ struct Grid
 
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);
 
-struct Coord *init_coord(unsigned char x,unsigned char y);
+struct Coord *init_coord(unsigned char x, unsigned char y);
 /*
     x: coordonnée x
     y: coordonnee y
