@@ -425,9 +425,9 @@ void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FA
 */
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
-                                                                           /*
-                                                                               grid : la case de départ
-                                                                               bPLayers : Le nombre de joueurs
+/*
+    grid : la case de départ
+    bPLayers : Le nombre de joueurs
                                                                            
-                                                                               return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
-                                                                           */
+    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+*/
