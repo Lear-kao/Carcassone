@@ -167,14 +167,6 @@ struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *righ
     return new_grid;
 }
 
-struct Coord *init_coord(unsigned char x, unsigned char y)
-{
-    struct Coord *new_coord = malloc(sizeof(struct Coord));
-    new_coord->x = x;
-    new_coord->y = y;
-    return new_coord; 
-}
-
 /* NON UTILISE
 //-------------
 //-plateboard--
