@@ -321,7 +321,7 @@ char enum_to_char(enum types type); // A TESTER
     Convertie un enum en char. 
 */
 
-void show_grid(struct Grid *grid); // A FAIRE Axel
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y); // A FAIRE Axel
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
