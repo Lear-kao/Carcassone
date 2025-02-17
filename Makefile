@@ -1,13 +1,36 @@
 CC=cc
+PROG = program
 CFLAGS=-std=c99 -pedantic
 TESTFLAGS=-lcriterion
+INC_Dir = header
+SRC_Dir= program
+OBJ_Dir = oFile
+all = exe
 
-all : data_structure.o game_manager_function.o game_manager.o player.o tile.o
-	${CC} ${CFLAGS} -o Carcassonne
+default = $(all)
+
+all: $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o $(OBJ_Dir)/test.o 
+
+$(OBJ_Dir)/data_structure.o : $(SRC_Dir)/data_structure.c $(INC_Dir)/Carcassonne.h
+	$(CC) -c $(SRC_Dir)/data_structure.c $(CFLAGS) -o $(OBJ_Dir)/data_structure.o
+
+$(OBJ_Dir)/game_manager_function.o : $(SRC_Dir)/game_manager_function.c $(INC_Dir)/Carcassonne.h
+	$(CC) -c $(SRC_Dir)/game_manager_function.c $(CFLAGS) -o $(OBJ_Dir)/game_manager_function.o
+
+$(OBJ_Dir)/game_manager.o : $(SRC_Dir)/game_manager.c $(INC_Dir)/Carcassonne.h
+	$(CC) -c $(SRC_Dir)/game_manager.c $(CFLAGS) -o $(OBJ_Dir)/game_manager.o
+
+$(OBJ_Dir)/player.o : $(SRC_Dir)/player.c $(INC_Dir)/Carcassonne.h
+	$(CC) -c $(SRC_Dir)/player.c $(CFLAGS) -o $(OBJ_Dir)/player.o
+
+$(OBJ_Dir)/tile.o : $(SRC_Dir)/tile.c $(INC_Dir)/Carcassonne.h
+	$(CC) -c $(SRC_Dir)/tile.c $(CFLAGS) -o $(OBJ_Dir)/tile.o
+
+$(OBJ_Dir)/test.o : $(SRC_Dir)/testSuite.c $(INC_Dir)/Carcassonne.h
+	$(CC) -c $(SRC_Dir)/testSuite.c $(CFLAGS) -o $(OBJ_Dir)/test.o
 
 test :
-	${CC} ${CFLAGS} ${TESTFLAGS} testSuite.c -o testSuite
-	./testSuite
+	${CC} ${CFLAGS} ${TESTFLAGS} $(OBJ_Dir)/test.o -o testSuite
+
 clear : 
-	rm a.out data_structure.o game_manager_function.o game_manager.o player.o tile.o testSuite
-	
+	rm testSuite $(OBJ_Dir)/test.o $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o 

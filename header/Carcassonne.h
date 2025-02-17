@@ -196,7 +196,7 @@ struct list_player
     Contient la liste des joueurs, utilisé  pour lancer la partie, 
     vas  aussi  permettre d'y ajouer les bots plus tards
     */
-    struct Player *player;
+    struct Player **player;
 };
 
 // ----PLayers fonctions----
@@ -275,12 +275,12 @@ void reset_meeples(struct Player *player);//Fait
     Réinitialise le compteur de Meeple du joueur
 */
 
-struct Tile *rot_tile(struct Tile *tile); //A TESTER theo
+struct Tile *rot_tile(struct Tile *tile); //Fait
 /*
     Tourne la tuile de 90° dans le sens trigo.
 */
 
-char enum_to_char(enum types type); // A TESTER theo
+char enum_to_char(enum types type); //Fait
 /*
     Convertie un enum en char affichable (V pour ville et v pour village).
 */
@@ -303,7 +303,7 @@ void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile); //
     Place la tuile à l'emplacement indiqué.
 */
 
-void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord); // A FAIRE
+void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid **grid, unsigned int nb_coord); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -313,7 +313,7 @@ void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *p
     avec la fonction where_i_can_play
 */
 
-struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FAIRE theo
+struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid); // A FAIRE theo
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -325,17 +325,17 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FA
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
-char enum_to_char(enum types type); // A TESTER
+char enum_to_char(enum types type); 
 /*
     Convertie un enum en char. 
 */
 
-void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A FAIRE Axel
+void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A tester ( Valentin )
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Tile *start_game(struct list_player *players, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // fait (Axel)
+struct Tile *start_game(struct list_player **list_player, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
