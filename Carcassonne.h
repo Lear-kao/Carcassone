@@ -195,6 +195,15 @@ struct Player
     short points; 
 };
 
+struct list_player
+{
+    /* 
+    Contient la liste des joueurs, utilisé  pour lancer la partie, 
+    vas  aussi  permettre d'y ajouer les bots plus tards
+    */
+    struct Player *player;
+};
+
 // ----PLayers fonctions----
 
 void init_player(struct Player *player); // FAIT theo
@@ -239,7 +248,7 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
-struct Player **init_player_list(char nbPlayers); // Fait (Axel) 
+struct list_player *init_player_list(char nbPlayers); // Fait (Axel) 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
@@ -247,7 +256,7 @@ struct Player **init_player_list(char nbPlayers); // Fait (Axel)
 */
 
 void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être mieux si size est une macro A FAIRE
-/*
+/*S
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
 
@@ -256,7 +265,7 @@ void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être m
 
 void array_to_stack(struct Tile **tileArray, struct Stack **stack); // Fait
 /*
-    Prend en entrée une array et return une pile avec les éléments de l'array dedans.
+    Prend en entrée une array et return une pile avec les éléments de l'array dedans. ya pas de return !!!
 */
 
 void reset_points(struct Player *player); //Fait
@@ -326,12 +335,12 @@ char enum_to_char(enum types type); // A TESTER
     Convertie un enum en char. 
 */
 
-void show_grid(struct Grid *grid); // A FAIRE Axel
+void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A FAIRE Axel
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
+struct Tile *start_game(struct list_player *players, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -339,7 +348,9 @@ void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FA
     - Réinitialise les Meeples 
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
+    !!! a voir si il faut pas passer la  liste de  struct  tile  en paramètre
 */
+
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
 /*
@@ -347,6 +358,11 @@ char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A 
     nbPLayers : Le nombre de joueurs
 
     return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+*/
+
+void free_Grid( struct Grid *grid); // fait (Axel)
+/* 
+prend en paramètre une struct grid initialisée et la free pour être réutilisée
 */
 
 #endif // CARCASSONNE_H

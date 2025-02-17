@@ -75,24 +75,19 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     return tileArray;
 }
 
-struct Player **init_player_list(char nbPlayers) // Axel
+struct list_player *init_player_list(char nbPlayers) // Axel
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
 */
 {
-    struct Player **list_players = (struct Player **)malloc(sizeof(struct Player *) * (nbPlayers + 1));
-
-    if (list_players != NULL)
+    struct list_player *list_players = malloc(sizeof(struct list_player *));
+    list_players->player = malloc(sizeof(struct Player*)*nbPlayers);
+    for( int i = 0; i < nbPlayers; i++ )
     {
-        list_players[nbPlayers] = (struct Player *)malloc(sizeof(struct Player));
-        list_players[nbPlayers] = NULL;
-        for (char i = 0; i < nbPlayers; i++)
-        {
-            list_players[i] = (struct Player *)malloc(sizeof(struct Player));
-            init_player(list_players[i]);
-        }
+        list_players->player[i] = (struct Player *)malloc(sizeof(struct Player));
+        list_players->player[i] = NULL;
     }
     return list_players;
 }
@@ -350,14 +345,12 @@ void show_tile(struct Tile *tile)
     printf("    %c    \n", enum_to_char(tile->bot));
 }
 
-/*
+
 void show_part_tile(enum types a_aff)
 {
     if (a_aff == RIEN)  printf("  ");
     else  printf("%c\n", enum_to_char(a_aff));
 }
-
-/*
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
     switch (y)
@@ -378,25 +371,30 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             show_part_tile(RIEN);
     }
 }
-*/
-// void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
-//  en cours (Axel)
-/*
-    Affiche la grille du jeu en ascii art en minimisant l'espace occupé
-*/
-/*
-{
-    struct Grid *temp_y = tab, *temp_x;
+
+
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
+// en cours (Axel)
+
+    //Affiche la grille du jeu en ascii art en minimisant l'espace occupé
+
+
+{   
+    printf("1");
+    struct Grid *temp_y = tab, *temp_x; 
     unsigned char t_x = 0, t_y = 0;
     for (; t_x < x; t_x++)
     {
+        printf("2");
         for( int j = 0; j < 3; j++)
         {
+            printf("3");
             temp_y = temp_x;
             printf("\n");
             temp_y = temp_x;
             for(; t_y < y; t_y++)
             {
+                printf("4");
                 if (temp_y->tile == NULL)
                 {
                     show_part_tile(RIEN);
@@ -413,8 +411,9 @@ void choose_w_show(unsigned char y, struct Grid *tab)
         }
     }
 }
-*/
-void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FAIRE
+
+struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *turnTraker, struct Grid *grid){ // en cour ( Axel )
+
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -423,11 +422,51 @@ void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FA
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
+    if (list_player == NULL)
+    {
+        *list_player = malloc(sizeof(struct list_player));
+        *list_player -> player = malloc(sizeof(struct player) * nbPlayer);
+    }
+    for(  int i = 0; i < nbPlayer; i++)
+    {
+        init_player(*list_player->player[i]);
+    }
+    if ( grid != NULL)
+    {
+        free_Grid( grid );
+    }
+    struct Tile *tile_array;
+    //create_tile_array();
+    //shuffle(&(tile_array))
+    //init_Grid()
+    turnTraker = 0;
+    return tile_array;
+    }
+
+}
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
-                                                                           /*
-                                                                               grid : la case de départ
-                                                                               bPLayers : Le nombre de joueurs
-                                                                           
-                                                                               return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
-                                                                           */
+/*
+    grid : la case de départ
+    bPLayers : Le nombre de joueurs
+
+    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+*/
+
+void free_Grid( struct Grid *grid) // a tester
+/* 
+prend en paramètre une struct grid initialisée et la free pour être réutilisée
+!!! S'assurer que le pointeur vers grid sois bien en haut à gauche du graph
+*/
+{
+    if ( grid->right != NULL)
+    {
+        free_Grid( grid->right );
+    }
+    if ( grid->bot != NULL )
+    {
+        free_Grid( grid->bot);
+    }
+    free(grid);
+    return;
+}
