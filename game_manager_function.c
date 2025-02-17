@@ -84,7 +84,8 @@ struct Player **init_player_list(char nbPlayers) // Axel
 {
     struct Player **list_players = (struct Player **)malloc(sizeof(struct Player *) * (nbPlayers + 1));
 
-    if(list_players!=NULL){
+    if (list_players != NULL)
+    {
         list_players[nbPlayers] = (struct Player *)malloc(sizeof(struct Player));
         list_players[nbPlayers] = NULL;
         for (char i = 0; i < nbPlayers; i++)
@@ -171,7 +172,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-//void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord) // A FAIRE
+// void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -219,16 +220,67 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FA
     tile : La tile précedement pioché par le joueur
 
     grid : Un tableau de grid sur laquelle doit être effectué une recherche
-    en fonction de la tile. Les tuiles non posé sont soit des tuiles potentiel 
+    en fonction de la tile. Les tuiles non posé sont soit des tuiles potentiel
     soit des pointeurs sur NULL
 
     return : Une liste de coordonnées sur la grille de ou il est possible de placer sa tuile se terminant par NULL
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
-void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
-//void place_tile(struct Grid *grid, struct Coord *coord, struct Tile *Tile);
+struct Grid *first_tile(struct Tile *tile)
+{
+    // Tile potentiel
+    struct Tile *right_tile = init_tile(RIEN, RIEN, tile->right, RIEN, RIEN);
+    struct Coord *right_coord = init_coord(0, 1);
+    struct Grid *right_grid = init_grid(right_tile, right_coord, NULL, NULL, NULL, NULL);
 
+    
+    struct Tile *top_tile = init_tile(RIEN, RIEN, RIEN, tile->top, RIEN);
+    struct Coord *top_coord = init_coord(1, 0);
+    struct Grid *top_grid = init_grid(top_tile, top_coord, NULL, NULL, NULL, NULL);
+
+    
+    struct Tile *left_tile = init_tile(tile->left, RIEN, RIEN, RIEN, RIEN);
+    struct Coord *left_coord = init_coord(0, -1);
+    struct Grid *left_grid = init_grid(left_tile, left_coord, NULL, NULL, NULL, NULL);
+
+    
+    struct Tile *bot_tile = init_tile(RIEN, tile->bot, RIEN, RIEN, RIEN);
+    struct Coord *bot_coord = init_coord(-1, 0);
+    struct Grid *bot_grid = init_grid(bot_tile, bot_coord, NULL, NULL, NULL, NULL);
+
+
+    // Tile NULL
+    struct Coord *right_top_coord = init_coord(1, 1);
+    struct Grid *right_top_grid = init_grid(NULL, right_top_coord, NULL, NULL, NULL, NULL);
+   
+    struct Coord *left_top_coord = init_coord(-1, 1);
+    struct Grid *left_top_grid = init_grid(NULL, left_top_coord, NULL, NULL, NULL, NULL);
+    
+    struct Coord *right_bot_coord = init_coord(1, -1);
+    struct Grid *right_bot_grid = init_grid(NULL, right_bot_coord, NULL, NULL, NULL, NULL);
+   
+    struct Coord *left_bot_coord = init_coord(1, -1);
+    struct Grid *left_bot_grid = init_grid(NULL, right_bot_coord, NULL, NULL, NULL, NULL);
+
+    // Tile posé
+    struct Coord *first_coord = init_coord(0, 0);
+    struct Grid *first_grid = init_grid(tile, first_coord, right_grid, top_grid, left_grid, bot_grid);
+
+    //relier les Grid entre elles
+    right_grid->top = right_top_grid;
+    right_grid->bot = right_bot_grid;
+    top_grid->right = right_top_grid;
+    top_grid->left = left_top_grid;
+    left_grid->top = left_top_grid;
+    left_grid->bot = left_bot_grid;
+    bot_grid->right = right_bot_grid;
+    bot_grid->left = left_bot_grid;
+
+    return first_grid;
+}
+
+struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *tile)
 /*
     tile : La tile précedement pioché par le joueur à placer
 
@@ -239,15 +291,14 @@ void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile);
     Place la tuile à l'emplacement indiqué, actualise la grille de taille
     variable et met à jour la liste doublement chaîné les tuile ptoentiels pour les autres fonctions
 */
-/*
 {
-    if (grid = NULL)
-    {   
-        init_grid(grid, coord, tile,  NULL, struct Grid *left, NULL, NULL)
-        init_grid(grid, coord, tile,  struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
-    }// initialiser la grid avec grid->tile = NULL pour right left top bot
-}*/
-
+    if (grid == NULL && coord->x == 0 && coord->y == 0)
+    {
+        struct Grid *grid= first_tile(tile);
+        
+    }
+    return NULL;
+}
 
 char enum_to_char(enum types type)
 {
@@ -308,14 +359,14 @@ void choose_w_show(unsigned char y, struct Grid *tab)
     }
 }
 */
-//void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
-// en cours (Axel)
+// void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
+//  en cours (Axel)
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé
 */
 /*
 {
-    struct Grid *temp_y = tab, *temp_x; 
+    struct Grid *temp_y = tab, *temp_x;
     unsigned char t_x = 0, t_y = 0;
     for (; t_x < x; t_x++)
     {
@@ -334,9 +385,9 @@ void choose_w_show(unsigned char y, struct Grid *tab)
                 }
                 else
                 {
-                    choose_w_show(t_y, temp_y);                    
+                    choose_w_show(t_y, temp_y);
                 }
-                temp_y = temp_y->right;                
+                temp_y = temp_y->right;
             }
             temp_x = temp_x->bot;
         }
@@ -354,9 +405,9 @@ void start_game(char nbPlayers, char nbBots, char *turnTraker); // arg ? // A FA
 */
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
-/*
-    grid : la case de départ
-    bPLayers : Le nombre de joueurs
-
-    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
-*/
+                                                                           /*
+                                                                               grid : la case de départ
+                                                                               bPLayers : Le nombre de joueurs
+                                                                           
+                                                                               return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+                                                                           */

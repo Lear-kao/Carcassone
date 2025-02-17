@@ -98,9 +98,11 @@ char is_stack_not_empty(struct Stack *stack); // FAIT
 
 struct Coord
 {
-    unsigned char x;
-    unsigned char y;
+    int x;
+    int y;
 };
+
+struct Coord *init_coord(unsigned char x, unsigned char y);
 
 struct Grid
 {
@@ -114,6 +116,8 @@ struct Grid
     struct Grid *bot;
     struct Grid *top;
 };
+
+struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);
 
 
 /* NON UTILISE
@@ -150,7 +154,7 @@ struct Tile
 
 // ----Tiles fonctions----
 
-struct Tile *init_tile(enum types right, enum types top, enum types left, enum types bot, enum types middle);
+struct Tile *init_tile(enum types right, enum types top, enum types left, enum types bot, enum types middle); // fait Théo
     /*
     tile : Un pointer sur Tile
     right, left ... middle : les différent type des bordes de la tuile
@@ -270,7 +274,7 @@ void show_tile(struct Tile *tile); // A TESTER theo
     Affiche une tile.
 */
 
-void place_tile(struct Grid ***grid, struct Coord *coord, struct Tile *Tile); // A FAIRE theo
+struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *tile); // A TESTER
 /*
     tile : La tile précedement pioché par le joueur à placer
 

@@ -188,12 +188,5 @@ Test(all, DLList_pop)
     DLList_pop(db_list,&tileSlot); 
     cr_assert(db_list == NULL);
 
-
-
-
-
-
-
-
-
 }
+
