@@ -117,7 +117,19 @@ struct Grid
     struct Grid *top;
 };
 
+
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);
+
+struct Coord *init_coord(unsigned char x,unsigned char y);
+/*
+    x: coordonnée x
+    y: coordonnee y
+
+    Cette fonction alloue une struct coord et l'initialise
+    avec les coordonnée x et y
+
+    return: un pointeur vers un struct Coord
+*/
 
 
 /* NON UTILISE
@@ -242,7 +254,7 @@ void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être m
     Mélange les tuiles
 */
 
-void array_to_stack(struct Tile **tileArray, struct Stack *stack); // Fait
+void array_to_stack(struct Tile **tileArray, struct Stack **stack); // Fait
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
 */

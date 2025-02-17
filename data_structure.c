@@ -13,7 +13,6 @@ struct Stack *stack_push(struct Stack *stack, struct Tile *tile)
 
 */
 {
-
     struct Stack *new_stack = malloc(sizeof(struct Stack));
     new_stack->data = tile;
     new_stack->next = stack;
@@ -98,11 +97,14 @@ void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
     {
         return; // ERROR CASE
     }
+    else
+    {
+        *tileSlot = DLList->data;
+    }
     if (DLList->next == NULL)
     {
         if (DLList->prev == NULL)
-        {
-            *tileSlot = DLList->data;
+        {   
             free(DLList);
             return;
         }
@@ -135,6 +137,23 @@ void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
 // ------------
 // ----Grid----
 // ------------
+
+struct Coord *init_coord(unsigned char x,unsigned char y)
+/*
+    x: coordonnée x
+    y: coordonnee y
+
+    Cette fonction alloue une struct coord et l'initialise
+    avec les coordonnée x et y
+
+    return: un pointeur vers un struct Coord
+*/
+{
+    struct Coord *C=malloc(sizeof(struct Coord));
+    C->x=x;
+    C->y=y;
+    return C;
+}
 
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
 {

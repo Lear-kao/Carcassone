@@ -122,7 +122,7 @@ void shuffle(struct Tile **tileArray, char size) // Valentin c'est peut-être mi
     }
 }
 
-void array_to_stack(struct Tile **tileArray, struct Stack *stack) // Valentin A FAIRE
+void array_to_stack(struct Tile **tileArray, struct Stack **stack) // Valentin A FAIRE
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
     On considère que l'utilisateur donne le parametre stack non allouer
@@ -131,7 +131,7 @@ void array_to_stack(struct Tile **tileArray, struct Stack *stack) // Valentin A 
 
     for (short i = 0; i < NBTILE - 1; i++)
     {
-        stack = stack_push(stack, tileArray[i]);
+        *stack = stack_push(*stack, tileArray[i]);
     }
 }
 void reset_points(struct Player *player) // Fait
@@ -302,22 +302,42 @@ struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *til
 
 char enum_to_char(enum types type)
 {
-    if (type == RIEN)
-        return 'Z'; // ERROR CASE
-    else if (type == ROUTE)
-        return 'R';
-    else if (type == VILLE)
-        return 'V';
-    else if (type == ABBAYES)
-        return 'A';
-    else if (type == PRE)
-        return 'P';
-    else if (type == VILLAGE)
-        return 'v';
-    else if (type == BLASON)
-        return 'B';
-    else
-        return 'z'; // ERROR CASE
+    char result;
+
+    switch(type){
+        case RIEN:
+            result='Z';
+            break;
+            
+        case ROUTE:
+            result='R';
+            break;
+
+        case VILLE:
+            result='V';
+            break;
+
+        case ABBAYES:
+            result='A';
+            break;
+
+        case PRE:
+            result='P';
+            break;
+
+        case VILLAGE:
+            result='v';
+            break;
+
+        case BLASON:
+            result='B';
+            break;
+
+        default:
+            result='z';
+            break;
+    }
+    return result;
 }
 
 void show_tile(struct Tile *tile)
