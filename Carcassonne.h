@@ -345,8 +345,6 @@ void start_game(struct list_player *players, char nbPlayerchar, char *turnTraker
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
 
-void reset_plate( struct Grid *grid);
-/* réinitialise le  plateau */
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
 /*
@@ -354,6 +352,11 @@ char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A 
     nbPLayers : Le nombre de joueurs
 
     return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+*/
+
+void free_Grid( struct Grid *grid); // A faire
+/* 
+prend en paramètre une struct grid initialisée et la free pour être réutilisée
 */
 
 #endif // CARCASSONNE_H

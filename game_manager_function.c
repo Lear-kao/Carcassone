@@ -376,6 +376,8 @@ void start_game(struct list_player **list_player, char nbPlayer, char *turnTrake
     {
         init_player(*list_player->player[i]);
     }
+
+    //free_grid()
     //create_tile_array();
     //shuffle()
     //init_Grid()
@@ -391,3 +393,21 @@ char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A 
 
     return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
 */
+
+void free_Grid( struct Grid *grid) // a tester
+/* 
+prend en paramètre une struct grid initialisée et la free pour être réutilisée
+!!! S'assurer que le pointeur vers grid sois bien en haut à gauche du graph
+*/
+{
+    if ( grid->right != NULL)
+    {
+        free_Grid( grid->right );
+    }
+    if ( grid->bot != NULL )
+    {
+        free_Grid( grid->bot);
+    }
+    free(grid);
+    return;
+}
