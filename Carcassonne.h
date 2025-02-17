@@ -330,12 +330,12 @@ char enum_to_char(enum types type); // A TESTER
     Convertie un enum en char. 
 */
 
-void show_grid(struct Grid *tab, unsigned  char x, unsigned char y); // A FAIRE Axel
+void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A FAIRE Axel
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-void start_game(struct list_player *players, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // arg ? // A FAIRE
+struct Tile *start_game(struct list_player *players, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -343,6 +343,7 @@ void start_game(struct list_player *players, char nbPlayerchar, char *turnTraker
     - Réinitialise les Meeples 
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
+    !!! a voir si il faut pas passer la  liste de  struct  tile  en paramètre
 */
 
 
@@ -354,7 +355,7 @@ char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A 
     return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
 */
 
-void free_Grid( struct Grid *grid); // A faire
+void free_Grid( struct Grid *grid); // fait (Axel)
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
 */
