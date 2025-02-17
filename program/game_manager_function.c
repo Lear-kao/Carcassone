@@ -1,5 +1,4 @@
-#include "Carcassonne.h"
-
+#include "../header/Carcassonne.h"
 #include <string.h>
 
 // ------------------------------
@@ -83,10 +82,10 @@ struct list_player *init_player_list(char nbPlayers) // Axel
 */
 {
     struct list_player *list_players = malloc(sizeof(struct list_player *));
-    list_players->player = malloc(sizeof(struct Player*)*nbPlayers);
+    list_players->player = malloc(sizeof(struct Player**)*nbPlayers);
     for( int i = 0; i < nbPlayers; i++ )
     {
-        list_players->player[i] = (struct Player *)malloc(sizeof(struct Player));
+        list_players->player[i] = malloc(sizeof(struct Player*));
         list_players->player[i] = NULL;
     }
     return list_players;
@@ -168,6 +167,7 @@ struct Tile *rot_tile(struct Tile *tile)
 }
 
 // void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord) // A FAIRE
+
 /*
     playerNumber : Le numéro du joueur
 
@@ -187,7 +187,7 @@ struct Tile *rot_tile(struct Tile *tile)
     unsigned int token = -1;
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
-        show_tile(turn_tile);
+        show_Grid( grid );
         play_coord = where_i_can_play(turn_tile, grid);
         index = 0;
         while (*(play_coord + index) != NULL)
@@ -210,7 +210,7 @@ struct Tile *rot_tile(struct Tile *tile)
     }
 }
 */
-struct Coord **where_i_can_play(struct Tile *tile, struct Grid ***grid); // A FAIRE
+struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid); // A FAIRE
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -425,11 +425,11 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *t
     if (list_player == NULL)
     {
         *list_player = malloc(sizeof(struct list_player));
-        *list_player -> player = malloc(sizeof(struct player) * nbPlayer);
+        (*list_player) -> player = malloc(sizeof(struct player*) * nbPlayer);
     }
     for(  int i = 0; i < nbPlayer; i++)
     {
-        init_player(*list_player->player[i]);
+        init_player((*list_player)->player[i]);
     }
     if ( grid != NULL)
     {
@@ -441,9 +441,9 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *t
     //init_Grid()
     turnTraker = 0;
     return tile_array;
-    }
-
 }
+
+
 
 char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
 /*

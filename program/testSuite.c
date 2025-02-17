@@ -1,7 +1,7 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h> // si bug essayer de retirer le /new
 
-#include "Carcassonne.h"
+#include "../header/Carcassonne.h"
 #include "tile.c"
 #include "player.c"
 #include "game_manager_function.c"
@@ -76,9 +76,9 @@ Test(all, create_tile_array)
 Test(all, init_player_list)
 {
     char nbPlayer = 8;
-    struct Player **list_player = init_player_list(nbPlayer);
+    struct list_player *list_player = init_player_list(nbPlayer);
     int i = 0;
-    while( list_player[i] != NULL )
+    while( list_player->player[i] != NULL )
     {
         i++;
     }

@@ -1,6 +1,9 @@
 On ne push pas un code qui ne compile pas.
 
-Ne pas modifier le .csv il sert pour les test
+Ne pas modifier le .csv il sert pour les test.
 
-Il faudrait penser à tester le cas NULL à chaque fois par principe -_-
+Il faudrait penser à tester le cas NULL à chaque fois par principe -_-.
 
+Penser à noter les fonctions dont on s'occupe.
+
+Penser à modifier les commentaires lorsqu'une fonction est finie ou en traveaux.
