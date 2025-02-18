@@ -31,6 +31,7 @@ $(OBJ_Dir)/test.o : $(SRC_Dir)/testSuite.c $(INC_Dir)/Carcassonne.h
 
 test :
 	${CC} ${CFLAGS} ${TESTFLAGS} $(OBJ_Dir)/test.o -o testSuite
+	./testSuite
 
 clear : 
 	rm testSuite $(OBJ_Dir)/test.o $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o 

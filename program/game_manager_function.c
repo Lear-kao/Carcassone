@@ -166,7 +166,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-// void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord) // A FAIRE
+// void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid **grid, unsigned int nb_coord) // A FAIRE
 
 /*
     playerNumber : Le numéro du joueur
@@ -187,7 +187,7 @@ struct Tile *rot_tile(struct Tile *tile)
     unsigned int token = -1;
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
-        show_Grid( grid );
+        show_Grid( &grid );
         play_coord = where_i_can_play(turn_tile, grid);
         index = 0;
         while (*(play_coord + index) != NULL)
@@ -205,7 +205,7 @@ struct Tile *rot_tile(struct Tile *tile)
         else
         {
             pose = 1;
-            //place_tile(struct grid * grid, struct coord * coord);
+            //place_tile(struct grid grid, struct coord * coord);
         }
     }
 }
