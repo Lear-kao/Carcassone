@@ -380,30 +380,35 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
 
 
 {   
-    printf("1");
-    struct Grid *temp_y = tab, *temp_x; 
+    printf("1\n");
+    struct Grid *temp_y = tab, *temp_x; //temp_x pas initialisé 
+    printf("TEST AFF 1: %d\n",temp_y->tile->left);
     unsigned char t_x = 0, t_y = 0;
     for (; t_x < x; t_x++)
     {
-        printf("2");
+        printf("2\n");
+        printf("TEST AFF 2: %d\n",temp_y->tile->left);
         for( int j = 0; j < 3; j++)
         {
-            printf("3");
-            temp_y = temp_x;
-            printf("\n");
-            temp_y = temp_x;
+            printf("3\n");
+            printf("TEST AFF 3: %d\n",temp_y->tile->left);// pas crash
+            temp_y = temp_x; //la temp_y va prend un pointeur pas initialisé
+            //temp_y = temp_x; pourquoi 2 fois ?
+            //printf("TEST AFF 3.1: %d\n",temp_y->tile->left); //crash
             for(; t_y < y; t_y++)
             {
-                printf("4");
+                printf("4\n");
                 if (temp_y->tile == NULL)
                 {
+                    printf("5\n");
                     show_part_tile(RIEN);
                     show_part_tile(RIEN);
                     show_part_tile(RIEN);
                 }
                 else
                 {
-                    choose_w_show(t_y, temp_y);
+                    //printf("%d\n",temp_y->tile->left); //mon test de print la tile fait crash
+                    //choose_w_show(t_y, temp_y); //cette ligne semble faire crash
                 }
                 temp_y = temp_y->right;
             }

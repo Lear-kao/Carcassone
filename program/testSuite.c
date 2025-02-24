@@ -158,6 +158,8 @@ Test(all, rot_tile)
 
 //test where_i_can_play
 
+//test first_tile
+
 //test place_tile
 
 Test(all, enum_to_char)
@@ -181,13 +183,56 @@ Test(all, enum_to_char)
               enum_to_char(errorv) == 'z');
 }
 
-//test show_tile (affichage)
+Test(all, show_tile)
+{    
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Coord *C1=init_coord(0,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
 
-//test show_part_tile (affichage)
+    printf("||| TEST SHOW_TILE |||\n");
+    show_tile(G->tile);
+}
 
-//test choose_w_show
+Test(all, show_part_tile)
+{    
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Coord *C1=init_coord(0,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
 
-//test show_grid
+    printf("||| TEST SHOW_PART_TILE |||\n");
+    show_part_tile(G->tile->right);
+}
+
+Test(all ,choose_w_show)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Coord *C1=init_coord(0,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+
+    printf("||| TEST CHOOSE_W_SHOW |||\n");
+    choose_w_show(0,G);
+    choose_w_show(1,G);
+    choose_w_show(2,G);
+}
+
+Test(all ,show_grid)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
+    struct Tile *tile3 = init_tile(ROUTE, PRE, PRE, ROUTE, ROUTE);
+    struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(1,1);
+    struct Coord *C4=init_coord(0,1);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->top=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
+    G->top=init_grid(tile4,C4,G->right->top,NULL,G,NULL);
+
+    printf("||| TEST SHOW_GRID |||\n");
+    show_grid(G,1,2);
+}
 
 //test start_game
 
@@ -508,20 +553,3 @@ Test(all, init_grid)
     cr_assert(G->top->tile->right == PRE);
 }
 
-Test(all ,show_grid)
-{
-    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
-    struct Tile *tile3 = init_tile(ROUTE, PRE, PRE, ROUTE, ROUTE);
-    struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
-    struct Coord *C1=init_coord(0,0);
-    struct Coord *C2=init_coord(1,0);
-    struct Coord *C3=init_coord(1,1);
-    struct Coord *C4=init_coord(0,1);
-    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
-    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
-    G->right->top=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
-    G->top=init_grid(tile4,C4,G->right->top,NULL,G,NULL);
-
-    show_grid(G,0,0);
-}
