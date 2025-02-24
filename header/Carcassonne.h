@@ -285,7 +285,7 @@ struct Tile *rot_tile(struct Tile *tile); //Fait
     Tourne la tuile de 90° dans le sens trigo.
 */
 
-char enum_to_char(enum types type); //Fait
+void enum_to_char(enum types type); //Fait
 /*
     Convertie un enum en char affichable (V pour ville et v pour village).
 */
@@ -330,10 +330,6 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid); // A FAIR
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
 
-char enum_to_char(enum types type); 
-/*
-    Convertie un enum en char. 
-*/
 
 void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A tester ( Valentin )
 /*

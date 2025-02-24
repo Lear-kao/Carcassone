@@ -166,7 +166,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-// void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid ***grid, unsigned int nb_coord) // A FAIRE
+// void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid **grid, unsigned int nb_coord) // A FAIRE
 
 /*
     playerNumber : Le numéro du joueur
@@ -187,7 +187,7 @@ struct Tile *rot_tile(struct Tile *tile)
     unsigned int token = -1;
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
-        show_Grid( grid );
+        show_Grid( &grid );
         play_coord = where_i_can_play(turn_tile, grid);
         index = 0;
         while (*(play_coord + index) != NULL)
@@ -205,7 +205,7 @@ struct Tile *rot_tile(struct Tile *tile)
         else
         {
             pose = 1;
-            //place_tile(struct grid * grid, struct coord * coord);
+            //place_tile(struct grid grid, struct coord * coord);
         }
     }
 }
@@ -295,80 +295,106 @@ struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *til
     return NULL;
 }
 
-char enum_to_char(enum types type)
+void enum_to_char(enum types type)
 {
-    char result;
-
     switch(type){
         case RIEN:
-            result='Z';
+            printf("Z");
             break;
             
         case ROUTE:
-            result='R';
+            printf("\x1b[48;5;130m");
+            printf("  ");
+            printf("\x1b[0m");
             break;
 
         case VILLE:
-            result='V';
+            printf("\x1b[48;5;244m");
+            printf("  ");
+            printf("\x1b[0m");
             break;
 
         case ABBAYES:
-            result='A';
+            printf("A");
             break;
 
         case PRE:
-            result='P';
+            printf("\x1b[48;5;2m");
+            printf("  ");
+            printf("\x1b[0m");
             break;
 
         case VILLAGE:
-            result='v';
+            printf("v");
             break;
 
         case BLASON:
-            result='B';
+            printf("B");
             break;
 
         default:
-            result='z';
+            printf("z");
             break;
     }
-    return result;
 }
 
-void show_tile(struct Tile *tile)
+//void show_tile(struct Tile *tile)
 /*
     Affiche une tile.
 */
-{
-    printf("    %c    \n", enum_to_char(tile->top));
-    printf("%c   %c   %c\n", enum_to_char(tile->left), enum_to_char(tile->middle), enum_to_char(tile->right));
-    printf("    %c    \n", enum_to_char(tile->bot));
-}
+/* {
+    printf("    %s    \n", enum_to_char(tile->top));
+    printf("%s   %s   %s\n", enum_to_char(tile->left), enum_to_char(tile->middle), enum_to_char(tile->right));
+    printf("    %s    \n", enum_to_char(tile->bot));
+} */
 
 
-void show_part_tile(enum types a_aff)
-{
-    if (a_aff == RIEN)  printf("  ");
-    else  printf("%c\n", enum_to_char(a_aff));
-}
+
+
+
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
     switch (y)
     {
         case 0:
-            show_part_tile(RIEN);
-            show_part_tile(tab->tile->top);
-            show_part_tile(RIEN);
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->top == VILLE && tab->tile->left == VILLE )
+            {
+                enum_to_char(VILLE);
+            }
+            else enum_to_char(PRE);
+
+            enum_to_char(tab->tile->top);
+
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->top == VILLE && tab->tile->right == VILLE)
+            {
+                enum_to_char(VILLE);
+            }
+            else enum_to_char(PRE);
+
             break;
         case 1:
-            show_part_tile(tab->tile->left);
-            show_part_tile(tab->tile->middle);
-            show_part_tile(tab->tile->right);
+            enum_to_char(tab->tile->left);
+            enum_to_char(tab->tile->middle);
+            enum_to_char(tab->tile->right);
             break;
         case 2:
-            show_part_tile(RIEN);
-            show_part_tile(tab->tile->bot);
-            show_part_tile(RIEN);
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->bot == VILLE && tab->tile->left == VILLE )
+            {                    
+                enum_to_char(VILLE);
+            }
+            else enum_to_char(PRE);
+
+            enum_to_char(tab->tile->bot);
+
+            //teste pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->bot == VILLE && tab->tile->right == VILLE)
+            {
+                enum_to_char(VILLE);
+            }
+            else enum_to_char(PRE);
     }
 }
 
@@ -379,42 +405,34 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
     //Affiche la grille du jeu en ascii art en minimisant l'espace occupé
 
 
-{   
-    printf("1\n");
-    struct Grid *temp_y = tab, *temp_x; //temp_x pas initialisé 
-    printf("TEST AFF 1: %d\n",temp_y->tile->left);
+{
+    struct Grid *temp_x = tab, *temp_y; //temp_x pas initialisé 
     unsigned char t_x = 0, t_y = 0;
     for (; t_x < x; t_x++)
     {
-        printf("2\n");
-        printf("TEST AFF 2: %d\n",temp_y->tile->left);
         for( int j = 0; j < 3; j++)
         {
-            printf("3\n");
-            printf("TEST AFF 3: %d\n",temp_y->tile->left);// pas crash
             temp_y = temp_x; //la temp_y va prend un pointeur pas initialisé
-            //temp_y = temp_x; pourquoi 2 fois ?
-            //printf("TEST AFF 3.1: %d\n",temp_y->tile->left); //crash
-            for(; t_y < y; t_y++)
+            for( t_y = 0; t_y < y; t_y++)
             {
-                printf("4\n");
                 if (temp_y->tile == NULL)
                 {
-                    printf("5\n");
-                    show_part_tile(RIEN);
-                    show_part_tile(RIEN);
-                    show_part_tile(RIEN);
+                    enum_to_char(PRE);
+                    enum_to_char(PRE);
+                    enum_to_char(PRE);
                 }
                 else
                 {
                     //printf("%d\n",temp_y->tile->left); //mon test de print la tile fait crash
-                    //choose_w_show(t_y, temp_y); //cette ligne semble faire crash
+                    choose_w_show(j, temp_y); //cette ligne semble faire crash
                 }
                 temp_y = temp_y->right;
             }
-            temp_x = temp_x->bot;
+            printf("\n");
         }
+        temp_x = temp_x->bot;
     }
+    printf("\n fin affichage \n");
 }
 
 struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *turnTraker, struct Grid *grid){ // en cour ( Axel )
