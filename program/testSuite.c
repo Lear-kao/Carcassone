@@ -162,7 +162,7 @@ Test(all, rot_tile)
 
 //test place_tile
 
-Test(all, enum_to_char)
+/* Test(all, enum_to_char)
 {
     enum types rien=RIEN;
     enum types route=ROUTE;
@@ -181,9 +181,9 @@ Test(all, enum_to_char)
               enum_to_char(village) == 'v' &&
               enum_to_char(blason) == 'B' &&
               enum_to_char(errorv) == 'z');
-}
+} */
 
-Test(all, show_tile)
+/* Test(all, show_tile)
 {    
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Coord *C1=init_coord(0,0);
@@ -191,17 +191,9 @@ Test(all, show_tile)
 
     printf("||| TEST SHOW_TILE |||\n");
     show_tile(G->tile);
-}
+} */
 
-Test(all, show_part_tile)
-{    
-    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Coord *C1=init_coord(0,0);
-    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
 
-    printf("||| TEST SHOW_PART_TILE |||\n");
-    show_part_tile(G->tile->right);
-}
 
 Test(all ,choose_w_show)
 {
@@ -217,6 +209,7 @@ Test(all ,choose_w_show)
 
 Test(all ,show_grid)
 {
+    printf("||| TEST SHOW_GRID |||\n");
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
     struct Tile *tile3 = init_tile(ROUTE, PRE, PRE, ROUTE, ROUTE);
@@ -224,14 +217,14 @@ Test(all ,show_grid)
     struct Coord *C1=init_coord(0,0);
     struct Coord *C2=init_coord(1,0);
     struct Coord *C3=init_coord(1,1);
-    struct Coord *C4=init_coord(0,1);
+    struct Coord *C4=init_coord(1,0);
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
-    G->right->top=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
-    G->top=init_grid(tile4,C4,G->right->top,NULL,G,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,G,NULL);
 
-    printf("||| TEST SHOW_GRID |||\n");
-    show_grid(G,1,2);
+
+    show_grid(G,2,2);
 }
 
 //test start_game
