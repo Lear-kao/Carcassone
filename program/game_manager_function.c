@@ -287,10 +287,9 @@ struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *til
     variable et met à jour la liste doublement chaîné les tuile ptoentiels pour les autres fonctions
 */
 {
-    if (grid == NULL && coord->x == 0 && coord->y == 0)
+    if (grid == NULL && coord->x == 0 && coord->y == 0) // Cas début de partie
     {
         struct Grid *grid= first_tile(tile);
-        
     }
     return NULL;
 }
@@ -434,6 +433,12 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
     }
     printf("\n fin affichage \n");
 }
+
+char is_a_potential_tile(struct Tile *tile) // peut-être rajouter en argument la liste des tuiles potentiels utilisé dans where_i_can_place
+short points_route(struct Grid *grid); // Axel
+short points_ville(struct Grid *grid); // Axel et blason
+short points_abbayes(struct Grid *grid); // Axel
+short points_pre(struct Grid *grid); // Axel
 
 struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *turnTraker, struct Grid *grid){ // en cour ( Axel )
 

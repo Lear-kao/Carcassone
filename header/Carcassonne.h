@@ -295,6 +295,37 @@ void show_tile(struct Tile *tile); // A TESTER theo
     Affiche une tile.
 */
 
+char is_a_potential_tile(struct Tile *tile) // Axel peut-être rajouter en argument la liste des tuiles potentiels utilisé dans where_i_can_place
+/*
+    Return 0 si ce n'est pas une tuile potentielle
+    Return 1 si c'est une tuile potentielle
+
+    Information : Une tuile potentielle est une tuile parciellement remplie de enum qui sert pour la fonction where_i_can_place.
+*/
+
+short points_route(struct Grid *grid); // Axel
+/*
+    grid : Une grid qui pointe sur une tuile complète (pas une tuile potentiel) donc oublie pas de vérifier si c'est une tuile potentiel avant d'aller dessus.
+
+    return value :
+    Les conditions pour que les points soit rajouté aux joueurs ne sont pas remplie
+    return 0
+    ne pas retirer de meeple
+
+    Les conditions pour que les points soit rajouté aux joueurs sont remplie
+    return le nombre de point gagné par ce joueurs. 
+
+    ATTENTION : Que faire si plusieurs joueurs gagne des points ? Comment les différencier ? return une liste de couple joueurs points peut-être ?
+*/
+short points_ville(struct Grid *grid); // Axel et blason
+short points_abbayes(struct Grid *grid); // Axel
+short points_pre(struct Grid *grid); // Axel
+
+
+
+
+
+ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN
 struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *tile); // A TESTER
 /*
     tile : La tile précedement pioché par le joueur à placer
