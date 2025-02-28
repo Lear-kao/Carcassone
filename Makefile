@@ -29,7 +29,7 @@ $(OBJ_Dir)/tile.o : $(SRC_Dir)/tile.c $(INC_Dir)/Carcassonne.h
 $(OBJ_Dir)/test.o : $(SRC_Dir)/testSuite.c $(INC_Dir)/Carcassonne.h
 	$(CC) -c $(SRC_Dir)/testSuite.c $(CFLAGS) -o $(OBJ_Dir)/test.o
 
-test :
+test : $(OBJ_Dir)/test.o
 	${CC} ${CFLAGS} ${TESTFLAGS} $(OBJ_Dir)/test.o -o testSuite
 	./testSuite
 

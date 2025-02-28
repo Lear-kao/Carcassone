@@ -84,52 +84,60 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
     return DLList;
 }
 
-void DLList_pop(struct DLList *DLList, struct Tile **tileSlot)
+void DLList_pop(struct DLList **DLList, struct Tile **tileSlot)
 /*
-    DLList : L'élément de la liste chainé à supprimer
+    DLList : L'élément de la liste chainé à supprimer. Une fois l'élément supprimé le pointeur prend la valeur de l'élément précédent si il existe sinon l'élément suivant sinon NULL
     tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
 
     return : La liste actualisé 
 */
 {
     struct DLList *tmpDLList;
-    if (DLList == NULL)
+    if (*DLList == NULL)
     {
         return; // ERROR CASE
     }
-    else
+
+    *tileSlot = (*DLList)->data;
+    struct DLList *DLListTmp = NULL;
+
+    if ((*DLList)->next == NULL)
     {
-        *tileSlot = DLList->data;
-    }
-    if (DLList->next == NULL)
-    {
-        if (DLList->prev == NULL)
-        {   
-            free(DLList);
+        if ((*DLList)->prev == NULL)
+        {
+            // case NULL TO_DELETE NULL
+            free(*DLList);
+            *DLList = NULL;
             return;
         }
         else
         {
-            // case TRUC NULL
-            DLList->prev->next = NULL;
-            free(DLList);
+            // case TRUC TO_DELETE NULL
+            DLListTmp = (*DLList)->prev;
+            (*DLList)->prev->next = NULL;
+            free(*DLList);
+            *DLList = DLListTmp;
             return;
         }
     }
-    else if (DLList->prev == NULL)
+    else if ((*DLList)->prev == NULL)
     {
-        // case NULL TRUC
-        DLList->next->prev = NULL;
-        free(DLList);
+        // case NULL TO_DELETE TRUC
+        DLListTmp = (*DLList)->next;
+        (*DLList)->next->prev = NULL;
+        free(*DLList);
+        *DLList = DLListTmp;
         return;
 
     }
     else
     {
-        // case TRUC TRUC
-        DLList->prev->next = DLList->next;
-        DLList->next->prev = DLList->prev;
-        free(DLList);
+        // case TRUC TO_DELETE TRUC
+        DLListTmp = (*DLList)->prev;
+        (*DLList)->prev->next = (*DLList)->next;
+        (*DLList)->next->prev = (*DLList)->prev;
+        free(*DLList);
+        *DLList = DLListTmp;
         return;
     }
 }

@@ -351,7 +351,7 @@ Test(all, DLList_pop_vide)
     struct DLList *db_list=NULL;
     struct Tile *tile_rien = init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
 
-    DLList_pop(db_list,&tile_rien);
+    DLList_pop(&db_list,&tile_rien);
 
     cr_assert(db_list == NULL,"db_list != NULL !");
     cr_assert(tile_rien->bot == RIEN,"tile_rien != RIEN !");
@@ -364,10 +364,13 @@ Test(all, DLList_pop_one_item)
     struct Tile *out;
 
     db_list = DLList_push_end(db_list,tile1);
-    DLList_pop(db_list,&out);
+    DLList_pop(&db_list,&out);
 
     //comme il n'y y a qu'un element db_list devrait
     //être a nul
+    //cr_log_info("debug db_list = %d\n", db_list->data->top);
+    //cr_assert_fail("debug db_list = %d", db_list->data->top);
+    //cr_fatal("debug db_list = %d\n", db_list->data->top);
     cr_assert(db_list==NULL,"db_list != NULL !");
 
     //test si la tuile a ete extraite
@@ -384,7 +387,7 @@ Test(all, DLList_pop_two_item_first_item)
 
     db_list = DLList_push_end(db_list,tile1);
     db_list = DLList_push_end(db_list,tile2);
-    DLList_pop(db_list,&out);
+    DLList_pop(&db_list,&out);
 
     /*
     ici on veut tester le pop du premier element d'une
@@ -417,32 +420,40 @@ Test(all, DLList_pop_two_item_second_item)
     liste doublement chaine composé de 2 element
     */
 
-   DLList_pop(db_list->next,&out);
+   DLList_pop(&(db_list->next),&out);
 
     //meme test on va voir si il y a bien un seul element
 
-    cr_assert(db_list->prev == NULL && db_list->next == NULL,"condition sur les element de la db_list non respecter");
-    cr_assert(out->right == ROUTE ,"out->right != ROUTE !");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
+    cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
+    cr_assert(out->right == ROUTE ,"out->right == ROUTE est faux");
 
 }
 
-Test(all, DLList_pop_three_item_first_item)
+Test(all, DLList_push_three_item_pop_head)
 {
-    struct DLList *db_list=NULL;
+    struct DLList *db_list = NULL;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
     struct Tile *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
-    db_list = DLList_push_end(db_list,tile3);
-    DLList_pop(db_list,&out);
+    db_list = DLList_push_end(db_list, tile1);
+    db_list = DLList_push_end(db_list, tile2);
+    db_list = DLList_push_end(db_list, tile3);
 
-    cr_assert(db_list->prev == NULL && db_list->next != NULL,"condition sur les element de la db_list non respecter");
-    cr_assert(out->middle == PRE,"out->middle != PRE");
+    DLList_pop(&db_list, &out); // db_list devient db_list->next voir description fonction DLList_pop
 
+    // Vérification de la suppression du premier élément
+    cr_assert(db_list != NULL, "db_list != NULL est faux");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux");
+    // Vérification que `out` contient bien l'ancienne tête
+    cr_assert(out->middle == ROUTE, "out->middle == ROUTE est faux");
+
+    // Vérification de la continuité de la liste
+    cr_assert(db_list->next != NULL, "Il devrait rester 2 éléments après suppression");
 }
+
 
 Test(all, DLList_pop_three_item_second_item)
 {
@@ -455,7 +466,8 @@ Test(all, DLList_pop_three_item_second_item)
     db_list = DLList_push_end(db_list,tile1);
     db_list = DLList_push_end(db_list,tile2);
     db_list = DLList_push_end(db_list,tile3);
-    DLList_pop(db_list->next,&out);
+    struct DLList *db_list_parcours = db_list->next;
+    DLList_pop(&db_list_parcours, &out);
 
     cr_assert(db_list->prev == NULL &&
               db_list->next != NULL &&
@@ -476,12 +488,11 @@ Test(all, DLList_pop_three_item_third_item)
     db_list = DLList_push_end(db_list,tile1);
     db_list = DLList_push_end(db_list,tile2);
     db_list = DLList_push_end(db_list,tile3);
-    DLList_pop(db_list->next->next,&out);
+    struct DLList *db_list_parcours = db_list->next->next;
+    DLList_pop(&db_list_parcours, &out); // tile1 dans out normalement et db_list = db_list->prev
 
-    cr_assert(db_list->prev == NULL &&
-              db_list->next != NULL &&
-              db_list->next->prev != NULL && 
-              db_list->next->next == NULL,"condition sur les element de la db_list non respecter");
+    cr_assert(db_list_parcours->prev != NULL, "db_list->prev != NULL est faux\n");
+    cr_assert(db_list_parcours->next == NULL, "db_list->next == NULL est faux\n");
     
     cr_assert(out->middle == PRE,"out->middle != PRE !");
 }

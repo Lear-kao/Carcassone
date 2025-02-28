@@ -81,13 +81,13 @@ struct list_player *init_player_list(char nbPlayers) // Axel
     les iterations sur la liste (condition d'arrêt)
 */
 {
-    struct list_player *list_players = malloc(sizeof(struct list_player *));
-    list_players->player = malloc(sizeof(struct Player**)*nbPlayers);
+    struct list_player *list_players = malloc(sizeof(struct list_player));
+    list_players->player = malloc(sizeof(struct Player*) * (nbPlayers + 1));
     for( int i = 0; i < nbPlayers; i++ )
     {
-        list_players->player[i] = malloc(sizeof(struct Player*));
-        list_players->player[i] = NULL;
+        list_players->player[i] = malloc(sizeof(struct Player));
     }
+    list_players->player[nbPlayers] = NULL;
     return list_players;
 }
 
