@@ -47,7 +47,7 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile);
 */
 
 
-void DLList_pop(struct DLList *DLList, struct Tile **tileSlot);
+void DLList_pop(struct DLList **DLList, struct Tile **tileSlot);
 /*
     DLList : L'élément de la liste chainé à supprimer
     tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
