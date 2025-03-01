@@ -266,7 +266,7 @@ Test(all, stack_pop)
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile2);
     cr_assert(stack->data->right == ROUTE, "stack->data->right == ROUTE est faux\n");
-    cr-assert(stack->next->data->right == VILLE, "stack->next->data->right == VILLE est faux\n");
+    cr_assert(stack->next->data->right == VILLE, "stack->next->data->right == VILLE est faux\n");
     // Attention test peut-être pas assez unitaire ?
 
     struct Tile *tileSlot = malloc(sizeof(struct Tile));
@@ -315,8 +315,8 @@ Test(all, DLList_push_end_two_insert)//Test Deuxieme insertion
 {
     struct DLList *db_list=NULL;//initialisation a NULL
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
@@ -338,8 +338,8 @@ Test(all, DLList_push_end_three_insert)
 {
     struct DLList *db_list=NULL;//initialisation a NULL
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
@@ -365,8 +365,8 @@ Test(all, DLList_pop_vide)
 {
     struct DLList *db_list=NULL;
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile_rien = init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
     struct Grid *grid_rien = init_grid(tile_rien, coord, NULL, NULL, NULL, NULL);
 
@@ -380,8 +380,8 @@ Test(all, DLList_pop_one_item)
 {
     struct DLList *db_list=NULL;
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Grid *out;
@@ -405,13 +405,13 @@ Test(all, DLList_pop_two_item_first_item)
 {
     struct DLList *db_list=NULL;
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
-    struct Tile *out;
+    struct Grid *out;
 
     db_list = DLList_push_end(db_list,grid1);
     db_list = DLList_push_end(db_list,grid2);
@@ -427,19 +427,19 @@ Test(all, DLList_pop_two_item_first_item)
     d'ou ce test si il y a qu'un element il devrait avoir
     db_list->prev et db_list->next egale a NULL
     */
-    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n")
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
     cr_assert(db_list->next == NULL, "db_list->next == NULL est faux\n");
     
     //test si la tuile a ete extraite
-    cr_assert(out->right == VILLE,"out->right != VILLE !");
+    cr_assert(out->tile->right == VILLE,"out->right != VILLE !");
 }
 
 Test(all, DLList_pop_two_item_second_item)
 {
     struct DLList *db_list=NULL;
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
@@ -454,13 +454,13 @@ Test(all, DLList_pop_two_item_second_item)
     liste doublement chaine composé de 2 element
     */
 
-   DLList_pop(&(db_list->next),&out);
+   DLList_pop(&(db_list->next), &out);
 
     //meme test on va voir si il y a bien un seul element
 
     cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
     cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
-    cr_assert(out->tile->right == ROUTE ,"out->tile->right == ROUTE est faux\n");
+    cr_assert(out->tile->right == VILLE ,"out->tile->right == VILLE est faux\n");
 
 }
 
@@ -468,14 +468,14 @@ Test(all, DLList_push_three_item_pop_head)
 {
     struct DLList *db_list = NULL;
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Grid *grid1 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Grid *grid1 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *grid3 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
     struct Grid *out;
 
     db_list = DLList_push_end(db_list, grid1);
@@ -499,14 +499,14 @@ Test(all, DLList_pop_three_item_second_item)
 {
     struct DLList *db_list = NULL;
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Grid *grid1 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Grid *grid1 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *grid3 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
     struct Grid *out;
 
     db_list = DLList_push_end(db_list,grid1);
@@ -527,8 +527,8 @@ Test(all, DLList_pop_three_item_third_item)
 {
     struct DLList *db_list = NULL;
     struct Coord *coord = malloc(sizeof(struct Coord));
-    coord1->x = 0;
-    coord1->y = 0;
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);

@@ -15,7 +15,7 @@
 #include <time.h>
 
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
-enum meeplePlace {NO_MEEPLE, RIGHT, TOP, LEFT, BOT, MIDDLE};
+enum meeplePlace {NO_MEEPLE, MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 //-----------------------
@@ -38,19 +38,19 @@ struct DLList
 };
 
 
-struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile);
+struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid);
 /*
     DLList : La liste chainé
-    tile : Un pointer sur un espace mémoire ou se trouve une tile à à la fin de la liste chainé
+    grid : Un pointer sur un espace mémoire ou se trouve grid
 
     return : La liste actualisé 
 */
 
 
-void DLList_pop(struct DLList **DLList, struct Tile **tileSlot);
+void DLList_pop(struct DLList **DLList, struct Grid **gridSlot);
 /*
-    DLList : L'élément de la liste chainé à supprimer
-    tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
+    DLList : L'élément de la liste chainé à supprimer. Une fois l'élément supprimé le pointeur prend la valeur de l'élément précédent si il existe sinon l'élément suivant sinon NULL
+    gridSlot : Un pointer sur un espace mémoire ou mettre le grid pop
 
     return : La liste actualisé 
 */
@@ -346,7 +346,7 @@ void update_grid_size(struct Grid *origineGrid, int *largeur, int *hauteur, stru
     ce que le plateau de jeu soit un rectangle afin de simplifier le parcours à la fonction d'affichage.
 */
 
-void update_potential_tile(struct Grid trueGrid, enum places place); // Théo A TESTER
+void update_potential_tile(struct Grid *trueGrid, enum places place); // Théo A TESTER
 /*
     trueGrid : La vraie tuile qui vient d'être posé.
     potentialGrid : Une grid autours d'une tuile qui vient d'être posé. Grid doit être innitialisé au minimum à NULL et doit pointer sur une Tile innitialisé au minimum à NULL.
@@ -399,7 +399,7 @@ short points_pre(struct Grid *grid); // Axel
 
 
 
-struct Grid *place_tile(struct Grid *grid, struct Coord coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur); // Théo premier test possible mais WIP
+struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur); // Théo premier test possible mais WIP
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 
@@ -427,7 +427,7 @@ void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *p
     avec la fonction where_i_can_play
 */
 
-struct Coord **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Théo A TESTER
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Théo A TESTER
 /*
     tile : La tile précedement pioché par le joueur
 
