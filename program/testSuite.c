@@ -607,4 +607,3 @@ Test(all, init_grid)
     cr_assert(G->left == NULL, "G->left == NULL est faux\n");
     cr_assert(G->top->tile->right == PRE, "G->top->tile->right == PRE est faux\n");
 }
-

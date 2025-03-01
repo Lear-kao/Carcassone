@@ -210,7 +210,7 @@ struct Tile *rot_tile(struct Tile *tile)
     }
 }
 */
-struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid); // A FAIRE
+struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid, struct DLList *dllist) // A FAIRE
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -221,6 +221,7 @@ struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid); // A FAIR
     return : Une liste de coordonnées sur la grille de ou il est possible de placer sa tuile se terminant par NULL
     ATTENTION vous n'avez pas à gérer les rotations ici
 */
+
 char is_a_potential_tile(struct Tile *tile) // Théo
 /*
     Return 0 si ce n'est pas une tuile potentielle
@@ -239,7 +240,7 @@ char is_a_potential_tile(struct Tile *tile) // Théo
     }
 }
 
-void update_grid_size(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord) // Théo A TESTER
+void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord) // Théo A TESTER
 /*
     origineGrid : La case en haut à gauche de la Grid.
     largeur : La largeur max de la grille.
@@ -357,7 +358,7 @@ void update_grid_size(struct Grid *origineGrid, int *largeur, int *hauteur, stru
     return;
 }
 
-void update_potential_tile(struct Grid trueGrid, struct Grid *potentialGrid, enum places place) // Théo A TESTER
+void update_potential_tile(struct Grid trueGrid, enum places place) // Théo A TESTER
 /*
     trueGrid : La vraie tuile qui vient d'être posé.
     potentialGrid : Une grid autours d'une tuile qui vient d'être posé. Grid doit être innitialisé au minimum à NULL et doit pointer sur une Tile innitialisé au minimum à NULL.
@@ -370,6 +371,7 @@ void update_potential_tile(struct Grid trueGrid, struct Grid *potentialGrid, enu
     switch(type)
     {
         case RIGHT:
+            struct Grid *potentialGrid = trueGrid->right;
             potentialGrid->coord->x = (trueGrid->coord->x) + 1;
             potentialGrid->coord->y = (trueGrid->coord->y);
 
@@ -379,6 +381,7 @@ void update_potential_tile(struct Grid trueGrid, struct Grid *potentialGrid, enu
         break;
 
         case TOP:
+            struct Grid *potentialGrid = trueGrid->top;
             potentialGrid->coord->x = (trueGrid->coord->x);
             potentialGrid->coord->y = (trueGrid->coord->y) + 1;
 
@@ -388,6 +391,7 @@ void update_potential_tile(struct Grid trueGrid, struct Grid *potentialGrid, enu
         break;
 
         case LEFT:
+            struct Grid *potentialGrid = trueGrid->left;
             potentialGrid->coord->x = (trueGrid->coord->x) - 1;
             potentialGrid->coord->y = (trueGrid->coord->y);
 
@@ -397,6 +401,7 @@ void update_potential_tile(struct Grid trueGrid, struct Grid *potentialGrid, enu
         break;
 
         case BOT:
+            struct Grid *potentialGrid = trueGrid->bot;
             potentialGrid->coord->x = (trueGrid->coord->x);
             potentialGrid->coord->y = (trueGrid->coord->y) - 1;
 
@@ -412,22 +417,57 @@ void update_potential_tile(struct Grid trueGrid, struct Grid *potentialGrid, enu
     return;
 }
 
+struct Grid *find(struct Grid *grid, struct Coord coord)
+/*
+    grid : La grid en haut à gauche.
+    coord : Les coordonnées de la case recherchée.
+
+    return : Un pointeur sur la grille de coordonnées coord
+
+    Erreur : Si la fonction return un pointeur sur NULL cela
+    signifie que la case rechercher n'est pas innitialisé 
+    (pas de le scope largeur hauteur de case innitialisé).
+*/
+{
+    struct Grid tmpGrid = grid;
+    while (tmpGrid->coord->x != coord->x && tmpGrid->coord->y != coord->y && tmpGrid != NULL)
+    {
+        if (tmpGrid->coord->x < coord->x)
+        {
+            tmpGrid = tmpGrid->right
+        }
+        else if (tmpGrid->coord->y > coord->y)
+        {
+            tmpGrid = tmpGrid->bot;
+        }
+    }
+    return tmpGrid;
+}
+
 struct Grid *first_tile(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist) // WIP
+/*
+    Place la première tuile et actualise la grille en conséquence.
+    grid : La grid originelle de coord (0,0)
+    largeur : La largeur max.
+    hauteur : La hauteur max.
+
+    Return value : L'élément le plus en haut à gauche de la grid.
+*/
 {
     // Adaptation de la taille de la grid
     struct Coord tmpCoord = malloc(sizeof(struct Coord));
     tmpCoord->x = 1;
     tmpCoord->y = 0;
-    update_grid_size(grid, hauteur, largeur, tmpCoord); // (1,0)
+    upscale(grid, hauteur, largeur, tmpCoord); // (1,0)
     tmpCoord->x = -1;
     tmpCoord->y = 0;
-    update_grid_size(grid, hauteur, largeur, tmpCoord); // (-1,0)
+    upscale(grid, hauteur, largeur, tmpCoord); // (-1,0)
     tmpCoord->x = 0;
     tmpCoord->y = 1;
-    update_grid_size(grid, hauteur, largeur, tmpCoord); // (0,1)
+    upscale(grid, hauteur, largeur, tmpCoord); // (0,1)
     tmpCoord->x = 0;
     tmpCoord->y = -1;
-    update_grid_size(grid, hauteur, largeur, tmpCoord); // (0,-1)
+    upscale(grid, hauteur, largeur, tmpCoord); // (0,-1)
     free(tmpCoord);
 
     // Actualisation des tuiles pottentielles adjacente
@@ -448,12 +488,12 @@ struct Grid *first_tile(struct Grid *grid, int *hauteur, int *largeur, struct DL
     update_potential_tile(grid, right_grid, BOT);
 
     // actualisation de dllist
-    DLList_push_end(dllist, );
-    DLList_push_end(dllist, );
-    DLList_push_end(dllist, );
-    DLList_push_end(dllist, );
+    DLList_push_end(dllist, right_grid);
+    DLList_push_end(dllist, top_grid);
+    DLList_push_end(dllist, left_grid);
+    DLList_push_end(dllist, bot_grid);
 
-    return first_grid;
+    return grid->top->left;
 }
 
 struct Grid *place_tile(struct Grid *grid, struct Coord coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur)
@@ -479,8 +519,13 @@ struct Grid *place_tile(struct Grid *grid, struct Coord coord, struct Tile *tile
         struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
         struct Grid *grid= first_tile(tile, hauteur, largeur, dllist);
     }
-
-
+    upscale(grid, largeur, hauteur, coord);
+    struct Grid *gridFind = find(grid, coord);
+    gridFind->tile = tile;
+    update_potential_tile(gridFind, RIGHT);
+    update_potential_tile(gridFind, TOP);
+    update_potential_tile(gridFind, LEFT);
+    update_potential_tile(gridFind, BOT);
     return NULL;
 }
 
