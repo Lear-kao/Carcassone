@@ -441,11 +441,13 @@ Test(all, DLList_pop_two_item_second_item)
     coord1->x = 0;
     coord1->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Tile *out;
+    struct Grid *grid2 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
+    db_list = DLList_push_end(db_list,grid1);
+    db_list = DLList_push_end(db_list,grid2);
 
     /*
     ici on veut tester le pop du deuxieme element d'une
@@ -458,7 +460,7 @@ Test(all, DLList_pop_two_item_second_item)
 
     cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
     cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
-    cr_assert(out->right == ROUTE ,"out->right == ROUTE est faux");
+    cr_assert(out->tile->right == ROUTE ,"out->tile->right == ROUTE est faux\n");
 
 }
 
@@ -469,24 +471,27 @@ Test(all, DLList_push_three_item_pop_head)
     coord1->x = 0;
     coord1->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Tile *out;
+    struct Grid *grid1 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list, tile1);
-    db_list = DLList_push_end(db_list, tile2);
-    db_list = DLList_push_end(db_list, tile3);
+    db_list = DLList_push_end(db_list, grid1);
+    db_list = DLList_push_end(db_list, grid2);
+    db_list = DLList_push_end(db_list, grid3);
 
     DLList_pop(&db_list, &out); // db_list devient db_list->next voir description fonction DLList_pop
 
     // Vérification de la suppression du premier élément
-    cr_assert(db_list != NULL, "db_list != NULL est faux");
-    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux");
+    cr_assert(db_list != NULL, "db_list != NULL est faux\n");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
     // Vérification que `out` contient bien l'ancienne tête
-    cr_assert(out->middle == ROUTE, "out->middle == ROUTE est faux");
+    cr_assert(out->tile->middle == ROUTE, "out->tile->middle == ROUTE est faux\n");
 
     // Vérification de la continuité de la liste
-    cr_assert(db_list->next != NULL, "Il devrait rester 2 éléments après suppression\n");
+    cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
 }
 
 
@@ -497,22 +502,25 @@ Test(all, DLList_pop_three_item_second_item)
     coord1->x = 0;
     coord1->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Tile *out;
+    struct Grid *grid1 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
-    db_list = DLList_push_end(db_list,tile3);
+    db_list = DLList_push_end(db_list,grid1);
+    db_list = DLList_push_end(db_list,grid2);
+    db_list = DLList_push_end(db_list,grid3);
     struct DLList *db_list_parcours = db_list->next;
     DLList_pop(&db_list_parcours, &out);
 
-    cr_assert(db_list->prev == NULL &&
-              db_list->next != NULL &&
-              db_list->next->prev != NULL &&
-              db_list->next->next == NULL,"condition sur les element de la db_list non respecter");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
+    cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
+    cr_assert(db_list->next->prev != NULL, "db_list->next->prev != NULL est faux\n");
+    cr_assert(db_list->next->next == NULL, "db_list->next->next == NULL est faux\n");
     
-    cr_assert(out->right == ROUTE,"out->right != ROUTE !");
+    cr_assert(out->tile->right == ROUTE,"out->right != ROUTE est faux\n");
 }
 
 Test(all, DLList_pop_three_item_third_item)
@@ -522,13 +530,16 @@ Test(all, DLList_pop_three_item_third_item)
     coord1->x = 0;
     coord1->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Tile *out;
+    struct Grid *grid3 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
-    db_list = DLList_push_end(db_list,tile3);
+    db_list = DLList_push_end(db_list, grid1);
+    db_list = DLList_push_end(db_list, grid2);
+    db_list = DLList_push_end(db_list, grid3);
     struct DLList *db_list_parcours = db_list->next->next;
     DLList_pop(&db_list_parcours, &out); // tile1 dans out normalement et db_list = db_list->prev
 
@@ -557,43 +568,43 @@ Test(all, init_grid)
 
     //Test sur un seul morceau de grid
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
-    cr_assert(G->coord->x == 0 && 
-              G->coord->y == 0,"Coordonnee incorrect");
-    cr_assert(G->bot == NULL &&
-              G->left == NULL &&
-               G->top == NULL &&
-                G->right == NULL ,"Cellule voisine incorrect");
-    cr_assert(G->tile->right == VILLE,"Propriete de la tuile incorrect");
+    cr_assert(G->coord->y == 0, "G->coord->y == 0 est faux\n");
+    cr_assert(G->coord->x == 0, "G->coord->x == 0 est faux\n");
+    cr_assert(G->bot == NULL, "G->bot == NULL est faux\n");
+    cr_assert(G->left == NULL, "G->left == NULL est faux\n");
+    cr_assert(G->top == NULL, "G->top == NULL est faux\n");
+    cr_assert(G->right == NULL, "G->right == NULL est faux\n");
+    cr_assert(G->tile->right == VILLE, "G->tile->right == VILLE est faux\n");
 
     //Test sur une deuxieme insertion
     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
-    cr_assert(G->right->coord->x == 1 && 
-              G->coord->y == 0,"Coordonnee incorrect");
-    cr_assert(G->right->bot == NULL &&
-              G->right->left == G &&
-              G->right->top == NULL &&
-              G->right->right == NULL,"Cellule voisine incorrect");
-    cr_assert(G->right->tile->right == ROUTE &&
-              G->right->tile->left == VILLE ,"Propriete de la tuile incorrect");
+    cr_assert(G->right->coord->x == 1, "G->right->coord->x == 1 est faux\n");
+    cr_assert(G->coord->y == 0, "G->coord->y == 0 est faux\n");
+    cr_assert(G->right->bot == NULL, "G->right->bot == NULL est faux\n");
+    cr_assert(G->right->left == G, "G->right->left == G est faux\n");
+    cr_assert(G->right->top == NULL, "G->right->top == NULL est faux\n");
+    cr_assert(G->right->right == NULL,"G->right->right == NULL est faux\n");
+    cr_assert(G->right->tile->right == ROUTE, "G->right->tile->right == ROUTE est faux\n");
+    cr_assert(G->right->tile->left == VILLE, "G->right->tile->left == VILLE est faux\n");
     
     //Test sur une troisieme insertion
     G->right->top=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
-    cr_assert(G->right->top->coord->x == 1 &&
-              G->right->top->coord->y == 1,"Coordonnee incorrect");
-    cr_assert(G->right->top->right == NULL &&
-              G->right->top->top == NULL &&
-              G->right->top->left == NULL &&
-              G->right->top->bot == G->right,"Cellule voisine incorrect");
-    cr_assert(G->right->top->tile->top == PRE);
+    cr_assert(G->right->top->coord->x == 1,"G->right->top->coord->x == 1 est faux\n");
+    cr_assert(G->right->top->coord->y == 1,"G->right->top->coord->y == 1 est faux\n");
+    cr_assert(G->right->top->right == NULL,"G->right->top->right == NULL est faux\n");
+    cr_assert(G->right->top->top == NULL,"G->right->top->top == NULL est faux\n");
+    cr_assert(G->right->top->left == NULL,"G->right->top->left == NULL est faux\n");
+    cr_assert(G->right->top->bot == G->right,"G->right->top->bot == G->right est faux\n");
+    cr_assert(G->right->top->tile->top == PRE,"G->right->top->tile->top == PRE est faux\n");
 
     //Test sur une quatrieme insertion
     G->top=init_grid(tile4,C4,G->right->top,NULL,G,NULL);
-    cr_assert(G->top->coord->x == 0 && 
-              G->top->coord->y == 1,"Coordonnee incorrect");
-    cr_assert(G->top->top == NULL &&
-              G->top->right == G->right->top &&
-              G->top->bot == G && 
-              G->left == NULL,"Cellule voisine incorrect");
-    cr_assert(G->top->tile->right == PRE);
+    cr_assert(G->top->coord->x == 0, "G->top->coord->x == 0 est faux\n");
+    cr_assert(G->top->coord->y == 1, "G->top->coord->y == 1 est faux\n");
+    cr_assert(G->top->top == NULL, "G->top->top == NULL est faux\n");
+    cr_assert(G->top->right == G->right->top, "G->top->right == G->right->top est faux\n");
+    cr_assert(G->top->bot == G, "G->top->bot == G est faux\n");
+    cr_assert(G->left == NULL, "G->left == NULL est faux\n");
+    cr_assert(G->top->tile->right == PRE, "G->top->tile->right == PRE est faux\n");
 }
 
