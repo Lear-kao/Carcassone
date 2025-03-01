@@ -210,19 +210,34 @@ struct Tile *rot_tile(struct Tile *tile)
     }
 }
 */
-struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid, struct DLList *dllist) // A FAIRE
+struct Coord **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo A TESTER
 /*
     tile : La tile précedement pioché par le joueur
 
-    grid : Un tableau de grid sur laquelle doit être effectué une recherche
-    en fonction de la tile. Les tuiles non posé sont soit des tuiles potentiel
-    soit des pointeurs sur NULL
+    dllist : Une liste doublement chainé contenant les tuiles potentiels pour cette fonction.
 
-    return : Une liste de coordonnées sur la grille de ou il est possible de placer sa tuile se terminant par NULL
-    ATTENTION vous n'avez pas à gérer les rotations ici
+    return : La liste malloc des endroit ou il est possible de jouer.
 */
-
-char is_a_potential_tile(struct Tile *tile) // Théo
+{
+    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc
+    struct DLList *tmpDllist = dllist;
+    int index = 0;
+    for (int i = 0, i < 4, i++)
+    {
+        while (tmpDllist->next != NULL)
+        {
+            if ((tile->right == tmpDllist->right || tile->right == RIEN) && (tile->top == tmpDllist->top || tile->right == RIEN) && (tile->left == tmpDllist->left || tile->right == RIEN) && (tile->bot == tmpDllist->bot || tile->right == RIEN))
+            {
+                gridArrray[index] = tmpDllist->data;
+                index++;
+            }
+            tmpDllist = tmpDllist->next;
+        }
+        turn_tile(tile);
+    }
+    return gridArrray;
+}
+char is_a_potential_tile(struct Tile *tile) // Théo A TESTER
 /*
     Return 0 si ce n'est pas une tuile potentielle
     Return 1 si c'est une tuile potentielle
@@ -417,7 +432,7 @@ void update_potential_tile(struct Grid trueGrid, enum places place) // Théo A T
     return;
 }
 
-struct Grid *find(struct Grid *grid, struct Coord coord)
+struct Grid *find(struct Grid *grid, struct Coord coord) // Théo A TESTER
 /*
     grid : La grid en haut à gauche.
     coord : Les coordonnées de la case recherchée.
@@ -444,7 +459,7 @@ struct Grid *find(struct Grid *grid, struct Coord coord)
     return tmpGrid;
 }
 
-struct Grid *first_tile(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist) // WIP
+struct Grid *first_tile(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist) // Théo A TESTER
 /*
     Place la première tuile et actualise la grille en conséquence.
     grid : La grid originelle de coord (0,0)
@@ -496,7 +511,7 @@ struct Grid *first_tile(struct Grid *grid, int *hauteur, int *largeur, struct DL
     return grid->top->left;
 }
 
-struct Grid *place_tile(struct Grid *grid, struct Coord coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur)
+struct Grid *place_tile(struct Grid *grid, struct Coord coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo premier test possible mais WIP
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 

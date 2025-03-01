@@ -181,6 +181,13 @@ char is_meeple_on_tile(struct Tile *tile); // FAIT theo
     - 1 si un Meeple est sur la tile
 */
 
+struct Tile *turn_tile(struct Tile *tile); // A TESTER
+/*
+    tile : Une tuile
+
+    return : Une tuile malloc tourné de 90° dans le sens trigo.
+*/
+
 // ---------------
 // ----Player-----
 // ---------------
@@ -303,6 +310,24 @@ char is_a_potential_tile(struct Tile *tile); // Théo A TESTER
     Information : Une tuile potentielle est une tuile parciellement remplie de enum qui sert pour la fonction where_i_can_place.
 */
 
+void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord); // Théo A TESTER
+/*
+    origineGrid : La case en haut à gauche de la Grid.
+    largeur : La largeur max de la grille.
+    hauteur : La hauteur max de la grille.
+    coord : La coordonnée qui dépasse de la grille
+
+    Attention il faut appeler cette fonction avant qu'il exisite une tuile dont les coords dépassent
+    xMax, yMax, xMin ou yMin.
+
+    Attention il est impossible d'agrandire à partir d'un angle, exemple, hauteur == 1, largeur == 1 
+    origineGrid->coord == (0,0) alors si coord == (1,1) la fonction ne fonctionne pas mais si 
+    coord == (1,0) alors elle fonctionne.
+
+    L'objectif de cette fonction est de s'assurer la présence de Grid innitialiser à NULL de sorte à 
+    ce que le plateau de jeu soit un rectangle afin de simplifier le parcours à la fonction d'affichage.
+*/
+
 void update_grid_size(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord); // Théo A TESTER
 /*
     origineGrid : La case en haut à gauche de la Grid.
@@ -321,11 +346,35 @@ void update_grid_size(struct Grid *origineGrid, int *largeur, int *hauteur, stru
     ce que le plateau de jeu soit un rectangle afin de simplifier le parcours à la fonction d'affichage.
 */
 
-void update_potential_tile(struct Grid trueGrid, enum types trueType, struct Grid *potentialGrid, enum places place); // Théo A TESTER
+void update_potential_tile(struct Grid trueGrid, enum places place); // Théo A TESTER
 /*
-    Grid : Une grid autours d'une tuile qui vient d'être posé. Grid doit être innitialisé au minimum à NULL et doit pointer sur une Tile innitialisé au minimum à NULL.
+    trueGrid : La vraie tuile qui vient d'être posé.
+    potentialGrid : Une grid autours d'une tuile qui vient d'être posé. Grid doit être innitialisé au minimum à NULL et doit pointer sur une Tile innitialisé au minimum à NULL.
     place : La position de la tuile potentielle par rapport à la tuile qui a était posé.
-    coord : La coordonnée de de grid, utile si grid n'exisite pas.
+
+    Cette fonction a pour but d'actualiser une des tuiles pottentielles qui se trouve autours d'une tuile qui vient d'être posé.
+*/
+
+struct Grid *find(struct Grid *grid, struct Coord coord); // Théo A TESTER
+/*
+    grid : La grid en haut à gauche.
+    coord : Les coordonnées de la case recherchée.
+
+    return : Un pointeur sur la grille de coordonnées coord
+
+    Erreur : Si la fonction return un pointeur sur NULL cela
+    signifie que la case rechercher n'est pas innitialisé 
+    (pas de le scope largeur hauteur de case innitialisé).
+*/
+
+struct Grid *first_tile(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist); // Théo A TESTER
+/*
+    Place la première tuile et actualise la grille en conséquence.
+    grid : La grid originelle de coord (0,0)
+    largeur : La largeur max.
+    hauteur : La hauteur max.
+
+    Return value : L'élément le plus en haut à gauche de la grid.
 */
 
 short points_route(struct Grid *grid); // Axel
@@ -350,7 +399,7 @@ short points_pre(struct Grid *grid); // Axel
 
 
 
-struct Grid *place_tile(struct Grid *grid, struct Coord coord, struct Tile *tile, struct DLList *dllist, int *largeur, int *hauteur)
+struct Grid *place_tile(struct Grid *grid, struct Coord coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur); // Théo premier test possible mais WIP
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 
@@ -378,16 +427,13 @@ void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *p
     avec la fonction where_i_can_play
 */
 
-struct Coord **where_i_can_play(struct Tile *tile, struct Grid *grid); // A FAIRE theo
+struct Coord **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Théo A TESTER
 /*
     tile : La tile précedement pioché par le joueur
 
-    grid : Un tableau de grid sur laquelle doit être effectué une recherche
-    en fonction de la tile. Les tuiles non posé sont soit des tuiles potentiel 
-    soit des pointeurs sur NULL
+    dllist : Une liste doublement chainé contenant les tuiles potentiels pour cette fonction.
 
-    return : Une liste de coordonnées sur la grille de ou il est possible de placer sa tuile se terminant par NULL
-    ATTENTION vous n'avez pas à gérer les rotations ici
+    return : La liste malloc des endroit ou il est possible de jouer.
 */
 
 
