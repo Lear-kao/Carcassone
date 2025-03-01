@@ -57,16 +57,16 @@ char is_stack_not_empty(struct Stack *stack)
 // DLList : Linked list
 
 
-struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
+struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid)
 /*
     DLList : La liste chainé
-    tile : Un pointer sur un espace mémoire ou se trouve une tile à à la fin de la liste chainé
+    grid : Un pointer sur un espace mémoire ou se trouve grid
 
     return : La liste actualisé 
 */
 {
     struct DLList *newDLList = malloc(sizeof(struct DLList));
-    newDLList->data = tile;
+    newDLList->data = grid;
     newDLList->next = NULL;
     newDLList->prev = NULL;
     struct DLList *tmp = DLList;
@@ -84,10 +84,10 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Tile *tile)
     return DLList;
 }
 
-void DLList_pop(struct DLList **DLList, struct Tile **tileSlot)
+void DLList_pop(struct DLList **DLList, struct Grid **gridSlot)
 /*
     DLList : L'élément de la liste chainé à supprimer. Une fois l'élément supprimé le pointeur prend la valeur de l'élément précédent si il existe sinon l'élément suivant sinon NULL
-    tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
+    gridSlot : Un pointer sur un espace mémoire ou mettre le grid pop
 
     return : La liste actualisé 
 */
@@ -98,7 +98,7 @@ void DLList_pop(struct DLList **DLList, struct Tile **tileSlot)
         return; // ERROR CASE
     }
 
-    *tileSlot = (*DLList)->data;
+    *gridSlot = (*DLList)->data;
     struct DLList *DLListTmp = NULL;
 
     if ((*DLList)->next == NULL)
@@ -128,7 +128,6 @@ void DLList_pop(struct DLList **DLList, struct Tile **tileSlot)
         free(*DLList);
         *DLList = DLListTmp;
         return;
-
     }
     else
     {
