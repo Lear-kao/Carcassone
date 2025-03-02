@@ -17,17 +17,17 @@ Test(all, init_player)
 {
     struct Player *player = malloc(sizeof(struct Player));
     init_player(player);
-    cr_expect(player->nbMeeple == 8 ,"la fonction init_player n'a pas initialisé nbMeeple");
-    cr_expect(player->points == 0 ,"la fonction init_player n'a pas initialisé les points a 0");
+    cr_expect(player->nbMeeple == 8 ,"la fonction init_player n'a pas initialisé nbMeeple\n");
+    cr_expect(player->points == 0 ,"la fonction init_player n'a pas initialisé les points a 0\n");
 }
 
 Test(all, is_meeple_on_player)
 {
     struct Player *player = malloc(sizeof(struct Player));
     init_player(player);
-    cr_expect(is_meeple_on_player(player) > 0);
+    cr_expect(is_meeple_on_player(player) > 0, "is_meeple_on_player(player) > 0 est faux\n");
     player->nbMeeple = 0;
-    cr_expect(is_meeple_on_player(player) == 0);
+    cr_expect(is_meeple_on_player(player) == 0, "is_meeple_on_player(player) == 0 est faux\n");
 }
 
 // -----------------
@@ -38,20 +38,18 @@ Test(all, is_meeple_on_player)
 Test(all, init_tile)
 {
     struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    cr_assert(
-        tile->right == VILLE 
-        && tile->top == ROUTE 
-        && tile->left == ROUTE 
-        && tile->bot == VILLE 
-        && tile->middle == ROUTE 
-        && tile->meeple == NO_MEEPLE
-        ,"init_tile na pas bien initialisé la tuile");
+    cr_assert(tile->right == VILLE,"tile->right == VILLE est faux\n");
+    cr_assert(tile->top == ROUTE,"tile->top == ROUTE est faux\n");
+    cr_assert(tile->left == ROUTE,"tile->left == ROUTE est faux\n");
+    cr_assert(tile->bot == VILLE,"tile->bot == VILLE est faux\n");
+    cr_assert(tile->middle == ROUTE,"tile->middle == ROUTE est faux\n");
+    cr_assert(tile->meeple == NO_MEEPLE,"tile->meeple == NO_MEEPLE est faux\n");
 }
 
 Test(all, is_meeple_on_tile)
 {
     struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    cr_assert(tile->meeple == NO_MEEPLE);
+    cr_assert(tile->meeple == NO_MEEPLE, "tile->meeple == NO_MEEPLE est faux\n");
 }
 
 // ------------------
@@ -66,11 +64,11 @@ Test(all, create_tile_array)
     struct Tile **tileArray;
     char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
     tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
-    cr_assert(tileArray[0]->right == ROUTE);
-    cr_assert(tileArray[0]->middle == ROUTE);
-    cr_assert(tileArray[1]->middle == BLASON);
-    cr_assert(tileArray[1]->right == BLASON);
-    cr_assert(tileArray[70]->middle == PRE);
+    cr_assert(tileArray[0]->right == ROUTE, "tileArray[0]->right == ROUTE est faux\n");
+    cr_assert(tileArray[0]->middle == ROUTE, "tileArray[0]->middle == ROUTE est faux\n");
+    cr_assert(tileArray[1]->middle == BLASON, "tileArray[1]->middle == BLASON est faux\n");
+    cr_assert(tileArray[1]->right == BLASON, "tileArray[1]->right == BLASON est faux\n");
+    cr_assert(tileArray[70]->middle == PRE, "tileArray[70]->middle est faux\n");
 }
 
 Test(all, init_player_list)
@@ -82,7 +80,7 @@ Test(all, init_player_list)
     {
         i++;
     }
-    cr_expect(i == 8);
+    cr_expect(i == 8, "i == 8 est faux\n");
 }
 
 Test(all, shuffle)
@@ -95,7 +93,7 @@ Test(all, shuffle)
 
     for(short i = 0;i<NBTILE-1;i++)
     {
-        cr_assert(tileArray[i] != NULL,"Shuffle has broke array");
+        cr_assert(tileArray[i] != NULL, "Shuffle has broke array");
     }
 }
 
@@ -112,11 +110,11 @@ Test(all, array_to_stack)
     short i = NBTILE-2;
 
     while(parcour != NULL){
-        cr_assert(tileArray[i]->right == parcour->data->right &&
-                  tileArray[i]->bot == parcour->data->bot &&
-                  tileArray[i]->left == parcour->data->left && 
-                  tileArray[i]->top == parcour->data->top && 
-                  tileArray[i]->middle == parcour->data->middle);
+        cr_assert(tileArray[i]->right == parcour->data->right, "tileArray[i]->right == parcour->data->right est faux\n");
+        cr_assert(tileArray[i]->bot == parcour->data->bot, "tileArray[i]->bot == parcour->data->bot est faux\n");
+        cr_assert(tileArray[i]->left == parcour->data->left, "tileArray[i]->left == parcour->data->left est faux\n");
+        cr_assert(tileArray[i]->top == parcour->data->top, "tileArray[i]->top == parcour->data->top est faux\n");
+        cr_assert(tileArray[i]->middle == parcour->data->middle, "tileArray[i]->middle == parcour->data->middle est faux\n");
         parcour=parcour->next;
         i--;
     }
@@ -127,7 +125,7 @@ Test(all, reset_points)
     struct Player *player=(struct Player *)malloc(sizeof(struct Player));
     player->points=380;
     reset_points(player);
-    cr_assert(player->points==0);
+    cr_assert(player->points == 0, "player->points == 0 est faux\n");
 }
 
 Test(all, reset_meeples)
@@ -135,7 +133,7 @@ Test(all, reset_meeples)
     struct Player *player=(struct Player *)malloc(sizeof(struct Player));
     player->nbMeeple=8;
     reset_points(player);
-    cr_assert(player->points==0);
+    cr_assert(player->points == 0, "player->points == 0 est faux\n");
 }
 
 Test(all, rot_tile)
@@ -145,13 +143,11 @@ Test(all, rot_tile)
     
     rot_tile(tile_out);
 
-    cr_assert(tile_out->right == tile_in->bot &&
-              tile_out->top == tile_in->right &&
-              tile_out->left == tile_in->top &&
-              tile_out->bot == tile_in->left &&
-              tile_out->middle == tile_in->middle);
- 
-
+    cr_assert(tile_out->right == tile_in->bot, "tile_out->right == tile_in->bot est faux\n");
+    cr_assert(tile_out->top == tile_in->right, "tile_out->top == tile_in->right est faux\n");
+    cr_assert(tile_out->left == tile_in->top, "tile_out->left == tile_in->top est faux\n");
+    cr_assert(tile_out->bot == tile_in->left, "tile_out->bot == tile_in->left est faux\n");
+    cr_assert(tile_out->middle == tile_in->middle, "tile_out->middle == tile_in->middle est faux\n");
 }
 
 //test player_turn
@@ -242,8 +238,8 @@ Test(all, stack_push_stack_vide)
     struct Stack *stack=NULL;
     struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile);
-    cr_assert(stack->next == NULL);
-    cr_assert(stack->data->right == VILLE);
+    cr_assert(stack->next == NULL, "stack->next == NULL est faux \n");
+    cr_assert(stack->data->right == VILLE, "stack->data->right == VILLE est faux \n");
 }
 
 Test(all, stack_push_stack_non_vide)
@@ -255,8 +251,10 @@ Test(all, stack_push_stack_non_vide)
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile2);
 
-    cr_assert(stack->next != NULL && stack->next->next == NULL);
-    cr_assert(stack->data->right == ROUTE && stack->next->data->right == VILLE);
+    cr_assert(stack->next != NULL, "stack->next != NULL est faux\n");
+    cr_assert(stack->next->next == NULL, "stack->next->next == NULL est faux\n");
+    cr_assert(stack->data->right == ROUTE, "stack->data->right == ROUTE est faux\n");
+    cr_assert(stack->next->data->right == VILLE, "stack->next->data->right == VILLE est faux\n");
 }
 
 Test(all, stack_pop)
@@ -267,15 +265,16 @@ Test(all, stack_pop)
 
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
     stack = stack_push(stack, tile2);
-    cr_assert(stack->data->right == ROUTE && stack->next->data->right == VILLE);
+    cr_assert(stack->data->right == ROUTE, "stack->data->right == ROUTE est faux\n");
+    cr_assert(stack->next->data->right == VILLE, "stack->next->data->right == VILLE est faux\n");
     // Attention test peut-être pas assez unitaire ?
 
     struct Tile *tileSlot = malloc(sizeof(struct Tile));
     stack = stack_pop(stack, &tileSlot);
 
-    cr_assert(stack->next == NULL);
-    cr_assert(tileSlot->right == ROUTE);
-    cr_assert(stack->data->right == VILLE);
+    cr_assert(stack->next == NULL, "stack->next == NULL est faux\n");
+    cr_assert(tileSlot->right == ROUTE, "tileSlot->right == ROUTE est faux\n");
+    cr_assert(stack->data->right == VILLE, "stack->data->right == VILLE est faux\n");
 }
 
 Test(all, is_stack_not_empty)
@@ -285,13 +284,13 @@ Test(all, is_stack_not_empty)
     struct Tile *out;
     stack = stack_push(stack, tile1);
 
-    cr_assert(is_stack_not_empty(stack) == 1);
+    cr_assert(is_stack_not_empty(stack) == 1, "is_stack_not_empty(stack) == 1 est faux\n");
 
     stack = stack_pop(stack,&out);
-    cr_assert(is_stack_not_empty(stack) == 0);
+    cr_assert(is_stack_not_empty(stack) == 0, "is_stack_not_empty(stack) == 0 est faux\n");
 
     struct Stack *stackEmpty = NULL;
-    cr_assert(is_stack_not_empty(stackEmpty) == 0);
+    cr_assert(is_stack_not_empty(stackEmpty) == 0, "is_stack_not_empty(stackEmpty) == 0 est faux\n");
 
 }
 
@@ -299,95 +298,124 @@ Test(all, DLList_push_end_one_insert)//Test premiere insertion
 {
     struct DLList *db_list=NULL;//initialisation a NULL
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Coord *coord1 = malloc(sizeof(struct Coord));
+    coord1->x = 0;
+    coord1->y = 0;
+    struct Grid *grid1 = init_grid(tile1, coord1, NULL, NULL, NULL, NULL);
 
-    db_list=DLList_push_end(db_list,tile1);
 
-    cr_assert(db_list !=NULL);
-    cr_assert(db_list->data->right==VILLE);
-    cr_assert(db_list->prev==NULL && db_list->next==NULL);
+    db_list=DLList_push_end(db_list, grid1);
+
+    cr_assert(db_list != NULL, "db_list != NULL est faux\n");
+    cr_assert(db_list->data->tile->right == VILLE, "db_list->data->tile->right == VILLE est faux\n");
+    cr_assert(db_list->prev==NULL && db_list->next == NULL, "db_list->prev==NULL && db_list->next == NULL est faux\n");
 }
 
 Test(all, DLList_push_end_two_insert)//Test Deuxieme insertion
 {
     struct DLList *db_list=NULL;//initialisation a NULL
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
+    db_list = DLList_push_end(db_list,grid1);
+    db_list = DLList_push_end(db_list,grid2);
 
-    cr_assert(db_list != NULL);
-    cr_assert(db_list->prev == NULL);
-    cr_assert(db_list->next != NULL);
-    cr_assert(db_list->next->next == NULL);
-    cr_assert(db_list->next->prev == db_list);
-    cr_assert(db_list->next->data->right == ROUTE);
+    cr_assert(db_list != NULL, "db_list != NULL est faux\n");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
+    cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
+    cr_assert(db_list->next->next == NULL, "db_list->next->next == NULL est faux\n");
+    cr_assert(db_list->next->prev == db_list, "db_list->next->prev == db_list est faux\n");
+    cr_assert(db_list->next->data->tile->right == ROUTE, "db_list->next->data->tile->right == ROUTE est faux\n");
     
 }
 
 Test(all, DLList_push_end_three_insert)
 {
     struct DLList *db_list=NULL;//initialisation a NULL
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
+    struct Grid *grid3 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
-    db_list = DLList_push_end(db_list,tile3);
+    db_list = DLList_push_end(db_list,grid1);
+    db_list = DLList_push_end(db_list,grid2);
+    db_list = DLList_push_end(db_list,grid3);
 
-    cr_assert(db_list != NULL);
-    cr_assert(db_list->prev == NULL);
-    cr_assert(db_list->next != NULL);
-    cr_assert(db_list->next->next->next == NULL);
-    cr_assert(db_list->next->prev == db_list);
-    cr_assert(db_list->next->next != NULL);
-    cr_assert(db_list->next->next->prev == db_list->next);
-    cr_assert(db_list->next->next->data->middle == PRE);
+    cr_assert(db_list != NULL, "db_list != NULL est faux \n");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
+    cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
+    cr_assert(db_list->next->next->next == NULL, "db_list->next->next->next == NULL est faux\n");
+    cr_assert(db_list->next->prev == db_list, "db_list->next->prev == db_list est faux \n");
+    cr_assert(db_list->next->next != NULL, "db_list->next->next != NULL est faux\n");
+    cr_assert(db_list->next->next->prev == db_list->next, "db_list->next->next->prev == db_list->next est faux\n");
+    cr_assert(db_list->next->next->data->tile->middle == PRE, "db_list->next->next->data->tile->middle == PRE est faux\n");
 }
 
 Test(all, DLList_pop_vide)
 {
     struct DLList *db_list=NULL;
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile_rien = init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Grid *grid_rien = init_grid(tile_rien, coord, NULL, NULL, NULL, NULL);
 
-    DLList_pop(&db_list,&tile_rien);
+    DLList_pop(&db_list,&grid_rien);
 
-    cr_assert(db_list == NULL,"db_list != NULL !");
-    cr_assert(tile_rien->bot == RIEN,"tile_rien != RIEN !");
+    cr_assert(db_list == NULL,"db_list == NULL est faux\n");
+    cr_assert(grid_rien->tile->bot == RIEN,"grid_rien->tile->bot == RIEN est faux\n");
 }
 
 Test(all, DLList_pop_one_item)
 {
     struct DLList *db_list=NULL;
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Tile *out;
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    DLList_pop(&db_list,&out);
+    db_list = DLList_push_end(db_list, grid1);
+    DLList_pop(&db_list, &out);
 
     //comme il n'y y a qu'un element db_list devrait
     //être a nul
     //cr_log_info("debug db_list = %d\n", db_list->data->top);
     //cr_assert_fail("debug db_list = %d", db_list->data->top);
     //cr_fatal("debug db_list = %d\n", db_list->data->top);
-    cr_assert(db_list==NULL,"db_list != NULL !");
+    cr_assert(db_list == NULL,"db_list == NULL est faux\n");
 
     //test si la tuile a ete extraite
-    cr_assert(out->right==VILLE,"out->right != VILLE");
+    cr_assert(out->tile->right == VILLE,"out->right == VILLE est faux\n");
 
 }
 
 Test(all, DLList_pop_two_item_first_item)
 {
     struct DLList *db_list=NULL;
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Tile *out;
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
-    DLList_pop(&db_list,&out);
+    db_list = DLList_push_end(db_list,grid1);
+    db_list = DLList_push_end(db_list,grid2);
+    DLList_pop(&db_list, &out);
 
     /*
     ici on veut tester le pop du premier element d'une
@@ -399,102 +427,125 @@ Test(all, DLList_pop_two_item_first_item)
     d'ou ce test si il y a qu'un element il devrait avoir
     db_list->prev et db_list->next egale a NULL
     */
-    cr_assert(db_list->prev == NULL && db_list->next == NULL,"condition sur les element de la db_list non respecter");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
+    cr_assert(db_list->next == NULL, "db_list->next == NULL est faux\n");
     
     //test si la tuile a ete extraite
-    cr_assert(out->right == VILLE,"out->right != VILLE !");
+    cr_assert(out->tile->right == VILLE,"out->right != VILLE !");
 }
 
 Test(all, DLList_pop_two_item_second_item)
 {
     struct DLList *db_list=NULL;
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Tile *out;
+    struct Grid *grid2 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
+    db_list = DLList_push_end(db_list,grid1);
+    db_list = DLList_push_end(db_list,grid2);
 
     /*
     ici on veut tester le pop du deuxieme element d'une
     liste doublement chaine composé de 2 element
     */
 
-   DLList_pop(&(db_list->next),&out);
+   DLList_pop(&(db_list->next), &out);
 
     //meme test on va voir si il y a bien un seul element
 
     cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
     cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
-    cr_assert(out->right == ROUTE ,"out->right == ROUTE est faux");
+    cr_assert(out->tile->right == VILLE ,"out->tile->right == VILLE est faux\n");
 
 }
 
 Test(all, DLList_push_three_item_pop_head)
 {
     struct DLList *db_list = NULL;
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Tile *out;
+    struct Grid *grid3 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list, tile1);
-    db_list = DLList_push_end(db_list, tile2);
-    db_list = DLList_push_end(db_list, tile3);
+    db_list = DLList_push_end(db_list, grid1);
+    db_list = DLList_push_end(db_list, grid2);
+    db_list = DLList_push_end(db_list, grid3);
 
     DLList_pop(&db_list, &out); // db_list devient db_list->next voir description fonction DLList_pop
 
     // Vérification de la suppression du premier élément
-    cr_assert(db_list != NULL, "db_list != NULL est faux");
-    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux");
+    cr_assert(db_list != NULL, "db_list != NULL est faux\n");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
     // Vérification que `out` contient bien l'ancienne tête
-    cr_assert(out->middle == ROUTE, "out->middle == ROUTE est faux");
+    cr_assert(out->tile->middle == ROUTE, "out->tile->middle == ROUTE est faux\n");
 
     // Vérification de la continuité de la liste
-    cr_assert(db_list->next != NULL, "Il devrait rester 2 éléments après suppression");
+    cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
 }
 
 
 Test(all, DLList_pop_three_item_second_item)
 {
-    struct DLList *db_list=NULL;
+    struct DLList *db_list = NULL;
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Tile *out;
+    struct Grid *grid3 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
-    db_list = DLList_push_end(db_list,tile3);
+    db_list = DLList_push_end(db_list,grid1);
+    db_list = DLList_push_end(db_list,grid2);
+    db_list = DLList_push_end(db_list,grid3);
     struct DLList *db_list_parcours = db_list->next;
     DLList_pop(&db_list_parcours, &out);
 
-    cr_assert(db_list->prev == NULL &&
-              db_list->next != NULL &&
-              db_list->next->prev != NULL &&
-              db_list->next->next == NULL,"condition sur les element de la db_list non respecter");
+    cr_assert(db_list->prev == NULL, "db_list->prev == NULL est faux\n");
+    cr_assert(db_list->next != NULL, "db_list->next != NULL est faux\n");
+    cr_assert(db_list->next->prev != NULL, "db_list->next->prev != NULL est faux\n");
+    cr_assert(db_list->next->next == NULL, "db_list->next->next == NULL est faux\n");
     
-    cr_assert(out->right == ROUTE,"out->right != ROUTE !");
+    cr_assert(out->tile->right == ROUTE,"out->right != ROUTE est faux\n");
 }
 
 Test(all, DLList_pop_three_item_third_item)
 {
-    struct DLList *db_list=NULL;
+    struct DLList *db_list = NULL;
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid1 = init_grid(tile1, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, ROUTE);
+    struct Grid *grid2 = init_grid(tile2, coord, NULL, NULL, NULL, NULL);
     struct Tile *tile3 = init_tile(ROUTE, ROUTE, ROUTE, VILLE, PRE);
-    struct Tile *out;
+    struct Grid *grid3 = init_grid(tile3, coord, NULL, NULL, NULL, NULL);
+    struct Grid *out;
 
-    db_list = DLList_push_end(db_list,tile1);
-    db_list = DLList_push_end(db_list,tile2);
-    db_list = DLList_push_end(db_list,tile3);
+    db_list = DLList_push_end(db_list, grid1);
+    db_list = DLList_push_end(db_list, grid2);
+    db_list = DLList_push_end(db_list, grid3);
     struct DLList *db_list_parcours = db_list->next->next;
     DLList_pop(&db_list_parcours, &out); // tile1 dans out normalement et db_list = db_list->prev
 
     cr_assert(db_list_parcours->prev != NULL, "db_list->prev != NULL est faux\n");
     cr_assert(db_list_parcours->next == NULL, "db_list->next == NULL est faux\n");
-    
-    cr_assert(out->middle == PRE,"out->middle != PRE !");
+    cr_assert(out->tile->middle == PRE,"out->tile->middle == PRE est faux\n");
 }
 
 Test(all, init_coord)
@@ -517,43 +568,114 @@ Test(all, init_grid)
 
     //Test sur un seul morceau de grid
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
-    cr_assert(G->coord->x == 0 && 
-              G->coord->y == 0,"Coordonnee incorrect");
-    cr_assert(G->bot == NULL &&
-              G->left == NULL &&
-               G->top == NULL &&
-                G->right == NULL ,"Cellule voisine incorrect");
-    cr_assert(G->tile->right == VILLE,"Propriete de la tuile incorrect");
+    cr_assert(G->coord->y == 0, "G->coord->y == 0 est faux\n");
+    cr_assert(G->coord->x == 0, "G->coord->x == 0 est faux\n");
+    cr_assert(G->bot == NULL, "G->bot == NULL est faux\n");
+    cr_assert(G->left == NULL, "G->left == NULL est faux\n");
+    cr_assert(G->top == NULL, "G->top == NULL est faux\n");
+    cr_assert(G->right == NULL, "G->right == NULL est faux\n");
+    cr_assert(G->tile->right == VILLE, "G->tile->right == VILLE est faux\n");
 
     //Test sur une deuxieme insertion
     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
-    cr_assert(G->right->coord->x == 1 && 
-              G->coord->y == 0,"Coordonnee incorrect");
-    cr_assert(G->right->bot == NULL &&
-              G->right->left == G &&
-              G->right->top == NULL &&
-              G->right->right == NULL,"Cellule voisine incorrect");
-    cr_assert(G->right->tile->right == ROUTE &&
-              G->right->tile->left == VILLE ,"Propriete de la tuile incorrect");
+    cr_assert(G->right->coord->x == 1, "G->right->coord->x == 1 est faux\n");
+    cr_assert(G->coord->y == 0, "G->coord->y == 0 est faux\n");
+    cr_assert(G->right->bot == NULL, "G->right->bot == NULL est faux\n");
+    cr_assert(G->right->left == G, "G->right->left == G est faux\n");
+    cr_assert(G->right->top == NULL, "G->right->top == NULL est faux\n");
+    cr_assert(G->right->right == NULL,"G->right->right == NULL est faux\n");
+    cr_assert(G->right->tile->right == ROUTE, "G->right->tile->right == ROUTE est faux\n");
+    cr_assert(G->right->tile->left == VILLE, "G->right->tile->left == VILLE est faux\n");
     
     //Test sur une troisieme insertion
     G->right->top=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
-    cr_assert(G->right->top->coord->x == 1 &&
-              G->right->top->coord->y == 1,"Coordonnee incorrect");
-    cr_assert(G->right->top->right == NULL &&
-              G->right->top->top == NULL &&
-              G->right->top->left == NULL &&
-              G->right->top->bot == G->right,"Cellule voisine incorrect");
-    cr_assert(G->right->top->tile->top == PRE);
+    cr_assert(G->right->top->coord->x == 1,"G->right->top->coord->x == 1 est faux\n");
+    cr_assert(G->right->top->coord->y == 1,"G->right->top->coord->y == 1 est faux\n");
+    cr_assert(G->right->top->right == NULL,"G->right->top->right == NULL est faux\n");
+    cr_assert(G->right->top->top == NULL,"G->right->top->top == NULL est faux\n");
+    cr_assert(G->right->top->left == NULL,"G->right->top->left == NULL est faux\n");
+    cr_assert(G->right->top->bot == G->right,"G->right->top->bot == G->right est faux\n");
+    cr_assert(G->right->top->tile->top == PRE,"G->right->top->tile->top == PRE est faux\n");
 
     //Test sur une quatrieme insertion
     G->top=init_grid(tile4,C4,G->right->top,NULL,G,NULL);
-    cr_assert(G->top->coord->x == 0 && 
-              G->top->coord->y == 1,"Coordonnee incorrect");
-    cr_assert(G->top->top == NULL &&
-              G->top->right == G->right->top &&
-              G->top->bot == G && 
-              G->left == NULL,"Cellule voisine incorrect");
-    cr_assert(G->top->tile->right == PRE);
+    cr_assert(G->top->coord->x == 0, "G->top->coord->x == 0 est faux\n");
+    cr_assert(G->top->coord->y == 1, "G->top->coord->y == 1 est faux\n");
+    cr_assert(G->top->top == NULL, "G->top->top == NULL est faux\n");
+    cr_assert(G->top->right == G->right->top, "G->top->right == G->right->top est faux\n");
+    cr_assert(G->top->bot == G, "G->top->bot == G est faux\n");
+    cr_assert(G->left == NULL, "G->left == NULL est faux\n");
+    cr_assert(G->top->tile->right == PRE, "G->top->tile->right == PRE est faux\n");
 }
 
+Test(all, is_a_potential_tile)
+{
+    struct Tile *tile = init_tile(VILLE, VILLE, VILLE, VILLE, MIDDLE);
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = -3;
+    coord->y = 42;
+    struct Grid *grid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
+}
+
+
+Test(find, find_mega_test)
+{
+    struct Coord *coord00 = malloc(sizeof(struct Coord));
+    if (!coord00) 
+    {
+        perror("erreur malloc\n");
+    }
+    coord00->x = 0;
+    coord00->y = 0;
+    struct Coord *coord10 = malloc(sizeof(struct Coord));
+    coord10->x = 1;
+    coord10->y = 0;
+    struct Coord *coord0m1 = malloc(sizeof(struct Coord));
+    coord0m1->x = 0;
+    coord0m1->y  = -1;
+    struct Coord *coord1m1 = malloc(sizeof(struct Coord));
+    coord1m1->x = 1;
+    coord1m1->y = -1;
+    struct Tile *tile00 = init_tile(VILLE, VILLE, VILLE, VILLE, VILLE);
+    struct Grid *grid00 = init_grid(tile00, coord00, NULL, NULL, NULL, NULL);
+    struct Tile *tile10 = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
+    struct Grid *grid10 = init_grid(tile10, coord10, NULL, NULL, NULL, NULL);
+    struct Tile *tile0m1 = init_tile(ROUTE, ROUTE, ROUTE, ROUTE, ROUTE);
+    struct Grid *grid0m1 = init_grid(tile0m1, coord0m1, NULL, NULL, NULL, NULL);
+    struct Tile *tile1m1 = init_tile(PRE, PRE, PRE, PRE, VILLE);
+    struct Grid *grid1m1 = init_grid(tile1m1, coord1m1, NULL, NULL, NULL, NULL);
+
+    grid00->right = grid10;
+    grid00->top = NULL;
+    grid00->left = NULL;
+    grid00->bot = grid0m1;
+
+    grid10->right = NULL;
+    grid10->top = NULL;
+    grid10->left = grid00;
+    grid10->bot = grid1m1; 
+
+    grid0m1->right = grid1m1;
+    grid0m1->top = grid00;
+    grid0m1->left = NULL;
+    grid0m1->bot = NULL;    
+
+    grid1m1->right = NULL;
+    grid1m1->top = grid10;
+    grid1m1->left = grid0m1;
+    grid1m1->bot = NULL;
+    
+    struct Coord coord1;
+    coord1.x = -1;
+    coord1.y = 0;
+    struct Coord coord2;
+    coord2.x = -1;
+    coord2.y = 0;
+    
+    struct Grid *gridFind = find(grid00, *coord1m1);
+    char isNull1 = (find(grid00, coord1) == NULL);
+    char isNull2 = (find(grid00, coord2) == NULL);
+    cr_assert(gridFind == grid1m1, "gridFind == grid00 est faux\n");
+    cr_assert(isNull1, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
+    cr_assert(isNull2, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
+}

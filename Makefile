@@ -1,6 +1,7 @@
-CC=cc
+CC=gcc
 PROG = program
 CFLAGS=-std=c99 -pedantic
+GDBFLAGS=-g
 TESTFLAGS=-lcriterion
 INC_Dir = header
 SRC_Dir= program

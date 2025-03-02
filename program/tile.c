@@ -39,3 +39,14 @@ char is_meeple_on_tile(struct Tile *tile)
         return 1;
     }
 }
+
+struct Tile *turn_tile(struct Tile *tile)
+/*
+    tile : Une tuile
+
+    return : Une tuile malloc tourné de 90° dans le sens trigo.
+*/
+{
+    
+    return init_tile(tile->bot, tile->right, tile->top, tile->left, tile->middle);
+}
