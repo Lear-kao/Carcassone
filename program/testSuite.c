@@ -607,3 +607,75 @@ Test(all, init_grid)
     cr_assert(G->left == NULL, "G->left == NULL est faux\n");
     cr_assert(G->top->tile->right == PRE, "G->top->tile->right == PRE est faux\n");
 }
+
+Test(all, is_a_potential_tile)
+{
+    struct Tile *tile = init_tile(VILLE, VILLE, VILLE, VILLE, MIDDLE);
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = -3;
+    coord->y = 42;
+    struct Grid *grid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
+}
+
+
+Test(find, find_mega_test)
+{
+    struct Coord *coord00 = malloc(sizeof(struct Coord));
+    if (!coord00) 
+    {
+        perror("erreur malloc\n");
+    }
+    coord00->x = 0;
+    coord00->y = 0;
+    struct Coord *coord10 = malloc(sizeof(struct Coord));
+    coord10->x = 1;
+    coord10->y = 0;
+    struct Coord *coord0m1 = malloc(sizeof(struct Coord));
+    coord0m1->x = 0;
+    coord0m1->y  = -1;
+    struct Coord *coord1m1 = malloc(sizeof(struct Coord));
+    coord1m1->x = 1;
+    coord1m1->y = -1;
+    struct Tile *tile00 = init_tile(VILLE, VILLE, VILLE, VILLE, VILLE);
+    struct Grid *grid00 = init_grid(tile00, coord00, NULL, NULL, NULL, NULL);
+    struct Tile *tile10 = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
+    struct Grid *grid10 = init_grid(tile10, coord10, NULL, NULL, NULL, NULL);
+    struct Tile *tile0m1 = init_tile(ROUTE, ROUTE, ROUTE, ROUTE, ROUTE);
+    struct Grid *grid0m1 = init_grid(tile0m1, coord0m1, NULL, NULL, NULL, NULL);
+    struct Tile *tile1m1 = init_tile(PRE, PRE, PRE, PRE, VILLE);
+    struct Grid *grid1m1 = init_grid(tile1m1, coord1m1, NULL, NULL, NULL, NULL);
+
+    grid00->right = grid10;
+    grid00->top = NULL;
+    grid00->left = NULL;
+    grid00->bot = grid0m1;
+
+    grid10->right = NULL;
+    grid10->top = NULL;
+    grid10->left = grid00;
+    grid10->bot = grid1m1; 
+
+    grid0m1->right = grid1m1;
+    grid0m1->top = grid00;
+    grid0m1->left = NULL;
+    grid0m1->bot = NULL;    
+
+    grid1m1->right = NULL;
+    grid1m1->top = grid10;
+    grid1m1->left = grid0m1;
+    grid1m1->bot = NULL;
+    
+    struct Coord coord1;
+    coord1.x = -1;
+    coord1.y = 0;
+    struct Coord coord2;
+    coord2.x = -1;
+    coord2.y = 0;
+    
+    struct Grid *gridFind = find(grid00, *coord1m1);
+    char isNull1 = (find(grid00, coord1) == NULL);
+    char isNull2 = (find(grid00, coord2) == NULL);
+    cr_assert(gridFind == grid1m1, "gridFind == grid00 est faux\n");
+    cr_assert(isNull1, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
+    cr_assert(isNull2, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
+}

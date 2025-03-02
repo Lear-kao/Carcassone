@@ -210,7 +210,7 @@ struct Tile *rot_tile(struct Tile *tile)
     }
 }
 */
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo A TESTER
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -237,7 +237,7 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     }
     return gridArrray;
 }
-char is_a_potential_tile(struct Tile *tile) // Théo A TESTER
+char is_a_potential_tile(struct Tile *tile) // Théo FAIT
 /*
     Return 0 si ce n'est pas une tuile potentielle
     Return 1 si c'est une tuile potentielle
@@ -441,7 +441,7 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
     return;
 }
 
-struct Grid *find(struct Grid *grid, struct Coord coord) // Théo A TESTER
+struct Grid *find(struct Grid *grid, struct Coord coord) // Théo FAIT
 /*
     grid : La grid en haut à gauche.
     coord : Les coordonnées de la case recherchée.
@@ -454,7 +454,7 @@ struct Grid *find(struct Grid *grid, struct Coord coord) // Théo A TESTER
 */
 {
     struct Grid *tmpGrid = grid;
-    while (tmpGrid->coord->x != coord.x && tmpGrid->coord->y != coord.y && tmpGrid != NULL)
+    while ((tmpGrid != NULL) && (tmpGrid->coord->x != coord.x || tmpGrid->coord->y != coord.y))
     {
         if (tmpGrid->coord->x < coord.x)
         {
@@ -463,6 +463,10 @@ struct Grid *find(struct Grid *grid, struct Coord coord) // Théo A TESTER
         else if (tmpGrid->coord->y > coord.y)
         {
             tmpGrid = tmpGrid->bot;
+        }
+        else
+        {
+            return NULL;
         }
     }
     return tmpGrid;
@@ -519,7 +523,7 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     return grid->top->left;
 }
 
-struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo premier test possible mais WIP
+struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 

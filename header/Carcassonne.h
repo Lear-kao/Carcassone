@@ -302,7 +302,7 @@ void show_tile(struct Tile *tile); // A TESTER theo
     Affiche une tile.
 */
 
-char is_a_potential_tile(struct Tile *tile); // Théo A TESTER
+char is_a_potential_tile(struct Tile *tile); // Théo FAIT
 /*
     Return 0 si ce n'est pas une tuile potentielle
     Return 1 si c'est une tuile potentielle
@@ -355,7 +355,7 @@ void update_potential_tile(struct Grid *trueGrid, enum places place); // Théo A
     Cette fonction a pour but d'actualiser une des tuiles pottentielles qui se trouve autours d'une tuile qui vient d'être posé.
 */
 
-struct Grid *find(struct Grid *grid, struct Coord coord); // Théo A TESTER
+struct Grid *find(struct Grid *grid, struct Coord coord); // Théo FAIT
 /*
     grid : La grid en haut à gauche.
     coord : Les coordonnées de la case recherchée.
