@@ -201,6 +201,7 @@ Test(all ,choose_w_show)
     choose_w_show(0,G);
     choose_w_show(1,G);
     choose_w_show(2,G);
+    printf("\n");
 }
 
 Test(all ,show_grid)
