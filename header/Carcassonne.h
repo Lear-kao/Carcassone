@@ -109,6 +109,7 @@ struct Grid
     /*
         Un morceau de grille permettant de relier les tiles entre elles
     */
+    char marquer = 0;
     struct Coord *coord;
     struct Tile *tile;
     struct Grid *right;
