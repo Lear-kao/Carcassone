@@ -1,11 +1,8 @@
 #include "../header/Carcassonne.h"
 
 
-<<<<<<< Updated upstream
-char isFinishedAbbaye(struct Grid grille, char finJeu)
-=======
+
 char isFinishedAbbaye(struct Grid *grille, char finJeu)
->>>>>>> Stashed changes
 /* 
 Compter les points abbaye.
 La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
@@ -15,16 +12,6 @@ pas complètement entourée.
 */
 {
     char point = 0;
-<<<<<<< Updated upstream
-    if (grille.top->tile != NULL) point++;
-    if (grille.bot->tile != NULL) point++;
-    if (grille.left->tile != NULL) point++;
-    if (grille.right->tile != NULL) point++;
-    if (grille.bot->left->tile != NULL) point++;
-    if (grille.bot->right->tile != NULL) point++;
-    if (grille.top->left->tile != NULL) point++;
-    if (grille.top->right->tile != NULL) point++;
-=======
     if (grille->top->tile != NULL) point++;
     if (grille->bot->tile != NULL) point++;
     if (grille->left->tile != NULL) point++;
@@ -33,7 +20,6 @@ pas complètement entourée.
     if (grille->bot->right->tile != NULL) point++;
     if (grille->top->left->tile != NULL) point++;
     if (grille->top->right->tile != NULL) point++;
->>>>>>> Stashed changes
     if (finJeu!= 0) return point;
     if (point != 8) return 0;
     return point;
@@ -63,11 +49,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-<<<<<<< Updated upstream
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
-=======
                 cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
->>>>>>> Stashed changes
             }
         }
         if(grille->tile->right == VILLE)
@@ -78,11 +60,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-<<<<<<< Updated upstream
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
-=======
                 cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
->>>>>>> Stashed changes
             }
         }
         if(grille->tile->left == VILLE)
@@ -93,11 +71,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-<<<<<<< Updated upstream
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
-=======
                 cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
->>>>>>> Stashed changes
             }
         }
         if(grille->tile->bot == VILLE)
@@ -108,18 +82,10 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-<<<<<<< Updated upstream
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
-            }
-        }
-    }
-    if (unfinished == 1 && finJeu == 0) return 0;
-=======
                 cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
             }
         }
     }
     if (*unfinished == 1 && finJeu == 0) return 0;
->>>>>>> Stashed changes
     return cmpt;
 }
