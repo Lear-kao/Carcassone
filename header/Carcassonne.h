@@ -109,12 +109,6 @@ struct Grid
     Un morceau de grille permettant de relier les tiles entre elles
 */
 {
-<<<<<<< Updated upstream
-=======
-    /*
-        Un morceau de grille permettant de relier les tiles entre elles
-    */
->>>>>>> Stashed changes
     char marquer;
     struct Coord *coord;
     struct Tile *tile;
