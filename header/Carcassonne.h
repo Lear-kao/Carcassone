@@ -105,10 +105,11 @@ struct Coord
 struct Coord *init_coord(unsigned char x, unsigned char y);
 
 struct Grid
+/*
+    Un morceau de grille permettant de relier les tiles entre elles
+*/
 {
-    /*
-        Un morceau de grille permettant de relier les tiles entre elles
-    */
+    char marquer;
     struct Coord *coord;
     struct Tile *tile;
     struct Grid *right;
