@@ -25,59 +25,66 @@ pas complètement entourée.
 }
 
 
-char isFinishedCity( struct Grid *grille, char finJeu , char *m)
+char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, char v_marquer)
 /* 
 Compter les points villes
 Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
-tuiles villes) la fonction 
+tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
+On entre en  paramètre une grille, un char idiquant si on compte les points de fin de jeu ou non, 
+    un charactère servant de marquer pour savoir si la ville est complète ou non et un charadctère 
+    pour connaitre la valeur du marquer (-1 ou 1)
 */
 {
-    if (grille->marquer == 1) return 0;
-    char cmpt = 0;
-    grille->marquer = 1;
-    if(grille->tile->top == VILLE)
+    if (grille->marquer == v_marquer) return 0;
+    char cmpt = 1;
+    grille->marquer *= -1;
+    if( grille->tile->middle == VILLE )
     {
-        if(grille->top == NULL)
+        if(grille->tile->top == VILLE)
         {
-            *m = 1;
+            if(grille->top == NULL)
+            {
+                *unfinished = 1;
+            }
+            else
+            {
+                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+            }
         }
-        else
+        if(grille->tile->right == VILLE)
         {
-            cmpt += isFinishedAbbaye(grille->top,finJeu,m);
+            if(grille->right == NULL)
+            {
+                *unfinished = 1;
+            }
+            else
+            {
+                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+            }
+        }
+        if(grille->tile->left == VILLE)
+        {
+            if(grille->left == NULL)
+            {
+                *unfinished = 1;
+            }
+            else
+            {
+                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+            }
+        }
+        if(grille->tile->bot == VILLE)
+        {
+            if(grille->bot == NULL)
+            {
+                *unfinished = 1;
+            }
+            else
+            {
+                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+            }
         }
     }
-    if(grille->tile->right == VILLE)
-    {
-        if(grille->right == NULL)
-        {
-            *m = 1;
-        }
-        else
-        {
-            cmpt += isFinishedAbbaye(grille->top,finJeu,m);
-        }
-    }
-    if(grille->tile->left == VILLE)
-    {
-        if(grille->left == NULL)
-        {
-            *m = 1;
-        }
-        else
-        {
-            cmpt += isFinishedAbbaye(grille->top,finJeu,m);
-        }
-    }
-    if(grille->tile->bot == VILLE)
-    {
-        if(grille->bot == NULL)
-        {
-            *m = 1;
-        }
-        else
-        {
-            cmpt += isFinishedAbbaye(grille->top,finJeu,m);
-        }
-    }
-
+    if (unfinished == 1 && finJeu == 0) return 0;
+    return cmpt;
 }

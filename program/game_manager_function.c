@@ -619,7 +619,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
     {
         case 0:
             //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-            if( tab->tile->top == VILLE && tab->tile->left == VILLE )
+            if( tab->tile->top == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
             {
                 enum_to_char(VILLE);
             }
@@ -628,7 +628,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             enum_to_char(tab->tile->top);
 
             //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-            if( tab->tile->top == VILLE && tab->tile->right == VILLE)
+            if( tab->tile->top == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
             {
                 enum_to_char(VILLE);
             }
@@ -642,7 +642,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             break;
         case 2:
             //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-            if( tab->tile->bot == VILLE && tab->tile->left == VILLE )
+            if( tab->tile->bot == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
             {                    
                 enum_to_char(VILLE);
             }
@@ -651,7 +651,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             enum_to_char(tab->tile->bot);
 
             //teste pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-            if( tab->tile->bot == VILLE && tab->tile->right == VILLE)
+            if( tab->tile->bot == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
             {
                 enum_to_char(VILLE);
             }

@@ -7,3 +7,5 @@ Il faudrait penser à tester le cas NULL à chaque fois par principe -_-.
 Penser à noter les fonctions dont on s'occupe.
 
 Penser à modifier les commentaires lorsqu'une fonction est finie ou en traveaux.
+
+regarder raylib
