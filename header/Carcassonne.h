@@ -109,6 +109,12 @@ struct Grid
     Un morceau de grille permettant de relier les tiles entre elles
 */
 {
+<<<<<<< Updated upstream
+=======
+    /*
+        Un morceau de grille permettant de relier les tiles entre elles
+    */
+>>>>>>> Stashed changes
     char marquer;
     struct Coord *coord;
     struct Tile *tile;
@@ -466,6 +472,33 @@ char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // Ax
 void free_Grid( struct Grid *grid); // fait (Axel)
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
+*/
+
+/* 
+--------------------------------------
+--------------------------------------
+----Fonction de comptage de points----
+--------------------------------------
+--------------------------------------
+*/
+
+char isFinishedAbbaye(struct Grid *grille, char finJeu);
+/* 
+Compter les points abbaye.
+La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
+Elle vérifie chaque tuiles autour et  pour  chaques tuiles compte les points, si finJeu est != 0 (la partie est finie)
+la fonction envoie les points même si elle n'est pas complètement entourée, sinon elle envoie 0 si,l'abbaye n'est
+pas complètement entourée.
+*/
+
+char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, char v_marquer);
+/* 
+Compter les points villes
+Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
+tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
+On entre en  paramètre une grille, un char idiquant si on compte les points de fin de jeu ou non, 
+    un charactère servant de marquer pour savoir si la ville est complète ou non et un charadctère 
+    pour connaitre la valeur du marquer (-1 ou 1)
 */
 
 #endif // CARCASSONNE_H
