@@ -1,7 +1,8 @@
 #include "../header/Carcassonne.h"
 
 
-char isFinishedAbbaye(struct Grid grille, char finJeu)
+
+char isFinishedAbbaye(struct Grid *grille, char finJeu)
 /* 
 Compter les points abbaye.
 La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
@@ -11,14 +12,14 @@ pas complètement entourée.
 */
 {
     char point = 0;
-    if (grille.top->tile != NULL) point++;
-    if (grille.bot->tile != NULL) point++;
-    if (grille.left->tile != NULL) point++;
-    if (grille.right->tile != NULL) point++;
-    if (grille.bot->left->tile != NULL) point++;
-    if (grille.bot->right->tile != NULL) point++;
-    if (grille.top->left->tile != NULL) point++;
-    if (grille.top->right->tile != NULL) point++;
+    if (grille->top->tile != NULL) point++;
+    if (grille->bot->tile != NULL) point++;
+    if (grille->left->tile != NULL) point++;
+    if (grille->right->tile != NULL) point++;
+    if (grille->bot->left->tile != NULL) point++;
+    if (grille->bot->right->tile != NULL) point++;
+    if (grille->top->left->tile != NULL) point++;
+    if (grille->top->right->tile != NULL) point++;
     if (finJeu!= 0) return point;
     if (point != 8) return 0;
     return point;
@@ -48,7 +49,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
             }
         }
         if(grille->tile->right == VILLE)
@@ -59,7 +60,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
             }
         }
         if(grille->tile->left == VILLE)
@@ -70,7 +71,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
             }
         }
         if(grille->tile->bot == VILLE)
@@ -81,10 +82,10 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedAbbaye(grille->top,finJeu,m,v_marquer);
+                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
             }
         }
     }
-    if (unfinished == 1 && finJeu == 0) return 0;
+    if (*unfinished == 1 && finJeu == 0) return 0;
     return cmpt;
 }
