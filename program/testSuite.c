@@ -3,6 +3,7 @@
 
 #include "../header/Carcassonne.h"
 #include "tile.c"
+#include "func_point.c"
 #include "player.c"
 #include "game_manager_function.c"
 #include "data_structure.c"
@@ -679,4 +680,25 @@ Test(find, find_mega_test)
     cr_assert(gridFind == grid1m1, "gridFind == grid00 est faux\n");
     cr_assert(isNull1, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
     cr_assert(isNull2, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
+}
+
+Test(all, isFinishedCity)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
+    struct Tile *tile2 = init_tile(VILLE, PRE, VILLE, PRE, VILLE);
+    struct Tile *tile3 = init_tile(PRE, PRE, VILLE, PRE, PRE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(2,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->right=init_grid(tile3,C2,NULL,G->right,NULL,NULL);
+    
+
+    char t=0;
+    char res=isFinishedCity(G->right,0,&t,1);
+
+    cr_assert(res==6);
+
+
 }
