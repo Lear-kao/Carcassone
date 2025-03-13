@@ -19,14 +19,14 @@ pas complètement entourée.
     if (grille->bot->left->tile != NULL) point++;
     if (grille->bot->right->tile != NULL) point++;
     if (grille->top->left->tile != NULL) point++;
-    if (grille->top->right->tile != NULL) point++;
+    if (grille->top->right->tile != NULL &&) point++;
     if (finJeu!= 0) return point;
     if (point != 8) return 0;
     return point;
 }
 
 
-char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, char v_marquer)
+char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, int v_marquer)
 /* 
 Compter les points villes
 Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
@@ -36,6 +36,11 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 {
+    if( is_a_potential_tile(grille->tile) == 1)
+    {
+        *unfinished = 1;
+        return 0;
+    }
     if (grille->marquer == v_marquer) return 0;
     char cmpt = 1;
     grille->marquer *= -1;
@@ -86,6 +91,59 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
         }
     }
+    else
+    {
+
+    }
     if (*unfinished == 1 && finJeu == 0) return 0;
     return cmpt;
 }
+
+char isFinishedRoad(struct Grid *grille, char finJeu, char *unfinished, int v_marquer)
+/* 
+Commentaire à faire
+!!! unfinished initialisé à 1
+*/
+{
+    if( is_a_potential_tile(grille->tile) == 1)
+    {
+        return 0;
+    }
+    if(grille->tile->middle == VILLAGE)
+    {
+        *unfinished = 0;
+        return 1;
+    }
+    if( grille->marquer == v_marquer)
+    {
+        *unfinished = 0;
+        return 0;
+    }
+    grille->marquer = v_marquer;
+    char cmp = 1;
+    if ( grille->tile->bot == ROUTE && grille->bot !=NULL )
+    {
+        cmp += isFinishedRoad(grille->bot,finJeu,unfinished,v_marquer);
+    }
+    if ( grille->tile->left == ROUTE && grille->left !=NULL )
+    {
+        cmp += isFinishedRoad(grille->left,finJeu,unfinished,v_marquer);
+    }
+    if ( grille->tile->top == ROUTE && grille->top !=NULL )
+    {
+        cmp += isFinishedRoad(grille->top,finJeu,unfinished,v_marquer);
+    }
+    if ( grille->tile->right == ROUTE && grille->right !=NULL )
+    {
+        cmp += isFinishedRoad(grille->right,finJeu,unfinished,v_marquer);
+    }
+    if (*unfinished == 1 && finJeu == 0)
+    {
+        return 0;
+    }
+    return cmp;
+}
+
+
+
+void pointManager();
