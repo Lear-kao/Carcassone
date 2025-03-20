@@ -495,6 +495,6 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
-char NbMeepleVille( struct Grid *grille, char v_marquer);
+void nbMeepleVille( struct Grid *grille,char v_marquer,char *nbmeeple);
 
 #endif // CARCASSONNE_H

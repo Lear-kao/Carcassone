@@ -5,6 +5,7 @@
 #include "tile.c"
 #include "func_point.c"
 #include "player.c"
+#include "meeple.c"
 #include "game_manager_function.c"
 #include "data_structure.c"
 
@@ -701,4 +702,28 @@ Test(all, isFinishedCity)
     cr_assert(res==6);
 
 
+}
+
+Test(all, nbMeepleVille)
+{
+    char test=0;
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
+    struct Tile *tile2 = init_tile(VILLE, PRE, VILLE, PRE, VILLE);
+    struct Tile *tile3 = init_tile(PRE, PRE, VILLE, PRE, PRE);
+    tile1->meeplePlace=0;
+    tile2->meeplePlace=0;
+    tile3->meeplePlace=0;
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(2,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->right=init_grid(tile3,C2,NULL,G->right,NULL,NULL);
+    
+    nbMeepleVilles(G->right,1,&test);
+    cr_assert(test==0);
+
+    G->tile->meeplePlace=1;
+    nbMeepleVilles(G->right,2,&test);
+    cr_assert(test==1);
 }

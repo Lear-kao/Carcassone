@@ -565,13 +565,13 @@ void enum_to_char(enum types type)
             
         case ROUTE:
             printf("\x1b[48;5;130m");
-            printf("  ");
+            printf(" R ");
             printf("\x1b[0m");
             break;
 
         case VILLE:
             printf("\x1b[48;5;244m");
-            printf("  ");
+            printf(" V ");
             printf("\x1b[0m");
             break;
 
@@ -581,7 +581,7 @@ void enum_to_char(enum types type)
 
         case PRE:
             printf("\x1b[48;5;2m");
-            printf("  ");
+            printf(" P ");
             printf("\x1b[0m");
             break;
 
