@@ -485,7 +485,7 @@ la fonction envoie les points même si elle n'est pas complètement entourée, s
 pas complètement entourée.
 */
 
-char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, char v_marquer);
+char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, int v_marquer);
 /* 
 Compter les points villes
 Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
@@ -493,6 +493,12 @@ tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est co
 On entre en  paramètre une grille, un char idiquant si on compte les points de fin de jeu ou non, 
     un charactère servant de marquer pour savoir si la ville est complète ou non et un charadctère 
     pour connaitre la valeur du marquer (-1 ou 1)
+*/
+
+char count_point_city(struct Grid *grille, char where, int v_marquer, char finJeu);
+/* 
+A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
+Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
 
 #endif // CARCASSONNE_H
