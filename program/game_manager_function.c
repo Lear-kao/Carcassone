@@ -696,13 +696,8 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
     printf("\n fin affichage \n");
 }
 
-short points_route(struct Grid *grid); // Axel
-short points_ville(struct Grid *grid); // Axel et blason
-short points_abbayes(struct Grid *grid); // Axel
-short points_pre(struct Grid *grid); // Axel
 
-struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *turnTraker, struct Grid *grid){ // en cour ( Axel )
-
+struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *turnTraker, struct Grid *grid) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -711,6 +706,7 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *t
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
+{
     if (list_player == NULL)
     {
         *list_player = malloc(sizeof(struct list_player));
