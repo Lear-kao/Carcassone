@@ -135,6 +135,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     }
     if (grille->marquer == v_marquer) return 0;
     char cmpt = 1;
+
     grille->marquer = v_marquer;
     if( grille->tile->middle == VILLE )
     {
@@ -157,7 +158,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
+                cmpt += isFinishedCity(grille->right,finJeu,unfinished,v_marquer);
             }
         }
         if(grille->tile->left == VILLE)
@@ -168,7 +169,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
+                cmpt += isFinishedCity(grille->left,finJeu,unfinished,v_marquer);
             }
         }
         if(grille->tile->bot == VILLE)
@@ -179,7 +180,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
+                cmpt += isFinishedCity(grille->bot,finJeu,unfinished,v_marquer);
             }
         }
     }
