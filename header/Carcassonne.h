@@ -497,7 +497,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
-void nbMeepleVille( struct Grid *grille, char *nbmeeple);
+char nbMeepleVille( struct Grid *grille, char *nbmeeple,  int coul_player);
 
 char count_point_city(struct Grid *grille, char where);
 /* 
