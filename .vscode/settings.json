@@ -1,4 +1,8 @@
 {
     "makefile.configureOnOpen": false,
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "carcassonne.h": "c",
+        "assert.h": "c"
+    }
 }
