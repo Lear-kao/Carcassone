@@ -2,7 +2,7 @@
 
 
 
-char isFinishedAbbaye(struct Grid *grille, char finJeu)
+char isFinishedAbbaye( struct Grid *grille)
 /* 
 Compter les points abbaye.
 La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
@@ -25,7 +25,7 @@ pas complètement entourée.
     return point;
 }
 
-char count_point_city(struct Grid *grille, char where, int v_marquer, char finJeu)
+char count_point_city( struct Grid *grille, char where )
 {
     char point = 2;
     char unfinished;
@@ -36,7 +36,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
     Vérifie si la tuile en haut de la tuile de départ est vide et si oui appelle isFnihedCity() les points
     */
         if(grille->top != NULL)
-            point += isFinishedCity(grille->top, finJeu, &unfinished, v_marquer);
+            point += isFinishedCity(grille->top, &unfinished);
         else unfinished = 1;
         break;
     case 1:
@@ -44,7 +44,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
     Vérifie si la tuile à droite de la tuile de départ est vide et si oui appelle isFnihedCity() les points
     */
         if(grille->right != NULL)
-            point += isFinishedCity(grille->right, finJeu, &unfinished, v_marquer);
+            point += isFinishedCity(grille->right, &unfinished);
         else unfinished = 1;
         break;
     case 2:
@@ -52,7 +52,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
     Vérifie si la tuile en bas de la tuile de départ est vide et si oui appelle isFnihedCity() les points
     */
         if(grille->bot != NULL)
-            point += isFinishedCity(grille->bot, finJeu, &unfinished, v_marquer);
+            point += isFinishedCity(grille->bot, &unfinished );
         else unfinished = 1;
         break;
     case 3:
@@ -60,7 +60,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
     Vérifie si la tuile à gauche de la tuile de départ est vide et si oui appelle isFnihedCity() les points
     */
         if(grille->left != NULL)
-            point += isFinishedCity(grille->left, finJeu, &unfinished, v_marquer);
+            point += isFinishedCity(grille->left, &unfinished);
         else unfinished = 1;
         break;
     case 4:
@@ -75,7 +75,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
             }
             else
             {
-                point += isFinishedCity(grille->top,finJeu, &unfinished,v_marquer);
+                point += isFinishedCity(grille->top, &unfinished);
             }
         }
         if(grille->tile->right == VILLE)
@@ -86,7 +86,8 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
             }
             else
             {
-                point += isFinishedCity(grille->right,finJeu,&unfinished,v_marquer);
+
+                point += isFinishedCity(grille->right, &unfinished);
             }
         }
         if(grille->tile->left == VILLE)
@@ -97,7 +98,8 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
             }
             else
             {
-                point += isFinishedCity(grille->left,finJeu,&unfinished,v_marquer);
+
+                point += isFinishedCity(grille->left, &unfinished);
             }
         }
         if(grille->tile->bot == VILLE)
@@ -108,7 +110,8 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
             }
             else
            {
-               point += isFinishedCity(grille->bot,finJeu,&unfinished,v_marquer);
+
+               point += isFinishedCity(grille->bot, &unfinished);
             }
         }
         break;
@@ -118,7 +121,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
     return point;
 }
 
-char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, int v_marquer)
+char isFinishedCity( struct Grid *grille, char *unfinished)
 /* 
 Compter les points villes
 Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
@@ -147,7 +150,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedCity(grille->top,finJeu,unfinished,v_marquer);
+                cmpt += isFinishedCity(grille->top,unfinished);
             }
         }
         if(grille->tile->right == VILLE)
@@ -158,7 +161,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedCity(grille->right,finJeu,unfinished,v_marquer);
+                cmpt += isFinishedCity(grille->right,unfinished);
             }
         }
         if(grille->tile->left == VILLE)
@@ -169,7 +172,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedCity(grille->left,finJeu,unfinished,v_marquer);
+                cmpt += isFinishedCity(grille->left,unfinished);
             }
         }
         if(grille->tile->bot == VILLE)
@@ -180,7 +183,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                cmpt += isFinishedCity(grille->bot,finJeu,unfinished,v_marquer);
+                cmpt += isFinishedCity(grille->bot,unfinished);
             }
         }
     }
@@ -188,7 +191,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     return cmpt;
 }
 
-char isFinishedRoad(struct Grid *grille, char finJeu, char *unfinished, int v_marquer)
+char isFinishedRoad(struct Grid *grille, char *unfinished)
 /* 
 Commentaire à faire
 !!! unfinished initialisé à 1
@@ -212,19 +215,19 @@ Commentaire à faire
     char cmp = 1;
     if ( grille->tile->bot == ROUTE && grille->bot !=NULL )
     {
-        cmp += isFinishedRoad(grille->bot,finJeu,unfinished,v_marquer);
+        cmp += isFinishedRoad(grille->bot,unfinished);
     }
     if ( grille->tile->left == ROUTE && grille->left !=NULL )
     {
-        cmp += isFinishedRoad(grille->left,finJeu,unfinished,v_marquer);
+        cmp += isFinishedRoad(grille->left,unfinished);
     }
     if ( grille->tile->top == ROUTE && grille->top !=NULL )
     {
-        cmp += isFinishedRoad(grille->top,finJeu,unfinished,v_marquer);
+        cmp += isFinishedRoad(grille->top,unfinished);
     }
     if ( grille->tile->right == ROUTE && grille->right !=NULL )
     {
-        cmp += isFinishedRoad(grille->right,finJeu,unfinished,v_marquer);
+        cmp += isFinishedRoad(grille->right,unfinished);
     }
     if (*unfinished == 1 && finJeu == 0)
     {
@@ -233,4 +236,12 @@ Commentaire à faire
     return cmp;
 }
 
-void pointManager();
+void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
+{
+    char point;
+    char middle_type;
+    if (justPlaced->tile->middle == VILLE)
+    {
+
+    }
+}
