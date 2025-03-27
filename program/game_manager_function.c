@@ -255,7 +255,7 @@ char is_a_potential_tile(struct Tile *tile) // Théo FAIT
     }
 }
 
-void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord) // Théo A TESTER
+void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord) // Théo A corriger
 /*
     origineGrid : La case en haut à gauche de la Grid.
     largeur : La largeur max de la grille.

@@ -27,7 +27,7 @@ pas complètement entourée.
 
 char count_point_city(struct Grid *grille, char where, int v_marquer, char finJeu)
 {
-    char point = 1;
+    char point = 2;
     char unfinished;
     grille->marquer = v_marquer;
     switch (where)    {
@@ -86,7 +86,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
             }
             else
             {
-                point += isFinishedCity(grille->top,finJeu,&unfinished,v_marquer);
+                point += isFinishedCity(grille->right,finJeu,&unfinished,v_marquer);
             }
         }
         if(grille->tile->left == VILLE)
@@ -97,7 +97,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
             }
             else
             {
-                point += isFinishedCity(grille->top,finJeu,&unfinished,v_marquer);
+                point += isFinishedCity(grille->left,finJeu,&unfinished,v_marquer);
             }
         }
         if(grille->tile->bot == VILLE)
@@ -108,7 +108,7 @@ char count_point_city(struct Grid *grille, char where, int v_marquer, char finJe
             }
             else
            {
-               point += isFinishedCity(grille->top,finJeu,&unfinished,v_marquer);
+               point += isFinishedCity(grille->bot,finJeu,&unfinished,v_marquer);
             }
         }
         break;
@@ -134,7 +134,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
         return 0;
     }
     if (grille->marquer == v_marquer) return 0;
-    char cmpt = 1;
+    char cmpt = 2;
 
     grille->marquer = v_marquer;
     if( grille->tile->middle == VILLE )
