@@ -1,6 +1,6 @@
 #include "../header/Carcassonne.h"
 
-void nbMeepleVille( struct Grid *grille,char v_marquer,char *nbmeeple)
+void nbMeepleVille( struct Grid *grille, char *nbmeeple, char coul_player)
 {
     //pour l'instant la fonction ne fait que compter le nombre de meeple sans discinction
     if (grille->marquer == v_marquer) return;

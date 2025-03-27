@@ -85,7 +85,7 @@ struct list_player *init_player_list(char nbPlayers) // Axel
     list_players->player = malloc(sizeof(struct Player*) * (nbPlayers + 1));
     for( int i = 0; i < nbPlayers; i++ )
     {
-        list_players->player[i] = malloc(sizeof(struct Player));
+        init_player((list_players)->player[i],i);
     }
     list_players->player[nbPlayers] = NULL;
     return list_players;
@@ -599,19 +599,6 @@ void enum_to_char(enum types type)
     }
 }
 
-//void show_tile(struct Tile *tile)
-/*
-    Affiche une tile.
-*/
-/* {
-    printf("    %s    \n", enum_to_char(tile->top));
-    printf("%s   %s   %s\n", enum_to_char(tile->left), enum_to_char(tile->middle), enum_to_char(tile->right));
-    printf("    %s    \n", enum_to_char(tile->bot));
-} */
-
-
-
-
 
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
@@ -697,7 +684,8 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
 }
 
 
-struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *turnTraker, struct Grid *grid) // en cour ( Axel )
+
+struct Tile *start_game(struct list_player **list_player, char nbPlayer,char *turnTraker, struct Grid *grid) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -709,22 +697,17 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayer, char *t
 {
     if (list_player == NULL)
     {
-        *list_player = malloc(sizeof(struct list_player));
-        (*list_player) -> player = malloc(sizeof(struct player*) * nbPlayer);
+        init_player_list(nbPlayer);
     }
-    for(  int i = 0; i < nbPlayer; i++)
-    {
-        init_player((*list_player)->player[i]);
-    }
+        
     if ( grid != NULL)
     {
         free_Grid( grid );
     }
     struct Tile *tile_array;
-    //create_tile_array();
-    //shuffle(&(tile_array))
-    //init_Grid()
-    turnTraker = 0;
+    /* create_tile_array();
+    shuffle(&(tile_array));
+    init_Grid(); */
     return tile_array;
 }
 
