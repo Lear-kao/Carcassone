@@ -3,7 +3,9 @@
 
 #include "../header/Carcassonne.h"
 #include "tile.c"
+#include "func_point.c"
 #include "player.c"
+#include "meeple.c"
 #include "game_manager_function.c"
 #include "data_structure.c"
 
@@ -201,14 +203,15 @@ Test(all ,choose_w_show)
     choose_w_show(0,G);
     choose_w_show(1,G);
     choose_w_show(2,G);
+    printf("\n");
 }
 
 Test(all ,show_grid)
 {
     printf("||| TEST SHOW_GRID |||\n");
-    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
-    struct Tile *tile3 = init_tile(ROUTE, PRE, PRE, ROUTE, ROUTE);
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, VILLE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, VILLE);
+    struct Tile *tile3 = init_tile(ROUTE, VILLE, PRE, ROUTE, ROUTE);
     struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
     struct Coord *C1=init_coord(0,0);
     struct Coord *C2=init_coord(1,0);
@@ -679,3 +682,152 @@ Test(find, find_mega_test)
     cr_assert(isNull1, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
     cr_assert(isNull2, "NULL == find(grid00, (struct Coord)){-1,0} est faux\n");
 }
+
+Test(all, count_point_city1)
+{
+    struct Tile *tile1 = init_tile(VILLE, PRE,PRE,PRE,PRE);
+    struct Tile *tile2 = init_tile(PRE,PRE,VILLE,PRE,PRE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+
+    
+
+    char test =count_point_city(G,1,1,1);
+    cr_assert(test==4);
+}
+
+Test(all, count_point_city2)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, VILLE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, ROUTE);
+    struct Tile *tile3 = init_tile(ROUTE, PRE, PRE, ROUTE, ROUTE);
+    struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(1,1);
+    struct Coord *C4=init_coord(1,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,G,NULL);
+
+    char test=count_point_city(G,4,1,1);
+    cr_assert(test==6);
+}
+
+Test(all, count_point_city3)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, VILLE);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, VILLE);
+    struct Tile *tile3 = init_tile(ROUTE, VILLE, PRE, ROUTE, ROUTE);
+    struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(1,1);
+    struct Coord *C4=init_coord(1,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,G,NULL);
+
+    char test=count_point_city(G,4,1,1);
+    cr_assert(test==8);
+}
+
+// Test(all, nbMeepleVille)
+// {
+//     char test=0;
+//     struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
+//     struct Tile *tile2 = init_tile(VILLE, PRE, VILLE, PRE, VILLE);
+//     struct Tile *tile3 = init_tile(PRE, PRE, VILLE, PRE, PRE);
+//     tile1->meeplePlace=0;
+//     tile2->meeplePlace=0;
+//     tile3->meeplePlace=0;
+//     struct Coord *C1=init_coord(0,0);
+//     struct Coord *C2=init_coord(1,0);
+//     struct Coord *C3=init_coord(2,0);
+//     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+//     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+//     G->right->right=init_grid(tile3,C2,NULL,G->right,NULL,NULL);
+    
+//     nbMeepleVille(G->right,1,&test);
+//     cr_assert(test==0);
+
+//     G->tile->meeplePlace=1;
+//     nbMeepleVille(G->right,2,&test);
+//     cr_assert(test==1);
+// }
+
+Test(all, upscale)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
+    struct Tile *tile2 = init_tile(VILLE, PRE, VILLE, PRE, VILLE);
+    struct Tile *tile3 = init_tile(PRE, PRE, VILLE, PRE, PRE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(2,0);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->right=init_grid(tile3,C2,NULL,G->right,NULL,NULL);
+
+
+    int l=3,h=1;
+
+    
+    struct Coord C4={0,1};
+    cr_assert(l==3);
+    cr_assert(h==1);
+    
+    upscale(G,&l,&h,C4);
+
+    cr_assert(l==3);
+    cr_assert(h==2);
+
+    cr_assert(G->top != NULL);
+    cr_assert(G->top->tile->top==RIEN && 
+        G->top->tile->right==RIEN &&
+        G->top->tile->bot==RIEN &&
+        G->top->tile->left==RIEN && 
+        G->top->tile->middle==RIEN);
+
+    cr_assert(G->top->right != NULL);
+    cr_assert(G->top->right->tile->top==RIEN && 
+        G->top->right->tile->right==RIEN &&
+        G->top->right->tile->bot==RIEN &&
+        G->top->right->tile->left==RIEN && 
+        G->top->right->tile->middle==RIEN);
+
+    cr_assert(G->right->top != NULL);
+    cr_assert(G->right->top->tile->top==RIEN && 
+        G->right->top->tile->right==RIEN &&
+        G->right->top->tile->bot==RIEN &&
+        G->right->top->tile->left==RIEN && 
+        G->right->top->tile->middle==RIEN);
+
+    cr_assert(G->top->right->right != NULL);
+    cr_assert(G->top->right->right->tile->top==RIEN && 
+        G->top->right->right->tile->right==RIEN &&
+        G->top->right->right->tile->bot==RIEN &&
+        G->top->right->right->tile->left==RIEN && 
+        G->top->right->right->tile->middle==RIEN);
+
+    cr_assert(G->right->right->top != NULL);
+    cr_assert(G->right->right->top->tile->top==RIEN && 
+            G->right->right->top->tile->right==RIEN &&
+            G->right->right->top->tile->bot==RIEN &&
+            G->right->right->top->tile->left==RIEN && 
+            G->right->right->top->tile->middle==RIEN);
+
+    
+    struct Coord C5={3,0};
+    struct Coord C6={-1,0};
+    struct Coord C7={0,-1};
+
+
+    //upscale(G,&l,&h,C5); upscale vers la droite crash
+    //upscale(G,&l,&h,C6); upscale vers la gauche crash
+    //upscale(G,&l,&h,C7); upscale vers le bas crash
+}
+

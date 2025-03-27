@@ -18,6 +18,9 @@ enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace {NO_MEEPLE, MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 
+
+char finJeu = 0;
+int v_marquer  = 0;
 //-----------------------
 // ----Data structure----
 // ----------------------
@@ -105,10 +108,11 @@ struct Coord
 struct Coord *init_coord(unsigned char x, unsigned char y);
 
 struct Grid
+/*
+    Un morceau de grille permettant de relier les tiles entre elles
+*/
 {
-    /*
-        Un morceau de grille permettant de relier les tiles entre elles
-    */
+    int marquer;
     struct Coord *coord;
     struct Tile *tile;
     struct Grid *right;
@@ -170,7 +174,7 @@ struct Tile *init_tile(enum types right, enum types top, enum types left, enum t
     /*
     tile : Un pointer sur Tile
     right, left ... middle : les différent type des bordes de la tuile
-     */
+    */
 
 char is_meeple_on_tile(struct Tile *tile); // FAIT theo
 /*
@@ -194,10 +198,11 @@ struct Tile *turn_tile(struct Tile *tile); // A TESTER
 
 struct Player
 {
-     /*
+    /*
         nbMeeple : Nombre de Meeple du joueur
         points : Nombre de points du joueur
-     */  
+    */
+    char coulPlayer;
     char nbMeeple;
     short points; 
 };
@@ -213,7 +218,7 @@ struct list_player
 
 // ----PLayers fonctions----
 
-void init_player(struct Player *player); // FAIT theo
+void init_player(struct Player *player, int couleur); // FAIT theo
 /*
     Innitialise l'objet player
 */
@@ -276,13 +281,11 @@ void array_to_stack(struct Tile **tileArray, struct Stack **stack); // Fait
 */
 
 void reset_points(struct Player *player); //Fait
-
 /*
     Réinitialise les points du joueur
 */
 
 void reset_meeples(struct Player *player);//Fait
-
 /*
     Réinitialise le compteur de Meeple du joueur
 */
@@ -465,6 +468,41 @@ char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // Ax
 void free_Grid( struct Grid *grid); // fait (Axel)
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
+*/
+
+/* 
+--------------------------------------
+--------------------------------------
+----Fonction de comptage de points----
+--------------------------------------
+--------------------------------------
+*/
+
+char isFinishedAbbaye(struct Grid *grille);
+/* 
+Compter les points abbaye.
+La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
+Elle vérifie chaque tuiles autour et  pour  chaques tuiles compte les points, si finJeu est != 0 (la partie est finie)
+la fonction envoie les points même si elle n'est pas complètement entourée, sinon elle envoie 0 si,l'abbaye n'est
+pas complètement entourée.
+*/
+
+char isFinishedCity( struct Grid *grille, char *unfinished );
+/* 
+Compter les points villes
+Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
+tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
+On entre en  paramètre une grille, un char idiquant si on compte les points de fin de jeu ou non, 
+    un charactère servant de marquer pour savoir si la ville est complète ou non et un charadctère 
+    pour connaitre la valeur du marquer (-1 ou 1)
+*/
+
+void nbMeepleVille( struct Grid *grille, char *nbmeeple);
+
+char count_point_city(struct Grid *grille, char where);
+/* 
+A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
+Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
 
 #endif // CARCASSONNE_H

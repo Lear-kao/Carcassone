@@ -165,8 +165,9 @@ struct Coord *init_coord(unsigned char x,unsigned char y)
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
 {
     struct Grid *new_grid= malloc(sizeof(struct Grid));
+    new_grid->marquer  = -1;
     new_grid->coord = coord;
-    new_grid->tile = tile;
+    new_grid->tile= tile;
     new_grid->right = right;
     new_grid->left = left;
     new_grid->bot = bot;

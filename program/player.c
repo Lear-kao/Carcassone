@@ -4,11 +4,12 @@
 // ----Player-----
 // ---------------
 
-void init_player(struct Player *player)
+void init_player(struct Player *player,int couleur)
 {
     /*
         Innitialise l'objet player
     */
+    coulPlayer = couleur;  
     player->nbMeeple = NBMEEPLE_DEFAULT;
     player->points = 0;
 }
