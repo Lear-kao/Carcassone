@@ -109,7 +109,7 @@ struct Grid
     Un morceau de grille permettant de relier les tiles entre elles
 */
 {
-    char marquer;
+    int marquer;
     struct Coord *coord;
     struct Tile *tile;
     struct Grid *right;
@@ -485,7 +485,7 @@ la fonction envoie les points même si elle n'est pas complètement entourée, s
 pas complètement entourée.
 */
 
-char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, char v_marquer);
+char isFinishedCity( struct Grid *grille, char finJeu , char *unfinished, int v_marquer);
 /* 
 Compter les points villes
 Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
@@ -496,5 +496,11 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
 */
 
 void nbMeepleVille( struct Grid *grille,char v_marquer,char *nbmeeple);
+
+char count_point_city(struct Grid *grille, char where, int v_marquer, char finJeu);
+/* 
+A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
+Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 
 #endif // CARCASSONNE_H
