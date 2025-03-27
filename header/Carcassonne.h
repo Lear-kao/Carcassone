@@ -201,6 +201,7 @@ struct Player
     /*
         nbMeeple : Nombre de Meeple du joueur
         points : Nombre de points du joueur
+        coulPLayer : ?????????????????????
     */
     char coulPlayer;
     char nbMeeple;
@@ -497,7 +498,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
-void nbMeepleVille( struct Grid *grille, char *nbmeeple);
+void nbMeepleVille( struct Grid *grille, int *nbmeeple, char coul_player);
 
 char count_point_city(struct Grid *grille, char where);
 /* 
