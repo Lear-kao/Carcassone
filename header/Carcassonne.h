@@ -495,6 +495,8 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
+void nbMeepleVille( struct Grid *grille,char v_marquer,char *nbmeeple);
+
 char count_point_city(struct Grid *grille, char where, int v_marquer, char finJeu);
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
