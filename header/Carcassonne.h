@@ -15,10 +15,10 @@
 #include <time.h>
 
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
-enum meeplePlace {NO_MEEPLE, MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE};
+enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 
-
+int nbPlayers;
 char finJeu = 0;
 int v_marquer  = 0;
 //-----------------------
@@ -260,7 +260,7 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
-struct list_player *init_player_list(char nbPlayers); // Fait (Axel) 
+struct list_player *init_player_list(); // Fait (Axel) 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
@@ -445,7 +445,7 @@ void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A test
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Tile *start_game(struct list_player **list_player, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // fait (Axel)
+struct Tile *start_game(struct list_player **list_player, char *turnTraker,  struct Grid *grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -454,15 +454,6 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayerchar, cha
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
     !!! a voir si il faut pas passer la  liste de  struct  tile  en paramètre
-*/
-
-
-char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // Axel A FAIRE
-/*
-    grid : la case de départ
-    nbPLayers : Le nombre de joueurs
-
-    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
 */
 
 void free_Grid( struct Grid *grid); // fait (Axel)
@@ -497,12 +488,19 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
-char nbMeepleVille( struct Grid *grille, char *nbmeeple,  int coul_player);
+char nbMeepleVille( struct Grid *grille,  int coul_player);
 
 char count_point_city(struct Grid *grille, char where);
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
 Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
+
+void give_point(char *list_meeple_player, struct list_player *list, char point);
+
+int max(char *list);
+
+void *end_game_points_counter( struct list_player list ); // à tester (axel)
+
 
 #endif // CARCASSONNE_H
