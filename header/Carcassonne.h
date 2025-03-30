@@ -191,6 +191,7 @@ struct Player
     /*
         nbMeeple : Nombre de Meeple du joueur
         points : Nombre de points du joueur
+        coulPLayer : ?????????????????????
     */
     char coulPlayer;
     char nbMeeple;
@@ -485,6 +486,7 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start);
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
 Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
+void nbMeepleVille( struct Grid *grille, int *nbmeeple, char coul_player);
 
 char count_point_city(struct Grid *grille, enum places a);
 /* 

@@ -32,11 +32,16 @@ char nbMeepleVille( struct Grid *grille, int coul_player)
         if(grille->tile->right == VILLE)
         {
             cmpt += nbMeepleVille(grille->right,coul_player);
-            
+            nbMeepleVille(grille->top,&v_marquer,*nbmeeple);
+        }
+        if(grille->tile->right == VILLE)
+        {
+            nbMeepleVille(grille->right,&v_marquer,*nbmeeple);          
         }
         if(grille->tile->left == VILLE)
         {
             cmpt += nbMeepleVille(grille->left,coul_player);
+
         }
         
         if(grille->tile->bot == VILLE)
