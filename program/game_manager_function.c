@@ -74,22 +74,6 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     return tileArray;
 }
 
-struct list_player *init_player_list(char nbPlayers) // Axel
-/*
-    Crée une liste de pointeurs qui pointe sur un Player,
-    un pointer sur NULL est ajouté à la fin pour faciliter
-    les iterations sur la liste (condition d'arrêt)
-*/
-{
-    struct list_player *list_players = malloc(sizeof(struct list_player));
-    list_players->player = malloc(sizeof(struct Player*) * (nbPlayers + 1));
-    for( int i = 0; i < nbPlayers; i++ )
-    {
-        init_player((list_players)->player[i],i);
-    }
-    list_players->player[nbPlayers] = NULL;
-    return list_players;
-}
 
 void shuffle(struct Tile **tileArray, char size) // Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
@@ -128,21 +112,9 @@ void array_to_stack(struct Tile **tileArray, struct Stack **stack) // Valentin A
         *stack = stack_push(*stack, tileArray[i]);
     }
 }
-void reset_points(struct Player *player) // Fait
-/*
-    Réinitialise les points du joueur
-*/
-{
-    player->points = 0;
-}
 
-void reset_meeples(struct Player *player) // Fait
-/*
-    Réinitialise le compteur de Meeple du joueur
-*/
-{
-    player->nbMeeple = NBMEEPLE_DEFAULT;
-}
+
+
 
 struct Tile *rot_tile(struct Tile *tile)
 /*
@@ -686,7 +658,7 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
 
 
 
-struct Tile *start_game(struct list_player **list_player, char nbPlayer,char *turnTraker, struct Grid *grid) // en cour ( Axel )
+struct Tile *start_game(struct list_player **list_player,char *turnTraker, struct Grid *grid) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -696,9 +668,11 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayer,char *tu
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
 {
+    printf("combien  de joueur : ");
+    scanf("%d",&nbPlayers);
     if (list_player == NULL)
     {
-        init_player_list(nbPlayer);
+        init_player_list(nbPlayers);
     }
         
     if ( grid != NULL)
@@ -712,15 +686,16 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayer,char *tu
     return tile_array;
 }
 
-
-
-char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
+void *end_game_points_counter( struct list_player list ) // à tester (Axel)
 /*
-    grid : la case de départ
-    bPLayers : Le nombre de joueurs
-
     return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
 */
+{
+    for( int  i = 0; i < nbPlayers ; i++)
+    {
+        printf("Le joueur n°%d possède %d points",i, list.player[i]->points );
+    }
+}
 
 void free_Grid( struct Grid *grid) // a tester
 /* 
