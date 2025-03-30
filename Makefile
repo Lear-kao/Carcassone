@@ -2,7 +2,7 @@ CC=gcc
 PROG = program
 CFLAGS=-std=c99 -pedantic
 GDBFLAGS=-g
-TESTFLAGS=-lcriterion
+TESTFLAGS=-lcriterion	
 INC_Dir = header
 SRC_Dir= program
 OBJ_Dir = oFile
