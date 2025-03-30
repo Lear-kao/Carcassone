@@ -136,17 +136,7 @@ struct Coord *init_coord(unsigned char x, unsigned char y);
 */
 
 
-/* NON UTILISE
-//-------------
-//-plateboard--
-//-------------
-struct l_ch
-{
-    struct Grid *place;
-    struct l_ch *col;
-    struct l_ch *line;
-}
-*/
+
 // ------------
 // ----Tile----
 // ------------
@@ -488,19 +478,46 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
-char nbMeepleVille( struct Grid *grille,  int coul_player);
+char isFinishedRoad(struct Grid *grille, char *unfinished);
+/* vérifie la completion d'une ville et sa valeur en terme de points */
+char countPointRoad(struct Grid *grille,char *unfinished, enum places start);
+/* 
+A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
+Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 
-char count_point_city(struct Grid *grille, char where);
+char count_point_city(struct Grid *grille, enum places a);
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
 Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
 
 void give_point(char *list_meeple_player, struct list_player *list, char point);
-
-int max(char *list);
-
+/* distribue les points aux différents joueurs */
+void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle);
+/* compte les points après la pose d'un tuile pour les  structures en dehors de celle du millieu */
 void *end_game_points_counter( struct list_player list ); // à tester (axel)
+/* affiche les points en fin de partie */
+int max(char *list);
+/* calcule le maximum d'un tableau de charactère */
 
+/* 
+--------------------------------------
+--------------------------------------
+-----------fonction meeple------------
+--------------------------------------
+--------------------------------------
+*/
+
+char nbMeepleVille( struct Grid *grille,  int coul_player);
+/* compte le nombre de meeple dans une ville d'une couleur précise */
+char nbMeepleAbbaye( struct Grid *grille, int i);
+/* vérifie si un meeple d'une couleur précise est présent dans l'abbaye */
+char where_is_meeple(  int type, struct Tile tile);
+/* vérifie si le meeple posée estbien sur le type  de structure (ABBAYE/VILLE/VILLAGE/ROUTE) recherché */
+char what_color_is_meeple(int color, struct Tile tile);
+/* vérifie si le meeple posée sur la  tuile est bien de la bonne couleur */
+struct Grid* searchAbbaye(struct Grid* grille);
+/* cherche et renvoie la grille d'une tuile abbaye si celle-ce est présente autour de la case en entrée et renvoie NULL sinon */
 
 #endif // CARCASSONNE_H

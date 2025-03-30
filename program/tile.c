@@ -30,14 +30,7 @@ char is_meeple_on_tile(struct Tile *tile)
     - 0 si aucun Meeple n'est sur la tile
     - 1 si un Meeple est sur la tile
     */
-    if(tile->meeple == NO_MEEPLE)
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
+    return tile->meeplePlace != NO_MEEPLE;
 }
 
 struct Tile *turn_tile(struct Tile *tile)
@@ -47,6 +40,5 @@ struct Tile *turn_tile(struct Tile *tile)
     return : Une tuile malloc tourné de 90° dans le sens trigo.
 */
 {
-    
     return init_tile(tile->bot, tile->right, tile->top, tile->left, tile->middle);
 }

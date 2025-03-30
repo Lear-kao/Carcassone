@@ -246,10 +246,6 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
 */
 {
     int xMin = origineGrid->coord->x;
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     int yMin = origineGrid->coord->y;
     int xMax = xMin + *largeur - 1; // -1 car (0,0) existe (toujours).
     int yMax = yMin + *hauteur - 1;
