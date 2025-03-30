@@ -9,7 +9,7 @@ void init_player(struct Player *player,int couleur)
     /*
         Innitialise l'objet player
     */
-    player->coulPlayer = couleur;  
+    int coulPlayer = couleur;   // git blame O_O
     player->nbMeeple = NBMEEPLE_DEFAULT;
     player->points = 0;
 }
