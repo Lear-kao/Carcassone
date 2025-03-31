@@ -81,8 +81,7 @@ char where_is_meeple(  int type, struct Tile tile)
 
 char what_color_is_meeple(int color, struct Tile tile)
 {
-    if(tile->meeple->coulPlayer == color) return 1;
-    return 0;
+    return tile->meeple->coulPlayer == color;
 }
 
 struct Grid* searchAbbaye(struct Grid* grille)
