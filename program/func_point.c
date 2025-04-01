@@ -264,7 +264,7 @@ Prend en  paramètre :
     int max_L = max(list_meeple_player);
     for( int i = 0; i < nbPlayers; i++)
     {
-        if(list_meeple_player[i] == max) list->player[i]->points += point; 
+        if(list_meeple_player[i] == max(list_meeple_player)) list->player[i]->points += point; 
     }
     
 }

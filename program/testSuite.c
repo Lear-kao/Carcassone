@@ -45,13 +45,13 @@ Test(all, init_tile)
     cr_assert(tile->left == ROUTE,"tile->left == ROUTE est faux\n");
     cr_assert(tile->bot == VILLE,"tile->bot == VILLE est faux\n");
     cr_assert(tile->middle == ROUTE,"tile->middle == ROUTE est faux\n");
-    cr_assert(tile->meeple == NO_MEEPLE,"tile->meeple == NO_MEEPLE est faux\n");
+    cr_assert(tile->meeplePlace == NO_MEEPLE,"tile->meeple == NO_MEEPLE est faux\n");
 }
 
 Test(all, is_meeple_on_tile)
 {
     struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    cr_assert(tile->meeple == NO_MEEPLE, "tile->meeple == NO_MEEPLE est faux\n");
+    cr_assert(tile->meeplePlace == NO_MEEPLE, "tile->meeple == NO_MEEPLE est faux\n");
 }
 
 // ------------------
@@ -75,8 +75,9 @@ Test(all, create_tile_array)
 
 Test(all, init_player_list)
 {
-    char nbPlayer = 8;
-    struct list_player *list_player = init_player_list(nbPlayer);
+    nbPlayers=8;
+    struct list_player *list_player = init_player_list();
+
     int i = 0;
     while( list_player->player[i] != NULL )
     {
@@ -826,8 +827,19 @@ Test(all, upscale)
     struct Coord C7={0,-1};
 
 
-    //upscale(G,&l,&h,C5); upscale vers la droite crash
-    //upscale(G,&l,&h,C6); upscale vers la gauche crash
-    //upscale(G,&l,&h,C7); upscale vers le bas crash
+    //upscale(G,&l,&h,C5); //upscale vers la droite crash
+    //upscale(G,&l,&h,C6); //upscale vers la gauche crash
+    //upscale(G,&l,&h,C7); //upscale vers le bas crash
 }
 
+Test(all ,turn_tile)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
+    struct Tile *rot=turn_tile(tile1);
+
+    cr_assert(rot->middle==tile1->middle);
+    cr_assert(rot->top==tile1->right);
+    cr_assert(rot->left==tile1->top);
+    cr_assert(rot->bot==tile1->left);
+    cr_assert(rot->right==tile1->bot);
+}
