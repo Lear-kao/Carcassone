@@ -550,7 +550,9 @@ void enum_to_char(enum types type)
             break;
 
         case ABBAYES:
-            printf("A");
+            printf("\x1b[48;5;11m");
+            printf(" A ");
+            printf("\x1b[0m");
             break;
 
         case PRE:
