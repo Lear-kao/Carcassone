@@ -11,6 +11,14 @@ la fonction envoie les points même si elle n'est pas complètement entourée, s
 pas complètement entourée.
 */
 {
+    if(grille!=NULL && 
+       grille->tile!=NULL && 
+       grille->tile->right!=ABBAYES &&
+       grille->tile->top!=ABBAYES &&
+       grille->tile->left!=ABBAYES &&
+       grille->tile->bot!=ABBAYES &&
+       grille->tile->middle!=ABBAYES) return 0;
+
     char point = 0;
     if (grille->top->tile != NULL && !is_a_potential_tile(grille->top->tile)) point++;
     if (grille->bot->tile != NULL && !is_a_potential_tile(grille->bot->tile)) point++;

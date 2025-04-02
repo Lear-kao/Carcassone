@@ -919,6 +919,21 @@ Test(all ,isFinishedAbbaye)
     test=isFinishedAbbaye(G);
     cr_assert(test==7,"l'abbaye est censé avoir 7 case autour");
     finJeu=0;
+
+    G->right->tile->middle=VILLE;//juste pour ne plus que sa soit considerer comme une tuile potentiel
+    G->tile->middle=VILLE;
+    test=isFinishedAbbaye(G);
+    cr_assert(test==0,"il n'y est pas censé avoir d'abbaye");
+
+    G->tile->left=ABBAYES;
+    test=isFinishedAbbaye(G);
+    cr_assert(test==8,"l'abbaye est censé etre complete");
+
+
+
+
+
+
 }
 
 
