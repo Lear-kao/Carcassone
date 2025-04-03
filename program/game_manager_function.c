@@ -660,7 +660,7 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
 
 
 
-struct Tile *start_game(struct list_player **list_player,char *turnTraker, struct Grid *grid) // en cour ( Axel )
+struct Tile *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -682,9 +682,9 @@ struct Tile *start_game(struct list_player **list_player,char *turnTraker, struc
         free_Grid( grid );
     }
     struct Tile *tile_array;
-    /* create_tile_array();
+    create_tile_array();
     shuffle(&(tile_array));
-    init_Grid(); */
+    init_Grid();
     return tile_array;
 }
 
