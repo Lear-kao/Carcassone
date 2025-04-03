@@ -7,6 +7,7 @@ void main()
     char gameRuns = 1;       // Vaut 1 le temps que le jeu doit continuer, 0 sinon.
     char nbHumanPlayers = 0; // Nombre de joueurs humain
     char nbBotPlayers = 0;   // Nombre de bots
+    struct DLList;
     printf("Texte de bienvenu");
 
     while (gameRuns)
@@ -52,6 +53,7 @@ void main()
             for (char i = 0; i < nbPlayers; i++) 
             {
                 player_turn(i);
+                where_i_can_play(grid->tile,dllist);
                 show_grid(Grid);
             }
         }

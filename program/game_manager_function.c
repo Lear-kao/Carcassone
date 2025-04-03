@@ -684,6 +684,7 @@ struct Tile *start_game(struct list_player **list_player, struct Grid *grid) // 
     struct Tile *tile_array;
     create_tile_array();
     shuffle(&(tile_array));
+    
     init_Grid();
     return tile_array;
 }
