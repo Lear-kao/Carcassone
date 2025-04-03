@@ -41,7 +41,7 @@ struct DLList
 };
 
 
-struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid);
+struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid); //tester valider
 /*
     DLList : La liste chainé
     grid : Un pointer sur un espace mémoire ou se trouve grid
@@ -50,7 +50,7 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid);
 */
 
 
-void DLList_pop(struct DLList **DLList, struct Grid **gridSlot);
+void DLList_pop(struct DLList **DLList, struct Grid **gridSlot); // tester valider
 /*
     DLList : L'élément de la liste chainé à supprimer. Une fois l'élément supprimé le pointeur prend la valeur de l'élément précédent si il existe sinon l'élément suivant sinon NULL
     gridSlot : Un pointer sur un espace mémoire ou mettre le grid pop
@@ -105,8 +105,6 @@ struct Coord
     int y;
 };
 
-struct Coord *init_coord(unsigned char x, unsigned char y);
-
 struct Grid
 /*
     Un morceau de grille permettant de relier les tiles entre elles
@@ -122,9 +120,9 @@ struct Grid
 };
 
 
-struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);
+struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);//tester mais peut être a approfondir
 
-struct Coord *init_coord(unsigned char x, unsigned char y);
+struct Coord *init_coord(unsigned char x, unsigned char y);//tester valider
 /*
     x: coordonnée x
     y: coordonnee y
@@ -175,7 +173,7 @@ char is_meeple_on_tile(struct Tile *tile); // FAIT theo
     - 1 si un Meeple est sur la tile
 */
 
-struct Tile *turn_tile(struct Tile *tile); // A TESTER
+struct Tile *turn_tile(struct Tile *tile); // tester valider
 /*
     tile : Une tuile
 
@@ -304,7 +302,7 @@ char is_a_potential_tile(struct Tile *tile); // Théo FAIT
     Information : Une tuile potentielle est une tuile parciellement remplie de enum qui sert pour la fonction where_i_can_place.
 */
 
-void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord); // Théo A TESTER
+void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord); // Théo A regler
 /*
     origineGrid : La case en haut à gauche de la Grid.
     largeur : La largeur max de la grille.
@@ -486,7 +484,6 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start);
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
 Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
-void nbMeepleVille( struct Grid *grille, int *nbmeeple, char coul_player);
 
 char count_point_city(struct Grid *grille, enum places a);
 /* 

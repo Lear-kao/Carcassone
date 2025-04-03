@@ -172,6 +172,22 @@ struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *righ
     new_grid->left = left;
     new_grid->bot = bot;
     new_grid->top = top;
+
+    if(new_grid->right!=NULL && new_grid->right->left==NULL){
+        new_grid->right->left=new_grid;
+    }
+
+    if(new_grid->top!=NULL && new_grid->top->bot==NULL){
+        new_grid->top->bot=new_grid;
+    }
+
+    if(new_grid->left!=NULL && new_grid->left->right==NULL){
+        new_grid->left->right=new_grid;
+    }
+
+    if(new_grid->bot!=NULL && new_grid->bot->top==NULL){
+        new_grid->bot->top=new_grid;
+    }
     return new_grid;
 }
 

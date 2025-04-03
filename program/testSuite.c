@@ -45,13 +45,13 @@ Test(all, init_tile)
     cr_assert(tile->left == ROUTE,"tile->left == ROUTE est faux\n");
     cr_assert(tile->bot == VILLE,"tile->bot == VILLE est faux\n");
     cr_assert(tile->middle == ROUTE,"tile->middle == ROUTE est faux\n");
-    cr_assert(tile->meeple == NO_MEEPLE,"tile->meeple == NO_MEEPLE est faux\n");
+    cr_assert(tile->meeplePlace == NO_MEEPLE,"tile->meeple == NO_MEEPLE est faux\n");
 }
 
 Test(all, is_meeple_on_tile)
 {
     struct Tile *tile = init_tile(VILLE, ROUTE, ROUTE, VILLE, ROUTE);
-    cr_assert(tile->meeple == NO_MEEPLE, "tile->meeple == NO_MEEPLE est faux\n");
+    cr_assert(tile->meeplePlace == NO_MEEPLE, "tile->meeple == NO_MEEPLE est faux\n");
 }
 
 // ------------------
@@ -75,8 +75,9 @@ Test(all, create_tile_array)
 
 Test(all, init_player_list)
 {
-    char nbPlayer = 8;
-    struct list_player *list_player = init_player_list(nbPlayer);
+    nbPlayers=8;
+    struct list_player *list_player = init_player_list();
+
     int i = 0;
     while( list_player->player[i] != NULL )
     {
@@ -206,9 +207,9 @@ Test(all ,choose_w_show)
     printf("\n");
 }
 
-Test(all ,show_grid)
+Test(all ,show_gridv1)
 {
-    printf("||| TEST SHOW_GRID |||\n");
+    printf("||| TEST SHOW_GRID V1|||\n");
     struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, VILLE);
     struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, VILLE);
     struct Tile *tile3 = init_tile(ROUTE, VILLE, PRE, ROUTE, ROUTE);
@@ -222,8 +223,41 @@ Test(all ,show_grid)
     G->right->bot=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
     G->bot=init_grid(tile4,C4,G->right->bot,NULL,G,NULL);
 
-
     show_grid(G,2,2);
+}
+
+Test(all ,showgridv2)
+{
+    printf("||| TEST SHOW_GRID V2|||\n");
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ABBAYES);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, VILLE);
+    struct Tile *tile3 = init_tile(ROUTE, VILLE, PRE, ROUTE, ROUTE);
+    struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
+    struct Tile *tile5 = init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile6 = init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile7=init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile8=init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile9=init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(1,1);
+    struct Coord *C4=init_coord(1,0);
+    struct Coord *C5=init_coord(0,-1);
+    struct Coord *C6=init_coord(1,-1);
+    struct Coord *C7=init_coord(-1,0);
+    struct Coord *C8=init_coord(-1,-1);
+    struct Coord *C9=init_coord(-1,1);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,NULL,G->right);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,NULL,G);
+    G->top=init_grid(tile5,C5,NULL,NULL,G,NULL);
+    G->top->right=init_grid(tile6,C6,NULL,G->top,G->right,NULL);
+    G->left=init_grid(tile7,C7,G,NULL,NULL,NULL);
+    G->left->top=init_grid(tile8,C8,G->top,NULL,G->left,NULL);
+    G->left->bot=init_grid(tile9,C9,G->bot,NULL,NULL,G->left);
+
+    show_grid(G->top->left,3,3);
 }
 
 //test start_game
@@ -821,13 +855,85 @@ Test(all, upscale)
             G->right->right->top->tile->middle==RIEN);
 
     
-    struct Coord C5={3,0};
     struct Coord C6={-1,0};
-    struct Coord C7={0,-1};
+        struct Coord C5={3,0};
+struct Coord C7={0,-1};
 
 
-    //upscale(G,&l,&h,C5); upscale vers la droite crash
-    //upscale(G,&l,&h,C6); upscale vers la gauche crash
-    //upscale(G,&l,&h,C7); upscale vers le bas crash
+    //upscale(G,&l,&h,C5); //upscale vers la droite crash
+    //upscale(G,&l,&h,C6); //upscale vers la gauche crash
+    //upscale(G,&l,&h,C7); //upscale vers le bas crash
 }
+
+Test(all ,turn_tile)
+{
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
+    struct Tile *rot=turn_tile(tile1);
+
+    cr_assert(rot->middle==tile1->middle);
+    cr_assert(rot->top==tile1->right);
+    cr_assert(rot->left==tile1->top);
+    cr_assert(rot->bot==tile1->left);
+    cr_assert(rot->right==tile1->bot);
+}
+
+Test(all ,isFinishedAbbaye)
+{
+    char test=100; //initialisation a une valeur impossible a atteindre
+    struct Tile *tile1 = init_tile(VILLE, ROUTE, ROUTE, VILLE, ABBAYES);
+    struct Tile *tile2 = init_tile(ROUTE, ROUTE, VILLE, VILLE, VILLE);
+    struct Tile *tile3 = init_tile(ROUTE, VILLE, PRE, ROUTE, ROUTE);
+    struct Tile *tile4 = init_tile(PRE,VILLE,VILLE,ROUTE,ROUTE);
+    struct Tile *tile5 = init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile6 = init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile7=init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile8=init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile9=init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Coord *C1=init_coord(0,0);
+    struct Coord *C2=init_coord(1,0);
+    struct Coord *C3=init_coord(1,1);
+    struct Coord *C4=init_coord(1,0);
+    struct Coord *C5=init_coord(0,-1);
+    struct Coord *C6=init_coord(1,-1);
+    struct Coord *C7=init_coord(-1,0);
+    struct Coord *C8=init_coord(-1,-1);
+    struct Coord *C9=init_coord(-1,1);
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,NULL,G->right);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,NULL,G);
+    G->top=init_grid(tile5,C5,NULL,NULL,G,NULL);
+    G->top->right=init_grid(tile6,C6,NULL,G->top,G->right,NULL);
+    G->left=init_grid(tile7,C7,G,NULL,NULL,NULL);
+    G->left->top=init_grid(tile8,C8,G->top,NULL,G->left,NULL);
+    G->left->bot=init_grid(tile9,C9,G->bot,NULL,NULL,G->left);
+
+    test=isFinishedAbbaye(G);
+    cr_assert(test==8,"l'abbaye est censé etre complete");
+
+    G->right->tile->middle=RIEN;
+    test=isFinishedAbbaye(G);
+    cr_assert(test==0,"l'abbaye est censé n'etre pas complete");
+
+    finJeu=1;
+    test=isFinishedAbbaye(G);
+    cr_assert(test==7,"l'abbaye est censé avoir 7 case autour");
+    finJeu=0;
+
+    G->right->tile->middle=VILLE;//juste pour ne plus que sa soit considerer comme une tuile potentiel
+    G->tile->middle=VILLE;
+    test=isFinishedAbbaye(G);
+    cr_assert(test==0,"il n'y est pas censé avoir d'abbaye");
+
+    G->tile->left=ABBAYES;
+    test=isFinishedAbbaye(G);
+    cr_assert(test==8,"l'abbaye est censé etre complete");
+
+
+
+
+
+
+}
+
 

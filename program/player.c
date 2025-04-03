@@ -31,11 +31,12 @@ struct list_player *init_player_list() // Axel
     les iterations sur la liste (condition d'arrêt)
 */
 {
-    struct list_player *list_players = malloc(sizeof(struct list_player));
-    list_players->player = malloc(sizeof(struct Player*) * (nbPlayers + 1));
+    struct list_player *list_players = (struct list_player*)malloc(sizeof(struct list_player));
+    list_players->player = (struct Player**)malloc((nbPlayers + 1)*sizeof(struct Player*));
     for( int i = 0; i < nbPlayers; i++ )
     {
-        init_player((list_players)->player[i],i);
+        list_players->player[i]=malloc(sizeof(struct Player));
+        init_player(list_players->player[i],i);
     }
     list_players->player[nbPlayers] = NULL;
     return list_players;

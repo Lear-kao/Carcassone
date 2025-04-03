@@ -182,13 +182,13 @@ struct Tile *rot_tile(struct Tile *tile)
     }
 }
 */
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo à faire
 /*
     tile : La tile précedement pioché par le joueur
 
     dllist : Une liste doublement chainé contenant les tuiles potentiels pour cette fonction.
 
-    return : La liste malloc des endroit ou il est possible de jouer.
+    return : La liste malloc des endroit ou il est possible de jouer (position tuile fixe)
 */
 {
     struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc
@@ -209,6 +209,7 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     }
     return gridArrray;
 }
+
 char is_a_potential_tile(struct Tile *tile) // Théo FAIT
 /*
     Return 0 si ce n'est pas une tuile potentielle
@@ -246,6 +247,7 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
 */
 {
     int xMin = origineGrid->coord->x;
+    
     int yMin = origineGrid->coord->y;
     int xMax = xMin + *largeur - 1; // -1 car (0,0) existe (toujours).
     int yMax = yMin + *hauteur - 1;
@@ -548,7 +550,9 @@ void enum_to_char(enum types type)
             break;
 
         case ABBAYES:
-            printf("A");
+            printf("\x1b[48;5;11m");
+            printf(" A ");
+            printf("\x1b[0m");
             break;
 
         case PRE:
@@ -570,7 +574,6 @@ void enum_to_char(enum types type)
             break;
     }
 }
-
 
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
