@@ -207,7 +207,7 @@ struct list_player
 
 // ----PLayers fonctions----
 
-void init_player(struct Player *player, int couleur); // FAIT theo
+struct Player *init_player(int couleur); // FAIT theo
 /*
     Innitialise l'objet player
 */
@@ -458,7 +458,7 @@ prend en paramètre une struct grid initialisée et la free pour être réutilis
 --------------------------------------
 */
 
-char isFinishedAbbaye(struct Grid *grille);
+char isFinishedAbbaye(struct Grid *grille);// tester valider ? (verifier quand même une fois les test svp)
 /* 
 Compter les points abbaye.
 La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.

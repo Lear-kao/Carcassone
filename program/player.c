@@ -4,15 +4,17 @@
 // ----Player-----
 // ---------------
 
-void init_player(struct Player *player,int couleur)
+struct Player *init_player(int couleur)
 {
     /*
         Innitialise l'objet player
     */
+    struct Player *player=malloc(sizeof(struct Player));
     player->coulPlayer = couleur;  
     player->nbMeeple = NBMEEPLE_DEFAULT;
     player->points = 0;
 }
+
 char is_meeple_on_player(struct Player *player)
 {/*
     Player : L'objet Player
@@ -35,8 +37,7 @@ struct list_player *init_player_list() // Axel
     list_players->player = (struct Player**)malloc((nbPlayers + 1)*sizeof(struct Player*));
     for( int i = 0; i < nbPlayers; i++ )
     {
-        list_players->player[i]=malloc(sizeof(struct Player));
-        init_player(list_players->player[i],i);
+        list_players->player[i]=init_player(i);
     }
     list_players->player[nbPlayers] = NULL;
     return list_players;

@@ -534,7 +534,9 @@ void enum_to_char(enum types type)
 {
     switch(type){
         case RIEN:
-            printf("Z");
+            printf("\x1b[48;5;000m");
+            printf(" Z ");
+            printf("\x1b[0m");
             break;
             
         case ROUTE:
@@ -619,6 +621,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             }
             else enum_to_char(PRE);
     }
+    printf(" ");//ligne temporaire pour aider a differencier les tuile
 }
 
 
@@ -631,12 +634,12 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
 {
     struct Grid *temp_x = tab, *temp_y; //temp_x pas initialisé 
     unsigned char t_x = 0, t_y = 0;
-    for (; t_x < x; t_x++)
+    for (; t_x < y; t_x++)
     {
         for( int j = 0; j < 3; j++)
         {
             temp_y = temp_x; //la temp_y va prend un pointeur pas initialisé
-            for( t_y = 0; t_y < y; t_y++)
+            for( t_y = 0; t_y < x; t_y++)
             {
                 if (temp_y->tile == NULL)
                 {
@@ -653,6 +656,7 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
             }
             printf("\n");
         }
+        printf("\n");//ligne temporaire pour aider a differencier les tuile
         temp_x = temp_x->bot;
     }
     printf("\n fin affichage \n");
