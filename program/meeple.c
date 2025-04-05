@@ -59,7 +59,7 @@ char where_is_meeple(  int type, struct Tile tile)
 
 char what_color_is_meeple(int color, struct Tile tile)
 {
-    return tile->meeple->coulPlayer == color;
+    return tile.meeple->coulPlayer == color;
 
 }
 

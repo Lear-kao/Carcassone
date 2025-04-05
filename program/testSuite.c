@@ -17,7 +17,7 @@
 
 Test(all, init_player)
 {
-    struct Player *player = init_player(0);
+    struct Player *player = init_player(0,0);
      // git blame O_O
     cr_expect(player->nbMeeple == 8 ,"la fonction init_player n'a pas initialisé nbMeeple\n");
     cr_expect(player->points == 0 ,"la fonction init_player n'a pas initialisé les points a 0\n");
@@ -25,7 +25,7 @@ Test(all, init_player)
 
 Test(all, is_meeple_on_player)
 {
-    struct Player *player = init_player(0);
+    struct Player *player = init_player(0,0);
     cr_expect(is_meeple_on_player(player) > 0, "is_meeple_on_player(player) > 0 est faux\n");
     player->nbMeeple = 0;
     cr_expect(is_meeple_on_player(player) == 0, "is_meeple_on_player(player) == 0 est faux\n");
@@ -75,7 +75,7 @@ Test(all, create_tile_array)
 Test(all, init_player_list)
 {
     nbPlayers=8;
-    struct list_player *list_player = init_player_list();
+    struct list_player *list_player = init_player_list(0);
 
     int i = 0;
     while( list_player->player[i] != NULL )

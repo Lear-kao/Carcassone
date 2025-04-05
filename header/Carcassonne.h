@@ -19,8 +19,8 @@ enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 
 char turnTraker = 0;     // Numéro du joueur dont c'est le tour.
-int nbPlayers;
 char finJeu = 0;
+int nbPlayers;
 int v_marquer  = 0;
 //-----------------------
 // ----Data structure----
@@ -192,6 +192,7 @@ struct Player
         points : Nombre de points du joueur
         coulPLayer : ?????????????????????
     */
+    char bot;
     char coulPlayer;
     char nbMeeple;
     short points; 
@@ -204,11 +205,12 @@ struct list_player
     vas  aussi  permettre d'y ajouer les bots plus tards
     */
     struct Player **player;
+    char nbbot;
 };
 
 // ----PLayers fonctions----
 
-struct Player *init_player(int couleur); // FAIT theo
+struct Player *init_player(int couleur,char bot); // FAIT theo
 /*
     Innitialise l'objet player
 */
@@ -250,7 +252,8 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
-struct list_player *init_player_list(); // Fait (Axel) 
+
+struct list_player *init_player_list(char nbbot); // Fait (Axel) 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter

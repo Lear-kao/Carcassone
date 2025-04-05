@@ -621,7 +621,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             }
             else enum_to_char(PRE);
     }
-    printf(" ");//ligne temporaire pour aider a differencier les tuile
+    printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
 
 
@@ -664,7 +664,7 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
 
 
 
-struct Tile *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
+//struct Tile *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -673,6 +673,7 @@ struct Tile *start_game(struct list_player **list_player, struct Grid *grid) // 
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
+/*
 {
     printf("combien  de joueur : ");
     scanf("%d",&nbPlayers);
@@ -692,6 +693,8 @@ struct Tile *start_game(struct list_player **list_player, struct Grid *grid) // 
     init_Grid();
     return tile_array;
 }
+*/
+
 
 void *end_game_points_counter( struct list_player list ) // à tester (Axel)
 /*

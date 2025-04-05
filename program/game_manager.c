@@ -1,7 +1,7 @@
 #include "../header/Carcassonne.h"
 
 
-
+/*
 void main()
 {
     char gameRuns = 1;       // Vaut 1 le temps que le jeu doit continuer, 0 sinon.
@@ -53,8 +53,6 @@ void main()
             for (char i = 0; i < nbPlayers; i++) 
             {
                 player_turn(i);
-                where_i_can_play(grid->tile,dllist);
-                show_grid(Grid);
             }
         }
 
@@ -67,3 +65,4 @@ void main()
         scanf("%d",gameRuns);
     }
 }
+*/
