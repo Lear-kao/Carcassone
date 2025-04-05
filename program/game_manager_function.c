@@ -534,41 +534,45 @@ void enum_to_char(enum types type)
 {
     switch(type){
         case RIEN:
-            printf("\x1b[48;5;000m");
+            printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
             printf(" Z ");
             printf("\x1b[0m");
             break;
             
         case ROUTE:
-            printf("\x1b[48;5;130m");
+            printf("\x1b[48;2;%d;%d;%dm",168, 92, 33);
             printf(" R ");
             printf("\x1b[0m");
             break;
 
         case VILLE:
-            printf("\x1b[48;5;244m");
+            printf("\x1b[48;2;%d;%d;%dm",110,110,110);
             printf(" V ");
             printf("\x1b[0m");
             break;
 
         case ABBAYES:
-            printf("\x1b[48;5;11m");
+            printf("\x1b[48;2;%d;%d;%dm",241,196,15);
             printf(" A ");
             printf("\x1b[0m");
             break;
 
         case PRE:
-            printf("\x1b[48;5;2m");
+            printf("\x1b[48;2;%d;%d;%dm",35,155,86);
             printf(" P ");
             printf("\x1b[0m");
             break;
 
         case VILLAGE:
-            printf("v");
+            printf("\x1b[48;2;%d;%d;%dm",102,188,186);
+            printf(" v ");
+            printf("\x1b[0m");
             break;
 
         case BLASON:
-            printf("B");
+            printf("\x1b[48;2;%d;%d;%dm",101,112,255);
+            printf(" B ");
+            printf("\x1b[0m");
             break;
 
         default:
