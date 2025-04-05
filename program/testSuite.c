@@ -228,66 +228,32 @@ Test(all ,show_gridv1)
 Test(all ,showgridv2)
 {
     printf("||| TEST SHOW_GRID V2|||\n");
-    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE);
-    struct Tile *tile2 = init_tile(PRE,ROUTE,ROUTE,VILLE,ROUTE);
-    struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);
-    struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
-    struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE);
-    struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,ROUTE,ROUTE);
-    struct Tile *tile7 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);
-    struct Tile *tile8 = init_tile(PRE,PRE,PRE,PRE,PRE);
-    struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);
-    struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
-    struct Tile *tile11= init_tile(PRE,VILLE,PRE,PRE,PRE);
-    struct Tile *tile12= init_tile(PRE,PRE,PRE,PRE,ABBAYES);
-    struct Tile *tile13= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile14= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile15= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile17= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile18= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile19= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile20= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile21= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile22= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile23= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile24= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile25= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile26= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile27= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile28= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile29= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile30= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Coord *C1=init_coord(0,0);
-    struct Coord *C2=init_coord(1,0);
-    struct Coord *C3=init_coord(1,-1);
-    struct Coord *C4=init_coord(-1,0);
-    struct Coord *C5=init_coord(0,1);
-    struct Coord *C6=init_coord(1,1);
-    struct Coord *C7=init_coord(-1,0);
-    struct Coord *C8=init_coord(-1,1);
-    struct Coord *C9=init_coord(-1,-1);
-    struct Coord *C10=init_coord(2,1);
-    struct Coord *C11=init_coord(2,0);
-    struct Coord *C12=init_coord(2,-1);
-    struct Coord *C13=init_coord(3,0);
-    struct Coord *C14=init_coord(3,1);
-    struct Coord *C15=init_coord(3,-1);
-    struct Coord *C16=init_coord(3,-2);
-    struct Coord *C17=init_coord(2,-2);
-    struct Coord *C18=init_coord(1,-2);
-    struct Coord *C19=init_coord(0,-2);
-    struct Coord *C20=init_coord(-1,-2);
-    struct Coord *C21=init_coord(-2,0);
-    struct Coord *C22=init_coord(-2,1);
-    struct Coord *C23=init_coord(-2,-1);
-    struct Coord *C24=init_coord(-2,-2);
-    struct Coord *C25=init_coord(-2,2);
-    struct Coord *C26=init_coord(-1,2);
-    struct Coord *C27=init_coord(0,2);
-    struct Coord *C28=init_coord(1,2);
-    struct Coord *C29=init_coord(2,2);
-    struct Coord *C30=init_coord(3,2);
+    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE); struct Tile *tile2 = init_tile(PRE,ROUTE,ROUTE,VILLE,ROUTE);
+    struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);     struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
+    struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,ROUTE,ROUTE);
+    struct Tile *tile7 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
+    struct Tile *tile11= init_tile(PRE,VILLE,PRE,PRE,PRE);         struct Tile *tile12= init_tile(PRE,PRE,PRE,PRE,ABBAYES);
+    struct Tile *tile13= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile15= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile17= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile19= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile20= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile21= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile22= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile23= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile24= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile25= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile26= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile27= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile28= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile29= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile30= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Coord *C1=init_coord(0,0);   struct Coord *C2=init_coord(1,0);       struct Coord *C3=init_coord(1,-1);
+    struct Coord *C4=init_coord(-1,0);  struct Coord *C5=init_coord(0,1);       struct Coord *C6=init_coord(1,1);
+    struct Coord *C7=init_coord(-1,0);  struct Coord *C8=init_coord(-1,1);      struct Coord *C9=init_coord(-1,-1);
+    struct Coord *C10=init_coord(2,1);  struct Coord *C11=init_coord(2,0);      struct Coord *C12=init_coord(2,-1);
+    struct Coord *C13=init_coord(3,0);  struct Coord *C14=init_coord(3,1);      struct Coord *C15=init_coord(3,-1);
+    struct Coord *C16=init_coord(3,-2); struct Coord *C17=init_coord(2,-2);     struct Coord *C18=init_coord(1,-2);
+    struct Coord *C19=init_coord(0,-2); struct Coord *C20=init_coord(-1,-2);    struct Coord *C21=init_coord(-2,0);
+    struct Coord *C22=init_coord(-2,1); struct Coord *C23=init_coord(-2,-1);    struct Coord *C24=init_coord(-2,-2);
+    struct Coord *C25=init_coord(-2,2); struct Coord *C26=init_coord(-1,2);     struct Coord *C27=init_coord(0,2);
+    struct Coord *C28=init_coord(1,2);  struct Coord *C29=init_coord(2,2);      struct Coord *C30=init_coord(3,2);
+
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
     G->right->bot=init_grid(tile3,C3,NULL,NULL,NULL,G->right);
@@ -728,12 +694,24 @@ Test(find, find_mega_test)
     coord00->x = 0;
     coord00->y = 0;
     struct Coord *coord10 = malloc(sizeof(struct Coord));
+    if (!coord10) 
+    {
+        perror("erreur malloc\n");
+    }
     coord10->x = 1;
     coord10->y = 0;
     struct Coord *coord0m1 = malloc(sizeof(struct Coord));
+    if (!coord0m1) 
+    {
+        perror("erreur malloc\n");
+    }
     coord0m1->x = 0;
     coord0m1->y  = -1;
     struct Coord *coord1m1 = malloc(sizeof(struct Coord));
+    if (!coord1m1) 
+    {
+        perror("erreur malloc\n");
+    }
     coord1m1->x = 1;
     coord1m1->y = -1;
     struct Tile *tile00 = init_tile(VILLE, VILLE, VILLE, VILLE, VILLE);
@@ -995,66 +973,33 @@ Test(all ,isFinishedAbbaye)
 
 Test(all ,count_point_city)
 {
-    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE);
-    struct Tile *tile2 = init_tile(PRE,ROUTE,ROUTE,VILLE,ROUTE);
-    struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);
-    struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
-    struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE);
-    struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,ROUTE,ROUTE);
-    struct Tile *tile7 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);
-    struct Tile *tile8 = init_tile(PRE,PRE,PRE,PRE,PRE);
-    struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);
-    struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
-    struct Tile *tile11= init_tile(PRE,VILLE,PRE,PRE,PRE);
-    struct Tile *tile12= init_tile(PRE,PRE,PRE,PRE,ABBAYES);
-    struct Tile *tile13= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile14= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile15= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile17= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile18= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile19= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile20= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile21= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile22= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile23= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile24= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile25= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile26= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile27= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile28= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile29= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Tile *tile30= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
-    struct Coord *C1=init_coord(0,0);
-    struct Coord *C2=init_coord(1,0);
-    struct Coord *C3=init_coord(1,-1);
-    struct Coord *C4=init_coord(-1,0);
-    struct Coord *C5=init_coord(0,1);
-    struct Coord *C6=init_coord(1,1);
-    struct Coord *C7=init_coord(-1,0);
-    struct Coord *C8=init_coord(-1,1);
-    struct Coord *C9=init_coord(-1,-1);
-    struct Coord *C10=init_coord(2,1);
-    struct Coord *C11=init_coord(2,0);
-    struct Coord *C12=init_coord(2,-1);
-    struct Coord *C13=init_coord(3,0);
-    struct Coord *C14=init_coord(3,1);
-    struct Coord *C15=init_coord(3,-1);
-    struct Coord *C16=init_coord(3,-2);
-    struct Coord *C17=init_coord(2,-2);
-    struct Coord *C18=init_coord(1,-2);
-    struct Coord *C19=init_coord(0,-2);
-    struct Coord *C20=init_coord(-1,-2);
-    struct Coord *C21=init_coord(-2,0);
-    struct Coord *C22=init_coord(-2,1);
-    struct Coord *C23=init_coord(-2,-1);
-    struct Coord *C24=init_coord(-2,-2);
-    struct Coord *C25=init_coord(-2,2);
-    struct Coord *C26=init_coord(-1,2);
-    struct Coord *C27=init_coord(0,2);
-    struct Coord *C28=init_coord(1,2);
-    struct Coord *C29=init_coord(2,2);
-    struct Coord *C30=init_coord(3,2);
+    finJeu=0;
+    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE); struct Tile *tile2 = init_tile(PRE,ROUTE,ROUTE,VILLE,ROUTE);
+    struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);     struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
+    struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,ROUTE,ROUTE);
+    struct Tile *tile7 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,PRE,PRE,PRE,PRE);
+    struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
+    struct Tile *tile11= init_tile(PRE,VILLE,PRE,PRE,PRE);         struct Tile *tile12= init_tile(PRE,PRE,PRE,PRE,ABBAYES);
+    struct Tile *tile13= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile15= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile17= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile19= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile20= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile21= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile22= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile23= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile24= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile25= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile26= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile27= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile28= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile29= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile30= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Coord *C1=init_coord(0,0);   struct Coord *C2=init_coord(1,0);       struct Coord *C3=init_coord(1,-1);
+    struct Coord *C4=init_coord(-1,0);  struct Coord *C5=init_coord(0,1);       struct Coord *C6=init_coord(1,1);
+    struct Coord *C7=init_coord(-1,0);  struct Coord *C8=init_coord(-1,1);      struct Coord *C9=init_coord(-1,-1);
+    struct Coord *C10=init_coord(2,1);  struct Coord *C11=init_coord(2,0);      struct Coord *C12=init_coord(2,-1);
+    struct Coord *C13=init_coord(3,0);  struct Coord *C14=init_coord(3,1);      struct Coord *C15=init_coord(3,-1);
+    struct Coord *C16=init_coord(3,-2); struct Coord *C17=init_coord(2,-2);     struct Coord *C18=init_coord(1,-2);
+    struct Coord *C19=init_coord(0,-2); struct Coord *C20=init_coord(-1,-2);    struct Coord *C21=init_coord(-2,0);
+    struct Coord *C22=init_coord(-2,1); struct Coord *C23=init_coord(-2,-1);    struct Coord *C24=init_coord(-2,-2);
+    struct Coord *C25=init_coord(-2,2); struct Coord *C26=init_coord(-1,2);     struct Coord *C27=init_coord(0,2);
+    struct Coord *C28=init_coord(1,2);  struct Coord *C29=init_coord(2,2);      struct Coord *C30=init_coord(3,2);
+
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
     G->right->bot=init_grid(tile3,C3,NULL,NULL,NULL,G->right);
@@ -1085,6 +1030,106 @@ Test(all ,count_point_city)
     G->right->top->top=init_grid(tile28,C28,NULL,G->top->top,G->right->top,NULL);
     G->right->right->top->top=init_grid(tile29,C29,NULL,G->right->top->top,G->right->right->top,NULL);
     G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
+
+    /*
+        pour ce test je prend la meme grille que l'affichage
+    */
+
+    /*
+          [P,V,P]
+        G=[R,R,R]
+          [P,V,P]
+    */
+
+    char test1=count_point_city(G,TOP); 
+    printf("test1:%d\n",test1);
+    /*
+        ici la fonction me retourne 2 alors que si on regarde la grille la 
+        ville n'est pas finit (car il y a des tuile potentiel autour) et qu'on est pas a la fin du jeu
+        elle devrais donc retourner 0
+    */
+
+    char test2=count_point_city(G->top,MIDDLE);
+    printf("test2:%d\n",test2);
+    /*
+        RAS la fonction retourne bien 0 cette fois si j'ai donner cette grid [V,V,V]
+                                                                             [V,V,V]
+                                                                             [V,V,V]
+        avec MIDDLE comme parametre donc ici test2 est correct
+    */
+
+    char test3=count_point_city(G->top->right,RIGHT);
+    printf("test3:%d\n",test3);
+    /*
+        ici la fonction me retourne 2 alors qu'elle devrais retourner 6 car cette ville est finit 
+
+        G->top->right=[P,P,P]
+                      [V,R,V]
+                      [P,R,P]
+    */
+
+    char test4=count_point_city(G->top->right->right,MIDDLE);
+    printf("test4:%d\n",test4);
+    /*
+        ici la fonction me retourne 0 alors qu'elle devrais retourner 6 car cette ville est finit 
+
+        G->top->right->right=[P,P,P]
+                             [V,V,P]
+                             [V,V,P]
+    */
+
+    char test5=count_point_city(G->right->right,TOP);
+    printf("test5:%d\n",test5);
+    /*
+        ici la fonction me retourne 0 alors qu'elle devrais retourner 6 car cette ville est finit 
+
+        G->right->right=[P,V,P]
+                        [P,P,P]
+                        [P,P,P]
+    */
+
+    char test6=count_point_city(G->bot,MIDDLE);
+    printf("test6:%d\n",test6);
+    /*
+        ici la fonction me retourne 0 alors qu'elle devrais retourner 12 car cette ville est finit 
+
+        G->bot=[V,V,V]
+               [V,V,V]
+               [P,P,P]
+    */
+
+    char test7=count_point_city(G->bot,LEFT);
+    printf("test7:%d\n",test7);
+    /*
+        ici la fonction me retourne 2 alors qu'elle devrais retourner 12 car cette ville est finit 
+
+        G->bot=[V,V,V]
+               [V,V,V]
+               [P,P,P]
+    */
+
+    char test8=count_point_city(G->bot,RIGHT);
+    printf("test8:%d\n",test8);
+    /*
+        ici la fonction me retourne 2 alors qu'elle devrais retourner 12 car cette ville est finit 
+
+        G->bot=[V,V,V]
+               [V,V,V]
+               [P,P,P]
+    */
+    
+
+
+    cr_assert(test1==0,"test1 faux");
+    cr_assert(test2==0,"test2 faux");
+    cr_assert(test3==6,"test3 faux");
+    cr_assert(test4==6,"test4 faux");
+    cr_assert(test5==6,"test5 faux");
+    cr_assert(test6==12,"test6 faux");
+    cr_assert(test7==12,"test7 faux");
+    cr_assert(test8==12,"test8 faux");
+    
+    
 }
 
 
