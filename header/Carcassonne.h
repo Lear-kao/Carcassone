@@ -18,6 +18,7 @@ enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 
+char turnTraker = 0;     // Numéro du joueur dont c'est le tour.
 int nbPlayers;
 char finJeu = 0;
 int v_marquer  = 0;
@@ -434,7 +435,7 @@ void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A test
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Tile *start_game(struct list_player **list_player, char *turnTraker,  struct Grid *grid); // fait (Axel)
+struct Tile *start_game( struct list_player **list_player, struct Grid *grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)

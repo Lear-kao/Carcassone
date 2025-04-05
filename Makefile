@@ -7,7 +7,6 @@ INC_Dir = header
 SRC_Dir= program
 OBJ_Dir = oFile
 all = exe
-
 default = $(all)
 
 
