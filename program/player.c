@@ -13,6 +13,7 @@ struct Player *init_player(int couleur)
     player->coulPlayer = couleur;  
     player->nbMeeple = NBMEEPLE_DEFAULT;
     player->points = 0;
+    return player;
 }
 
 char is_meeple_on_player(struct Player *player)
