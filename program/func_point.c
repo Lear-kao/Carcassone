@@ -37,7 +37,7 @@ char count_point_city( struct Grid *grille, enum places a )
 {
     char point = 2;
     char unfinished;
-    printf("%d\n",unfinished);
+    printf("count_point_city -> unfinished = %d\n",unfinished);
     grille->marquer = v_marquer;
     
     switch (a)
