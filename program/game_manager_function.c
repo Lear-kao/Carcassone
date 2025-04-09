@@ -138,8 +138,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-// void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid **grid, unsigned int nb_coord) // A FAIRE
-
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -148,7 +147,6 @@ struct Tile *rot_tile(struct Tile *tile)
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
 */
-/*
 {
     printf("Tour du joueur %d\n", playerNumber);
     struct Tile *turn_tile = malloc(sizeof(struct Tile *));
@@ -159,8 +157,8 @@ struct Tile *rot_tile(struct Tile *tile)
     unsigned int token = -1;
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
-        show_Grid( &grid );
         play_coord = where_i_can_play(turn_tile, grid);
+        show_Grid( &grid );
         index = 0;
         while (*(play_coord + index) != NULL)
         {
@@ -177,11 +175,13 @@ struct Tile *rot_tile(struct Tile *tile)
         else
         {
             pose = 1;
-            //place_tile(struct grid grid, struct coord * coord);
+            place_tile(struct grid grid, struct coord * coord);
+            //pointPlacedTile  besoin de la fonction de théo
+            //secondary_verification()    idem
         }
     }
 }
-*/
+
 struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo à faire
 /*
     tile : La tile précedement pioché par le joueur
@@ -575,6 +575,17 @@ void enum_to_char(enum types type)
     }
 }
 
+void show_wplace(int j, int h)
+{
+    if(j == 0 || j == 2)
+    {
+        printf("---");
+        return;
+    }
+    printf("-%d-",h);-
+    
+}
+
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
     switch (y)
@@ -622,29 +633,41 @@ void choose_w_show(unsigned char y, struct Grid *tab)
 }
 
 
-void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct coord **w_place)
 // en cours (Axel)
 
     //Affiche la grille du jeu en ascii art en minimisant l'espace occupé
 
 
 {
+    char mrkr = 0;
     struct Grid *temp_x = tab, *temp_y; //temp_x pas initialisé 
-    unsigned char t_x = 0, t_y = 0;
+    unsigned char t_x = 0, t_y ;
     for (; t_x < x; t_x++)
     {
         for( int j = 0; j < 3; j++)
         {
             temp_y = temp_x; //la temp_y va prend un pointeur pas initialisé
-            for( t_y = 0; t_y < y; t_y++)
+            for(; t_y < y; t_y++)
             {
-                if (temp_y->tile == NULL)
+                mrkr = 0;
+                while ( *(w_place + h) != NULL )
+                {
+                    if(*(w_place + h) -> x == t_x && *(w_place + h) -> y == t_y )
+                    {
+                        show_wplace(j,h);
+                        mrkr = 1;
+                        break;
+                    }
+                }
+                
+                if (temp_y->tile == NULL && mrkr == 0)
                 {
                     enum_to_char(PRE);
                     enum_to_char(PRE);
                     enum_to_char(PRE);
                 }
-                else
+                else if(mrkr == 0)
                 {
                     //printf("%d\n",temp_y->tile->left); //mon test de print la tile fait crash
                     choose_w_show(j, temp_y); //cette ligne semble faire crash
