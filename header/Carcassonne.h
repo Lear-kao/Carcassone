@@ -430,7 +430,7 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Th√
 */
 
 
-void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A tester ( Valentin )
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct coord **w_place); // A tester ( Valentin )
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occup√© 
 */

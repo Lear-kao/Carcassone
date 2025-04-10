@@ -158,7 +158,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
         play_coord = where_i_can_play(turn_tile, grid);
-        show_Grid( &grid );
+        show_Grid( &grid, x, y ,play_coord);
         index = 0;
         while (*(play_coord + index) != NULL)
         {
