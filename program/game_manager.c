@@ -52,9 +52,7 @@ void main()
         {
             for (char i = 0; i < nbPlayers; i++) 
             {
-                player_turn(i);
-                where_i_can_play(grid->tile,dllist);
-                show_grid(Grid);
+                player_turn(i,p_list);
             }
         }
 

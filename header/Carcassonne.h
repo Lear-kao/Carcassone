@@ -410,7 +410,7 @@ struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *til
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 
-void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid **grid, unsigned int nb_coord); // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -430,7 +430,7 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Th�
 */
 
 
-void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A tester ( Valentin )
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct coord **w_place); // A tester ( Valentin )
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
@@ -492,6 +492,8 @@ A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appele
 Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
 
+void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer);
+/* premier tour pour compter si une structure est finie et si c'est le cas distribuer les points aux joueurs concernés */
 void give_point(char *list_meeple_player, struct list_player *list, char point);
 /* distribue les points aux différents joueurs */
 void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle);
@@ -511,10 +513,16 @@ int max(char *list);
 
 char nbMeepleVille( struct Grid *grille,  int coul_player);
 /* compte le nombre de meeple dans une ville d'une couleur précise */
+char nbMeepleVille_nocolor( struct Grid *grille);
+
 char nbMeepleAbbaye( struct Grid *grille, int i);
 /* vérifie si un meeple d'une couleur précise est présent dans l'abbaye */
+char nbMeepleAbbaye_nocolor(struct Grid *grille);
+/* pareil mais sans la couleur du meeple */
+
 char where_is_meeple(  int type, struct Tile tile);
 /* vérifie si le meeple posée estbien sur le type  de structure (ABBAYE/VILLE/VILLAGE/ROUTE) recherché */
+
 char what_color_is_meeple(int color, struct Tile tile);
 /* vérifie si le meeple posée sur la  tuile est bien de la bonne couleur */
 struct Grid* searchAbbaye(struct Grid* grille);
