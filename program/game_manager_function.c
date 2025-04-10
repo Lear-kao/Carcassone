@@ -255,9 +255,9 @@ char is_a_potential_tile(struct Tile *tile) // Théo FAIT
     }
 }
 
-void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord) // Théo A corriger
+void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord coord) // Théo A corriger
 /*
-    origineGrid : La case en haut à gauche de la Grid.
+    leftTopGrid : La case en haut à gauche de la Grid, elle mise à jour automatiquement.
     largeur : La largeur max de la grille.
     hauteur : La hauteur max de la grille.
     coord : La coordonnée qui dépasse de la grille
@@ -266,26 +266,26 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
     xMax, yMax, xMin ou yMin.
 
     Attention il est impossible d'agrandire à partir d'un angle, exemple, hauteur == 1, largeur == 1 
-    origineGrid->coord == (0,0) alors si coord == (1,1) la fonction ne fonctionne pas mais si 
+    *(leftTopGrid)->coord == (0,0) alors si coord == (1,1) la fonction ne fonctionne pas mais si 
     coord == (1,0) alors elle fonctionne.
 
     L'objectif de cette fonction est de s'assurer la présence de Grid innitialiser à NULL de sorte à 
     ce que le plateau de jeu soit un rectangle afin de simplifier le parcours à la fonction d'affichage.
 */
 {
-    int xMin = origineGrid->coord->x;
-    int yMin = origineGrid->coord->y;
+    puts("OK");
+    int xMin = (*leftTopGrid)->coord->x;
+    int yMax = (*leftTopGrid)->coord->y;
     int xMax = xMin + *largeur - 1; // -1 car (0,0) existe (toujours).
-    int yMax = yMin + *hauteur - 1;
+    int yMin = yMax - *hauteur + 1; // ou géométriquement yMin = -(hauteur - 1 - yMax) 
 
-    struct Grid *tmpGrid = origineGrid;
+    struct Grid *tmpGrid = *leftTopGrid;
 
     struct Tile *newTile;
     struct Grid *preGrid = NULL;
     struct Grid *newGrid;
-
     // Vérification que la coord est en dehors de la zone
-    if (coord.x > xMax)
+    if (coord.x > xMax) // ou coord.x == xMax + 1 
     {
         for (int i = 0; i < *largeur; i++) // plante si largeur mal innitialisé
         {
@@ -293,11 +293,18 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
         }
         for (int i = 0; i < *hauteur; i++)
         {
+            puts("ok2");
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             newGrid = init_grid(newTile, NULL, NULL, NULL, NULL, NULL);
+            newGrid->coord->x = *largeur;
+            newGrid->coord->y = i;
             newGrid->left = tmpGrid;
+            puts("jusque ici tout va bien");
+            printf("x : %d, y :%d", newGrid->coord->x, newGrid->coord->y );
             tmpGrid->right = newGrid;
+            puts("crash");
             newGrid->top = preGrid;
+
             if (preGrid != NULL)
             {
                 preGrid->bot = newGrid;
@@ -314,6 +321,8 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
         {
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             newGrid = init_grid(newTile, NULL, NULL, NULL, NULL, NULL);
+            newGrid->coord->x = xMin - 1;
+            newGrid->coord->y = i;
             newGrid->right = tmpGrid;
             tmpGrid->left = newGrid;
             newGrid->top = preGrid;
@@ -326,6 +335,7 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
             preGrid = newGrid;
         }
         (*largeur)++;
+        *leftTopGrid = newGrid; // met a jour leftTopGrid
     }
     else if (coord.y > yMax)
     {
@@ -333,6 +343,8 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
         {
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             newGrid = init_grid(newTile, NULL, NULL, NULL, NULL, NULL);
+            newGrid->coord->x = i;
+            newGrid->coord->y = *hauteur;
             newGrid->bot = tmpGrid;
             tmpGrid->top = newGrid;
             newGrid->left = preGrid;
@@ -346,6 +358,8 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
 
         }
         (*hauteur)++;
+        *leftTopGrid = newGrid; // met a jour leftTopGrid
+
     }
     else if (coord.y < yMin)
     {
@@ -357,6 +371,8 @@ void upscale(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord 
         {
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             newGrid = init_grid(newTile, NULL, NULL, NULL, NULL, NULL);
+            newGrid->coord->x = i;
+            newGrid->coord->y = yMin - 1;
             newGrid->top = tmpGrid;
             tmpGrid->bot = newGrid;
             newGrid->left = preGrid;
@@ -382,17 +398,21 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
     Cette fonction a pour but d'actualiser une des tuiles pottentielles qui se trouve autours d'une tuile qui vient d'être posé.
 */
 {
+    puts("start debug");
     switch(place)
     {
         case RIGHT:
         {
+            puts("RIGHT_case");
             struct Grid *potentialGrid = trueGrid->right;
             potentialGrid->coord->x = (trueGrid->coord->x) + 1;
             potentialGrid->coord->y = (trueGrid->coord->y);
+            puts("OKK");
 
             potentialGrid->tile->left = trueGrid->tile->right;
             trueGrid->right = potentialGrid;
             potentialGrid->left = trueGrid;
+            puts("end right case");
             break;
         }
         
@@ -438,6 +458,7 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
             //ERROR  CASE
         break;
     }
+    puts("end debug");
     return;
 }
 
@@ -482,25 +503,33 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     Return value : L'élément le plus en haut à gauche de la grid.
 */
 {
+    puts("i'm in");
+
     // Adaptation de la taille de la grid
     struct Coord tmpCoord;
+
     tmpCoord.x = 1;
     tmpCoord.y = 0;
-    upscale(grid, hauteur, largeur, tmpCoord); // (1,0)
+    puts("début upscale 1,0");
+    upscale(&grid, hauteur, largeur, tmpCoord); // (1,0)
+    puts("fin upscale 1,0");
     tmpCoord.x = -1;
     tmpCoord.y = 0;
-    upscale(grid, hauteur, largeur, tmpCoord); // (-1,0)
+    upscale(&grid, hauteur, largeur, tmpCoord); // (-1,0)
     tmpCoord.x = 0;
     tmpCoord.y = 1;
-    upscale(grid, hauteur, largeur, tmpCoord); // (0,1)
+    upscale(&grid, hauteur, largeur, tmpCoord); // (0,1)
     tmpCoord.x = 0;
     tmpCoord.y = -1;
-    upscale(grid, hauteur, largeur, tmpCoord); // (0,-1)
+    upscale(&grid, hauteur, largeur, tmpCoord); // (0,-1)
+    puts("upscale 4 pass");
 
     // Actualisation des tuiles pottentielles adjacente
     struct Tile *right_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *right_grid = init_grid(right_tile, NULL, NULL, NULL, NULL, NULL);
+    puts("OK2");
     update_potential_tile(grid, RIGHT);
+    puts("update potential pass"); // ici
 
     struct Tile *top_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *top_grid = init_grid(top_tile, NULL, NULL, NULL, NULL, NULL);
@@ -519,17 +548,16 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     DLList_push_end(dllist, top_grid);
     DLList_push_end(dllist, left_grid);
     DLList_push_end(dllist, bot_grid);
-
     return grid->top->left;
 }
 
-struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 
-    grid : Un pointeur sur la grid originelle TOUJOURS EN HAUT A GAUCHE (NULL si elle n'existe pas encore).
+    topLeftgrid : Un pointeur sur la grid la plus en haut à gauche qui s'actualise.
 
-    coord : Les coordonnées de l'endroit ou placer la tuile sur *grid.
+    coord : Les coordonnées de l'endroit ou placer la tuile sur *topLeftGrid.
 
     DLList : Un pointeur sur le première élément de la liste doublement chainé contenant les tuiles potentielles
 
@@ -541,13 +569,13 @@ struct Grid *place_tile(struct Grid *grid, struct Coord *coord, struct Tile *til
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 {
-    if (grid == NULL && coord->x == 0 && coord->y == 0) // Cas début de partie
+    if (topLeftGrid == NULL && coord->x == 0 && coord->y == 0) // Cas début de partie
     {
         struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
-        struct Grid *grid= first_grid(firstGrid, hauteur, largeur, dllist);
+        struct Grid *topLeftgrid= first_grid(firstGrid, hauteur, largeur, NULL);
     }
-    upscale(grid, largeur, hauteur, *coord);
-    struct Grid *gridFind = find(grid, *coord);
+    upscale(topLeftGrid, largeur, hauteur, *coord);
+    struct Grid *gridFind = find(*topLeftGrid, *coord);
     gridFind->tile = tile;
     update_potential_tile(gridFind, RIGHT);
     update_potential_tile(gridFind, TOP);

@@ -147,7 +147,7 @@ void DLList_pop(struct DLList **DLList, struct Grid **gridSlot)
 
 struct Coord *init_coord(unsigned char x,unsigned char y)
 /*
-    x: coordonnée x
+    x: coordonnée xF
     y: coordonnee y
 
     Cette fonction alloue une struct coord et l'initialise

@@ -760,31 +760,29 @@ Test(all, count_point_city3)
 //     cr_assert(test==1);
 // }
 
-Test(all, first_grid_and_upscale)
+Test(all, upscale)
 {
     struct Coord *coord = malloc(sizeof(struct Coord));
     coord->x = 0;
     coord->y = 0;
     struct Tile *tile = malloc(sizeof(struct Tile));
-    int hauteur = 0;
-    int largeur = 0;
+    int *hauteur = 0;
+    int *largeur = 0;
     struct DLList *dllist = malloc(sizeof(struct DLList));
     dllist->data = NULL;
     dllist->next = NULL;
     dllist->prev = NULL;
-
-    puts("init grid début");
+    
     struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
-    hauteur = 1;
-    largeur = 1;
-    puts("init grid fin fin");
-    puts("init first_grid début");
-    struct Grid *grid = first_grid(firstGrid, &hauteur, &largeur, dllist);
-    puts("init first_grid fin");
+    struct Grid *grid= first_grid(firstGrid, hauteur, largeur, dllist);
 
+    struct Grid *topLeftGrid = grid;
+    struct Coord upCoord;
+    upCoord.x = 1;
+    upCoord.y = 0;
 
-
-    cr_assert(grid->right != NULL); // upscale
+    upscale(&topLeftGrid, largeur, hauteur, upCoord);
+    cr_assert(topLeftGrid->right != NULL);
 }
 
 
