@@ -52,7 +52,7 @@ void main()
         {
             for (char i = 0; i < nbPlayers; i++) 
             {
-                player_turn(i);
+                player_turn(i,p_list);
             }
         }
 

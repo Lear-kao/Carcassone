@@ -156,42 +156,47 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
 
 char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
 {
-    char  point = 0;
+    char  point = 1;
     switch(start)
     {
         case RIGHT:
             if(grille->right == NULL  || is_a_potential_tile(grille->right->tile))
             {
-                point = 1;
+                *unfinished = 1;
                 break;
             }
-            isFinishedRoad(grille->right,unfinished);
+            point += isFinishedRoad(grille->right,unfinished);
             break;
         case TOP:
             if(grille->top == NULL  || is_a_potential_tile(grille->top->tile))
             {
-                point = 1;
+                *unfinished = 1;
                 break;
             }
-            isFinishedRoad(grille->top,unfinished);
+            point += isFinishedRoad(grille->top,unfinished);
             break;
         case LEFT:
             if(grille->left == NULL  || is_a_potential_tile(grille->left->tile))
             {
-                point = 1;
+                *unfinished = 1;
                 break;
             }
-            isFinishedRoad(grille->left,unfinished);
+            point += isFinishedRoad(grille->left,unfinished);
             break;
         case BOT:
             if(grille->bot == NULL  || is_a_potential_tile(grille->bot->tile))
             {
-                point = 1;
+                *unfinished = 1;
                 break;
             }
-            isFinishedRoad(grille->bot,unfinished);
+            point += isFinishedRoad(grille->bot,unfinished);
             break;
     }
+    if (*unfinished == 1 && finJeu == 0)
+    {
+        return 0;
+    }
+    return point;
 }
 
 char isFinishedRoad(struct Grid *grille, char *unfinished)
