@@ -21,6 +21,7 @@ enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 char turnTraker = 0;     // Numéro du joueur dont c'est le tour.
 char finJeu = 0;
 int nbPlayers;
+int nbBot;
 int v_marquer  = 0;
 //-----------------------
 // ----Data structure----
@@ -260,10 +261,9 @@ struct list_player *init_player_list(char nbbot); // Fait (Axel)
     les iterations sur la liste (condition d'arrêt)
 */
 
-void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être mieux si size est une macro
+void shuffle(struct Tile **tileArray); // Valentin c'est peut-être mieux si size est une macro
 /*S
     tileArray : Une liste de pointeurs sur Tile.
-    size : La taille de la liste (normalement 72)
 
     Mélange les tuiles
 */

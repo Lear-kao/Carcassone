@@ -75,7 +75,7 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
 }
 
 
-void shuffle(struct Tile **tileArray, char size) // Valentin c'est peut-être mieux si size est une macro A FAIRE
+void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
@@ -86,10 +86,10 @@ void shuffle(struct Tile **tileArray, char size) // Valentin c'est peut-être mi
     short i, rand1, rand2;
     struct Tile *temp;
 
-    for (i = 0; i < size * size; i++)
+    for (i = 0; i < NBTILE * NBTILE; i++)
     {
-        rand1 = rand() % size;
-        rand2 = rand() % size;
+        rand1 = rand() % NBTILE;
+        rand2 = rand() % NBTILE;
         if (rand1 != rand2)
         {
             temp = tileArray[rand1];
@@ -174,7 +174,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
-            grid = place_tile(struct grid grid, struct coord * coord);
+            grid = place_tile(struct Grid grid, struct Coord * coord);
             //pointPlacedTile  besoin de la fonction de théo
             //secondary_verification()    idem
         }
@@ -587,7 +587,7 @@ void show_wplace(int j, int h)
         printf("---");
         return;
     }
-    printf("-%d-",h);-
+    printf("-%d-",h);
     
 }
 
@@ -705,23 +705,29 @@ struct Stack *start_game(struct list_player **list_player, struct Grid *grid) //
 {
     printf("combien  de joueur : ");
     scanf("%d",&nbPlayers);
+
+    printf("combien  de bot: ");
+    scanf("%d",&nbBot);
+
     if (list_player == NULL)
     {
-        *list_player = init_player_list();
+        *list_player = init_player_list(nbBot);
     }
         
     if ( grid != NULL)
     {
         free_Grid( grid );
     }
-    struct Tile *tile_array;
-    tile_array = create_tile_array("tuiles_base_csv_simplifiees.csv",);
-    shuffle(&(tile_array)   );
+    struct Tile **tile_array;
+    char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
+    tile_array = create_tile_array("tuiles_base_csv_simplifiees.csv",tokenArray, MAX_TOKEN_SIZE);
+    shuffle(tile_array   );
     struct Stack  *stack;
-    array_to_stack(&tile_array,&stack);
+    array_to_stack(tile_array,&stack);
     struct Tile *variable_crée_à_cause_dune_decision_stupide;
     stack = stack_pop(stack,&variable_crée_à_cause_dune_decision_stupide);
-    *grid = init_grid(variable_crée_à_cause_dune_decision_stupide,,*grid,);
+    struct Coord *start_coord=init_coord(0,0);
+    grid = init_grid(variable_crée_à_cause_dune_decision_stupide,start_coord,NULL,NULL,NULL,NULL);
     return stack;
 }
 
