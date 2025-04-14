@@ -80,7 +80,6 @@ void shuffle(struct Tile **tileArray, char size) // Valentin c'est peut-être mi
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
     la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
-
 */
 {
     srand(time(NULL)); // initialisation de la seed pour la generation de nombre aléatoire
@@ -157,8 +156,8 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     unsigned int token = -1;
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
-        play_coord = where_i_can_play(turn_tile, grid);
-        show_Grid( &grid, x, y ,play_coord);
+        play_coord = where_i_can_play(turn_tile, *grid);
+        show_grid( &grid, x, y ,play_coord);
         index = 0;
         while (*(play_coord + index) != NULL)
         {
@@ -175,7 +174,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
-            place_tile(struct grid grid, struct coord * coord);
+            grid = place_tile(struct grid grid, struct coord * coord);
             //pointPlacedTile  besoin de la fonction de théo
             //secondary_verification()    idem
         }
@@ -640,58 +639,64 @@ void choose_w_show(unsigned char y, struct Grid *tab)
 }
 
 
-void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct coord **w_place)
-// en cours (Axel)
-
-    //Affiche la grille du jeu en ascii art en minimisant l'espace occupé
-
-
+void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct coord **w_place)
 {
     char mrkr = 0;
-    struct Grid *temp_x = tab, *temp_y; //temp_x pas initialisé 
-    unsigned char t_x = 0, t_y = 0;
-    for (; t_x < y; t_x++)
+    struct Grid *temp_x = tab, *temp_y;
+    unsigned char t_x = 0, t_y;
+
+    for (t_x = 0; t_x < x; t_x++)
     {
-        for( int j = 0; j < 3; j++)
-        {
-            temp_y = temp_x; //la temp_y va prend un pointeur pas initialisé
-            for( t_y = 0; t_y < x; t_y++)
+        for (int j = 0; j < 3; j++)
+            t_y = 0;
+            temp_y = temp_x;
+
+            for (; t_y < y; t_y++)
             {
                 mrkr = 0;
-                while ( *(w_place + h) != NULL )
+                int h = 0;
+
+                while (*(w_place + h) != NULL)
                 {
-                    if(*(w_place + h) -> x == t_x && *(w_place + h) -> y == t_y )
+                    if ((*(w_place + h))->x == t_x && (*(w_place + h))->y == t_y)
                     {
-                        show_wplace(j,h);
+                        show_wplace(j, h);
                         mrkr = 1;
                         break;
                     }
+                    h++;
                 }
-                
-                if (temp_y->tile == NULL && mrkr == 0)
+
+                if (temp_y == NULL || temp_y->tile == NULL)
                 {
-                    enum_to_char(PRE);
-                    enum_to_char(PRE);
-                    enum_to_char(PRE);
+                    if (mrkr == 0)
+                    {
+                        enum_to_char(PRE);
+                        enum_to_char(PRE);
+                        enum_to_char(PRE);
+                    }
                 }
-                else if(mrkr == 0)
+                else if (mrkr == 0)
                 {
-                    //printf("%d\n",temp_y->tile->left); //mon test de print la tile fait crash
-                    choose_w_show(j, temp_y); //cette ligne semble faire crash
+                    choose_w_show(j, temp_y);
                 }
-                temp_y = temp_y->right;
+
+                if (temp_y != NULL)
+                    temp_y = temp_y->right;
             }
             printf("\n");
         }
-        printf("\n");//ligne temporaire pour aider a differencier les tuile
-        temp_x = temp_x->bot;
+        if (temp_x != NULL)
+            temp_x = temp_x->bot;
+
     }
-    printf("\n fin affichage \n");
 }
 
 
 
-//struct Tile *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
+
+struct Stack *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
+
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -706,7 +711,7 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct coord
     scanf("%d",&nbPlayers);
     if (list_player == NULL)
     {
-        init_player_list(nbPlayers);
+        *list_player = init_player_list();
     }
         
     if ( grid != NULL)
@@ -714,11 +719,14 @@ void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct coord
         free_Grid( grid );
     }
     struct Tile *tile_array;
-    create_tile_array();
-    shuffle(&(tile_array));
-    
-    init_Grid();
-    return tile_array;
+    tile_array = create_tile_array("tuiles_base_csv_simplifiees.csv",);
+    shuffle(&(tile_array)   );
+    struct Stack  *stack;
+    array_to_stack(&tile_array,&stack);
+    struct Tile *variable_crée_à_cause_dune_decision_stupide;
+    stack = stack_pop(stack,&variable_crée_à_cause_dune_decision_stupide);
+    *grid = init_grid(variable_crée_à_cause_dune_decision_stupide,,*grid,);
+    return stack;
 }
 */
 
