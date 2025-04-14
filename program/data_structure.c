@@ -164,6 +164,7 @@ struct Coord *init_coord(unsigned char x,unsigned char y)
 
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
 {
+    // il aurait fallut faire le malloc de Coord ici mais c'est trop tard cette fonction ne peut être modifier sans casser tout le projet
     struct Grid *new_grid= malloc(sizeof(struct Grid));
     new_grid->marquer  = -1;
     new_grid->coord = coord;

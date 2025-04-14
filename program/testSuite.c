@@ -777,7 +777,7 @@ Test(all, first_grid_and_upscale)
     struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
     hauteur = 1;
     largeur = 1;
-    puts("init grid fin fin");
+    puts("init grid fin");
     puts("init first_grid début");
     struct Grid *grid = first_grid(firstGrid, &hauteur, &largeur, dllist);
     puts("init first_grid fin");
