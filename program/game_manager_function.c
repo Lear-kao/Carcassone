@@ -533,39 +533,45 @@ void enum_to_char(enum types type)
 {
     switch(type){
         case RIEN:
-            printf("Z");
+            printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
+            printf(" Z ");
+            printf("\x1b[0m");
             break;
             
         case ROUTE:
-            printf("\x1b[48;5;130m");
+            printf("\x1b[48;2;%d;%d;%dm",168, 92, 33);
             printf(" R ");
             printf("\x1b[0m");
             break;
 
         case VILLE:
-            printf("\x1b[48;5;244m");
+            printf("\x1b[48;2;%d;%d;%dm",110,110,110);
             printf(" V ");
             printf("\x1b[0m");
             break;
 
         case ABBAYES:
-            printf("\x1b[48;5;11m");
+            printf("\x1b[48;2;%d;%d;%dm",241,196,15);
             printf(" A ");
             printf("\x1b[0m");
             break;
 
         case PRE:
-            printf("\x1b[48;5;2m");
+            printf("\x1b[48;2;%d;%d;%dm",35,155,86);
             printf(" P ");
             printf("\x1b[0m");
             break;
 
         case VILLAGE:
-            printf("v");
+            printf("\x1b[48;2;%d;%d;%dm",102,188,186);
+            printf(" v ");
+            printf("\x1b[0m");
             break;
 
         case BLASON:
-            printf("B");
+            printf("\x1b[48;2;%d;%d;%dm",101,112,255);
+            printf(" B ");
+            printf("\x1b[0m");
             break;
 
         default:
@@ -629,6 +635,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             }
             else enum_to_char(PRE);
     }
+    printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
 
 
@@ -641,7 +648,6 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct coord 
     for (t_x = 0; t_x < x; t_x++)
     {
         for (int j = 0; j < 3; j++)
-        {
             t_y = 0;
             temp_y = temp_x;
 
@@ -682,6 +688,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct coord 
         }
         if (temp_x != NULL)
             temp_x = temp_x->bot;
+
     }
 }
 
@@ -689,6 +696,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct coord 
 
 
 struct Stack *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
+
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -697,6 +705,7 @@ struct Stack *start_game(struct list_player **list_player, struct Grid *grid) //
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
+/*
 {
     printf("combien  de joueur : ");
     scanf("%d",&nbPlayers);
@@ -719,6 +728,8 @@ struct Stack *start_game(struct list_player **list_player, struct Grid *grid) //
     *grid = init_grid(variable_crée_à_cause_dune_decision_stupide,,*grid,);
     return stack;
 }
+*/
+
 
 void *end_game_points_counter( struct list_player list ) // à tester (Axel)
 /*
