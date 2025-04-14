@@ -157,7 +157,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
         play_coord = where_i_can_play(turn_tile, *grid);
-        show_grid( &grid, x, y ,play_coord);
+        show_grid( *grid, x, y ,play_coord);
         index = 0;
         while (*(play_coord + index) != NULL)
         {
@@ -174,7 +174,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
-            grid = place_tile(struct Grid grid, struct Coord * coord);
+            *grid = place_tile(struct Grid grid, struct Coord * coord);
             //pointPlacedTile  besoin de la fonction de théo
             //secondary_verification()    idem
         }
@@ -639,7 +639,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
 }
 
 
-void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
+void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord **w_place)
 {
     char mrkr = 0;
     struct Grid *temp_x = tab, *temp_y;
@@ -657,7 +657,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
 
                 while (w_place[h] != NULL)
                 {
-                    if (w_place[h]->coord->x == t_x && w_place[h]->coord->y == t_y)
+                    if (w_place[h]->x == t_x && w_place[h]->y == t_y)
                     {
                         show_wplace(j, h);
                         mrkr = 1;
