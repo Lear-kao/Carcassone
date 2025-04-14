@@ -2,11 +2,11 @@
 
 
 
-void main()
+int main()
 {
-    char gameRuns = 1;       // Vaut 1 le temps que le jeu doit continuer, 0 sinon.
-    char nbHumanPlayers = 0; // Nombre de joueurs humain
-    char nbBotPlayers = 0;   // Nombre de bots
+    int gameRuns = 1;       // Vaut 1 le temps que le jeu doit continuer, 0 sinon.
+    unsigned char nbHumanPlayers = 0; // Nombre de joueurs humain
+    unsigned char nbBotPlayers = 0;   // Nombre de bots
     struct DLList;
     printf("Texte de bienvenu");
 
@@ -17,9 +17,9 @@ void main()
         while (phase1)
         {
             printf("Entrez le nombre de joueurs humains : ");
-            scanf("%u", &nbHumanPlayers);
+            scanf("%hhu", &nbHumanPlayers);
             printf("Entrez le nombre de robots participant à la partie : ");
-            scanf("%u", &nbBotPlayers);
+            scanf("%hhu", &nbBotPlayers);
             nbPlayers = nbHumanPlayers + nbBotPlayers;
             if ((nbPlayers) <= 6) // Phase 1 terminé
             {
@@ -41,27 +41,26 @@ void main()
         //void shuffle(struct Tile * *tileArray, char size);
         //void array_to_stack(struct Tile * *tileArray, struct Stack * stack);
         // Fin dans start game
-        struct player_list *p_list;
+        struct list_player *p_list;
         struct Grid *grid;
-        start_game(p_list, grid);        
+        struct Stack *stack = start_game(&p_list, grid);        
         // ---------------------------
         // ----Phase 3 : La partie----
         // ---------------------------
-        show_grid();
         while (is_stack_not_empty(stack))
         {
             for (char i = 0; i < nbPlayers; i++) 
             {
-                player_turn(i,p_list);
+                player_turn(i,p_list,stack,&grid);
             }
         }
 
         // -------------------------------
         // ----Phase 4 : Fin de partie----
         // -------------------------------
-        char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers);
+        end_game_points_counter(*p_list);
         printf("voulez-vous continuer?(0:non/1:oui)\n");
         free_Grid(grid);
-        scanf("%d",gameRuns);
+        scanf("%d",&gameRuns);
     }
 }

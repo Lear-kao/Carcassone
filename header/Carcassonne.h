@@ -430,12 +430,12 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Th�
 */
 
 
-void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct coord **w_place); // A tester ( Valentin )
+void show_grid(struct Grid *tab, unsigned  char x, unsigned char y, struct Coord **w_place); // A tester ( Valentin )
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Tile *start_game( struct list_player **list_player, struct Grid *grid); // fait (Axel)
+struct Stack *start_game( struct list_player **list_player, struct Grid *grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
