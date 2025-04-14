@@ -368,8 +368,7 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
     }
     else if (coord.y < yMin) // bot
     {
-        puts("JE DOIS ETRE AFFICHER !!!");
-        for (int i = 0; i < *hauteur; i++) // plante si largeur mal innitialisé
+        for (int i = 0; i < *hauteur - 1; i++) // plante si largeur mal innitialisé
         {
             tmpGrid = tmpGrid->bot;
         }
@@ -379,6 +378,7 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
             struct Coord *tmpCoord = malloc(sizeof(struct Coord));
             tmpCoord->x = i;
             tmpCoord->y = yMin - 1;
+
             newGrid = init_grid(newTile, tmpCoord, NULL, NULL, NULL, NULL);
             newGrid->top = tmpGrid;
             tmpGrid->bot = newGrid;
@@ -398,7 +398,7 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
 
 void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A TESTER
 /*
-    trueGrid : La vraie tuile qui vient d'être posé.
+    trueGrid : La "vraie" tuile qui vient d'être posé.
     trueGrid->(right, left...) : Une grid autours d'une tuile qui vient d'être posé. 
     Grid doit être innitialisé au minimum à NULL et doit pointer sur une Tile innitialisé au minimum à NULL.
     place : La position de la tuile potentielle par rapport à la tuile qui a était posé.
@@ -426,8 +426,10 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
 
         case TOP:
         {
+            puts("TOP CASE");
             struct Grid *potentialGrid = trueGrid->top;
-            potentialGrid->coord->x = (trueGrid->coord->x);
+            potentialGrid->coord->x = (trueGrid->coord->x); // potentialGrid->coord->x crash
+            puts("crash");
             potentialGrid->coord->y = (trueGrid->coord->y) + 1;
 
             potentialGrid->tile->bot = trueGrid->tile->top;
@@ -442,9 +444,8 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
             puts("LEFT CASE");
             struct Grid *potentialGrid = trueGrid->left;
             potentialGrid->coord->x = (trueGrid->coord->x) - 1;
-            puts("crash ?");
-
             potentialGrid->coord->y = (trueGrid->coord->y);
+
             potentialGrid->tile->right = trueGrid->tile->left;
             trueGrid->left = potentialGrid;
             potentialGrid->right = trueGrid;
@@ -540,7 +541,7 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     // Actualisation des tuiles pottentielles adjacente
     struct Tile *right_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *right_grid = init_grid(right_tile, NULL, NULL, NULL, NULL, NULL);
-    update_potential_tile(grid, RIGHT);
+    update_potential_tile(grid, RIGHT); // n'a aucun sens rajouter gridPosé confusion entre grid et gridPosé non ?// ici
     puts("update potential RIGHT pass ");
 
     struct Tile *top_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
