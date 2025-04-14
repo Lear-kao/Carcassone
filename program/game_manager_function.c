@@ -639,26 +639,25 @@ void choose_w_show(unsigned char y, struct Grid *tab)
 }
 
 
-void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct coord **w_place)
+void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
 {
     char mrkr = 0;
     struct Grid *temp_x = tab, *temp_y;
     unsigned char t_x = 0, t_y;
-
     for (t_x = 0; t_x < x; t_x++)
     {
         for (int j = 0; j < 3; j++)
+        {
             t_y = 0;
             temp_y = temp_x;
-
             for (; t_y < y; t_y++)
             {
                 mrkr = 0;
                 int h = 0;
 
-                while (*(w_place + h) != NULL)
+                while (w_place[h] != NULL)
                 {
-                    if ((*(w_place + h))->x == t_x && (*(w_place + h))->y == t_y)
+                    if (w_place[h]->coord->x == t_x && w_place[h]->coord->y == t_y)
                     {
                         show_wplace(j, h);
                         mrkr = 1;
@@ -688,7 +687,6 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct coord 
         }
         if (temp_x != NULL)
             temp_x = temp_x->bot;
-
     }
 }
 
@@ -696,7 +694,6 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct coord 
 
 
 struct Stack *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
-
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -705,7 +702,6 @@ struct Stack *start_game(struct list_player **list_player, struct Grid *grid) //
     - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
-/*
 {
     printf("combien  de joueur : ");
     scanf("%d",&nbPlayers);
@@ -728,7 +724,6 @@ struct Stack *start_game(struct list_player **list_player, struct Grid *grid) //
     *grid = init_grid(variable_crée_à_cause_dune_decision_stupide,,*grid,);
     return stack;
 }
-*/
 
 
 void *end_game_points_counter( struct list_player list ) // à tester (Axel)
