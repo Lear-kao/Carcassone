@@ -531,4 +531,6 @@ char what_color_is_meeple(int color, struct Tile tile);
 struct Grid* searchAbbaye(struct Grid* grille);
 /* cherche et renvoie la grille d'une tuile abbaye si celle-ce est présente autour de la case en entrée et renvoie NULL sinon */
 
+char meepleRoad(struct Grid *grille, int color);
+
 #endif // CARCASSONNE_H

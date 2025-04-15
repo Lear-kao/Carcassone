@@ -91,7 +91,7 @@ Test(all, shuffle)
     char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
     tileArray = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
 
-    shuffle(tileArray,NBTILE-1);
+    shuffle(tileArray);
 
     for(short i = 0;i<NBTILE-1;i++)
     {
@@ -222,7 +222,10 @@ Test(all ,show_gridv1)
     G->right->bot=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
     G->bot=init_grid(tile4,C4,G->right->bot,NULL,G,NULL);
 
-    show_grid(G,2,2);
+    struct Coord **t=(struct Coord**)malloc(sizeof(struct Coord*));
+    t[0]=NULL;
+
+    show_grid(G,2,2,t);
 }
 
 Test(all ,showgridv2)
@@ -285,8 +288,10 @@ Test(all ,showgridv2)
     G->right->right->top->top=init_grid(tile29,C29,NULL,G->right->top->top,G->right->right->top,NULL);
     G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
 
+    struct Coord **t=(struct Coord**)malloc(sizeof(struct Coord*));
+    t[0]=NULL;
 
-    show_grid(G->left->left->top->top,6,5);
+    show_grid(G->left->left->top->top,6,5,t);
 }
 
 //test start_game

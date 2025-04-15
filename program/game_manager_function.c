@@ -86,10 +86,10 @@ void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size
     short i, rand1, rand2;
     struct Tile *temp;
 
-    for (i = 0; i < NBTILE * NBTILE; i++)
+    for (i = 0; i < (NBTILE-1) * (NBTILE-1); i++)
     {
-        rand1 = rand() % NBTILE;
-        rand2 = rand() % NBTILE;
+        rand1 = rand() % (NBTILE-1);
+        rand2 = rand() % (NBTILE-1);
         if (rand1 != rand2)
         {
             temp = tileArray[rand1];
@@ -147,6 +147,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     avec la fonction where_i_can_play
 */
 {
+    int nb_coord=1;
     printf("Tour du joueur %d\n", playerNumber);
     struct Tile *turn_tile = malloc(sizeof(struct Tile *));
     pioche = stack_pop(pioche, &turn_tile);
@@ -157,7 +158,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
         play_coord = where_i_can_play(turn_tile, *grid);
-        show_grid( *grid, x, y ,play_coord);
+        //show_grid( *grid, x, y ,play_coord); ligne probleme
         index = 0;
         while (*(play_coord + index) != NULL)
         {
@@ -174,7 +175,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
-            *grid = place_tile(struct Grid grid, struct Coord * coord);
+            //*grid = place_tile(*grid,coord); ligne probleme
             //pointPlacedTile  besoin de la fonction de théo
             //secondary_verification()    idem
         }
@@ -644,13 +645,13 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord 
     char mrkr = 0;
     struct Grid *temp_x = tab, *temp_y;
     unsigned char t_x = 0, t_y;
-    for (t_x = 0; t_x < x; t_x++)
+    for (t_x = 0; t_x < y; t_x++)
     {
         for (int j = 0; j < 3; j++)
         {
             t_y = 0;
             temp_y = temp_x;
-            for (; t_y < y; t_y++)
+            for (; t_y < x; t_y++)
             {
                 mrkr = 0;
                 int h = 0;

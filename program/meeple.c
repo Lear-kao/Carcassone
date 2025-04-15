@@ -53,11 +53,13 @@ char nbMeepleVille( struct Grid *grille, int coul_player)
     //pour l'instant la fonction ne fait que compter le nombre de meeple sans discinction
     char cmpt = 0;
     if (grille->marquer == v_marquer) return 0;
-    if(is_meeple_on_tile(temp->tile))
+    if(is_meeple_on_tile(grille->tile)) //temp devient grille
     {
-        if (what_color_is_meeple(color,*(grille->tile)) &&
+        if (what_color_is_meeple(coul_player,*(grille->tile)) &&
             where_is_meeple(VILLE,*(grille->tile))) cmpt+= 1;
-    }    grille->marquer = v_marquer;
+    }    
+    grille->marquer = v_marquer;
+
     if( grille->tile->middle == VILLE )
     {
         if(grille->tile->top == VILLE)
@@ -91,20 +93,20 @@ char nbMeepleVille_nocolor( struct Grid *grille)
     {
         if(grille->tile->top == VILLE)
         {
-            cmpt += nbMeepleVille(grille->top);
+            cmpt += nbMeepleVille_nocolor(grille->top);
         }
         if(grille->tile->right == VILLE)
         {
-            cmpt += nbMeepleVille(grille->right);
+            cmpt += nbMeepleVille_nocolor(grille->right);
         }
         if(grille->tile->left == VILLE)
         {
-            cmpt += nbMeepleVille(grille->left);
+            cmpt += nbMeepleVille_nocolor(grille->left);
 
         }
         if(grille->tile->bot == VILLE)
         {
-            cmpt += nbMeepleVille(grille->bot);
+            cmpt += nbMeepleVille_nocolor(grille->bot);
         }
     }
     return cmpt;
@@ -158,7 +160,7 @@ Prend en paramètre une liste d'entiers et renvoie le plus grand
 char countMeepleRoad(struct Grid *grille, enum places start, int color)
 {
     char  nbmeeple = 0;
-    if(is_meeple_on_tile(temp->tile))
+    if(is_meeple_on_tile(grille->tile))
     {
         if (what_color_is_meeple(color,*(grille->tile)) &&
             where_is_meeple(ROUTE,*(grille->tile))) nbmeeple += 1;
@@ -166,47 +168,45 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
     switch(start)
     {
         case RIGHT:
-            if(grille->right == NULL  || is_a_potential_tile(grille->right->tile))
-            {
-                point = 1;
-                break;
-            }
+            // if(grille->right == NULL  || is_a_potential_tile(grille->right->tile))
+            // {
+            //     point = 1;
+            //     break;
+            // }
             nbmeeple += meepleRoad(grille->right,color);
             break;
         case TOP:
-            if(grille->top == NULL  || is_a_potential_tile(grille->top->tile))
-            {
-                point = 1;
-                break;
-            }
+            // if(grille->top == NULL  || is_a_potential_tile(grille->top->tile))
+            // {
+            //     point = 1;
+            //     break;
+            // }
             nbmeeple += meepleRoad(grille->top,color);
             break;
         case LEFT:
-            if(grille->left == NULL  || is_a_potential_tile(grille->left->tile))
-            {
-                point = 1;
-                break;
-            }
+            // if(grille->left == NULL  || is_a_potential_tile(grille->left->tile))
+            // {
+            //     point = 1;
+            //     break;
+            // }
             nbmeeple += meepleRoad(grille->left,color);
             break;
         case BOT:
-            if(grille->bot == NULL  || is_a_potential_tile(grille->bot->tile))
-            {
-                point = 1;
-                break;
-            }
+            // if(grille->bot == NULL  || is_a_potential_tile(grille->bot->tile))
+            // {
+            //     point = 1;
+            //     break;
+            // }
             nbmeeple += meepleRoad(grille->bot,color);
             break;
     }
     return nbmeeple;
 }
 
-char meepleRoad(struct Grid *grille, int color)
-/* 
-Commentaire à faire
-!!! unfinished initialisé à 1
-*/
+
+char meepleRoad(struct Grid *grille, int color)// Commentaire à faire !!! unfinished initialisé à 1
 {
+    /*
     if( is_a_potential_tile(grille->tile) == 1)
     {
         return 0;
@@ -246,4 +246,5 @@ Commentaire à faire
         return 0;
     }
     return cmp;
+    */
 }
