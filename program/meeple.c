@@ -3,15 +3,15 @@
 
 struct Grid* searchAbbaye(struct Grid* grille)
 {
-    if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille;
+    if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->tile)) return grille;
     if(grille->top->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->top;
-    if(grille->bot->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->bot;
-    if(grille->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->left;
-    if(grille->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->right;
-    if(grille->top->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->top->left;
-    if(grille->top->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->top->right;
-    if(grille->bot->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->bot->left;
-    if(grille->bot->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->bot->right;
+    if(grille->bot->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->tile)) return grille->bot;
+    if(grille->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->left->tile)) return grille->left;
+    if(grille->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->right->tile)) return grille->right;
+    if(grille->top->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->left->tile)) return grille->top->left;
+    if(grille->top->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->right->tile)) return grille->top->right;
+    if(grille->bot->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->left->tile)) return grille->bot->left;
+    if(grille->bot->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->right->tile)) return grille->bot->right;
     return NULL;
 }
 
@@ -19,23 +19,23 @@ char where_is_meeple(  int type, struct Tile tile)
 {
     switch (tile.meeplePlace)
     {
-        case RIGHT:
+        case MP_RIGHT:
             if (type == ROUTE && (tile.right == VILLAGE || tile.right == ROUTE)) return 1;
             if (type == tile.right) return 1;
             break;
-        case TOP:
+        case MP_TOP:
             if (type == ROUTE && (tile.top == VILLAGE || tile.top == ROUTE)) return 1;
             if (type == tile.top) return 1;            
             break;
-        case LEFT:
+        case MP_LEFT:
             if (type == ROUTE && (tile.left == VILLAGE || tile.left == ROUTE)) return 1;
             if (type == tile.left) return 1;            
             break;
-        case BOT:
+        case MP_BOT:
             if (type == ROUTE && (tile.bot == VILLAGE || tile.bot == ROUTE)) return 1;
             if (type == tile.bot) return 1;
             break;
-        case MIDDLE:
+        case MP_MIDDLE:
             if (type == ROUTE && (tile.middle == VILLAGE || tile.middle == ROUTE)) return 1;
             if (type == tile.middle) return 1;
     }

@@ -523,12 +523,12 @@ char nbMeepleAbbaye( struct Grid *grille, int i);
 char nbMeepleAbbaye_nocolor(struct Grid *grille);
 /* pareil mais sans la couleur du meeple */
 
-char where_is_meeple(  int type, struct Tile tile);
+char where_is_meeple(  int type, struct Tile tile);//tester 
 /* vérifie si le meeple posée estbien sur le type  de structure (ABBAYE/VILLE/VILLAGE/ROUTE) recherché */
 
-char what_color_is_meeple(int color, struct Tile tile);
+char what_color_is_meeple(int color, struct Tile tile);//tester
 /* vérifie si le meeple posée sur la  tuile est bien de la bonne couleur */
-struct Grid* searchAbbaye(struct Grid* grille);
+struct Grid* searchAbbaye(struct Grid* grille); //tester (normalement)
 /* cherche et renvoie la grille d'une tuile abbaye si celle-ce est présente autour de la case en entrée et renvoie NULL sinon */
 
 char meepleRoad(struct Grid *grille, int color);
