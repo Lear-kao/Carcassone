@@ -236,7 +236,7 @@ Test(all ,showgridv2)
     struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,PRE,PRE);
     struct Tile *tile7 = init_tile(ROUTE,ROUTE,PRE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,ROUTE,ROUTE,ROUTE,VILLAGE);
     struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
-    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(PRE,ROUTE,PRE,PRE,ABBAYES);
+    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(ROUTE,ROUTE,PRE,ROUTE,ABBAYES);
     struct Tile *tile13= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);
     struct Tile *tile15= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
     struct Tile *tile17= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
@@ -984,7 +984,7 @@ Test(all ,count_point_city)
     struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,PRE,PRE);
     struct Tile *tile7 = init_tile(ROUTE,ROUTE,PRE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,ROUTE,ROUTE,ROUTE,VILLAGE);
     struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
-    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(PRE,ROUTE,PRE,PRE,ABBAYES);
+    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(ROUTE,ROUTE,PRE,ROUTE,ABBAYES);
     struct Tile *tile13= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);
     struct Tile *tile15= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
     struct Tile *tile17= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
@@ -1048,20 +1048,9 @@ Test(all ,count_point_city)
 
     char test1=count_point_city(G,TOP); 
     printf("count_point_city -> test1 = %d\n",test1);
-    /*
-        ici la fonction me retourne 2 alors que si on regarde la grille la 
-        ville n'est pas finit (car il y a des tuile potentiel autour) et qu'on est pas a la fin du jeu
-        elle devrais donc retourner 0
-    */
 
     char test2=count_point_city(G->top,MIDDLE);
     printf("count_point_city -> test2 = %d\n",test2);
-    /*
-        la fonction retourne bien 0 cette fois si j'ai donner cette grid [V,V,V]
-                                                                             [V,V,V]
-                                                                             [V,V,V]
-        avec MIDDLE comme parametre donc ici test2 est correct
-    */
 
     char test12=count_point_city(G->top->right,LEFT);
     printf("count_point_city -> test12 = %d\n",test12);
@@ -1069,8 +1058,6 @@ Test(all ,count_point_city)
     char test3=count_point_city(G->top->right,RIGHT);
     printf("count_point_city -> test3 = %d\n",test3);
     /*
-        ici la fonction me retourne 2 alors qu'elle devrais retourner 6 car cette ville est finit 
-
         G->top->right=[P,P,P]
                       [V,R,V]
                       [P,R,P]
@@ -1079,8 +1066,6 @@ Test(all ,count_point_city)
     char test4=count_point_city(G->top->right->right,MIDDLE);
     printf("count_point_city -> test4 = %d\n",test4);
     /*
-        ici la fonction me retourne 0 alors qu'elle devrais retourner 6 car cette ville est finit 
-
         G->top->right->right=[P,P,P]
                              [V,V,P]
                              [V,V,P]
@@ -1089,8 +1074,6 @@ Test(all ,count_point_city)
     char test5=count_point_city(G->right->right,TOP);
     printf("count_point_city -> test5 = %d\n",test5);
     /*
-        ici la fonction me retourne 0 alors qu'elle devrais retourner 6 car cette ville est finit 
-
         G->right->right=[P,V,P]
                         [P,P,P]
                         [P,P,P]
@@ -1099,8 +1082,6 @@ Test(all ,count_point_city)
     char test6=count_point_city(G->bot,MIDDLE);
     printf("count_point_city -> test6 = %d\n",test6);
     /*
-        ici la fonction me retourne 0 alors qu'elle devrais retourner 12 car cette ville est finit 
-
         G->bot=[V,V,V]
                [V,V,V]
                [P,P,P]
@@ -1109,8 +1090,6 @@ Test(all ,count_point_city)
     char test7=count_point_city(G->bot,LEFT);
     printf("count_point_city -> test7 = %d\n",test7);
     /*
-        ici la fonction me retourne 2 alors qu'elle devrais retourner 12 car cette ville est finit 
-
         G->bot=[V,V,V]
                [V,V,V]
                [P,P,P]
@@ -1119,8 +1098,6 @@ Test(all ,count_point_city)
     char test8=count_point_city(G->bot,RIGHT);
     printf("count_point_city -> test8 = %d\n",test8);
     /*
-        ici la fonction me retourne 2 alors qu'elle devrais retourner 12 car cette ville est finit 
-
         G->bot=[V,V,V]
                [V,V,V]
                [P,P,P]
@@ -1129,19 +1106,9 @@ Test(all ,count_point_city)
     finJeu=1;
     char test9=count_point_city(G,TOP);
     printf("count_point_city -> test9 = %d\n",test9);
-    /*
-        ici la fonction me retourne 2 alors que si on regarde la grille la 
-        ville la zone comporte "3 case ville" la ville étant non finit et que finJeu = 1
-        je suis censé avoir test9=3
-    */
 
     char test10=count_point_city(G->top,MIDDLE);
     printf("count_point_city -> test10 = %d\n",test10);
-    /*
-        ici la fonction me retourne 2 alors que si on regarde la grille la 
-        ville la zone comporte "3 case ville" la ville étant non finit et que finJeu = 1
-        je suis censé avoir test9=3
-    */
 
     char test11=count_point_city(G->top->right,LEFT);
     printf("count_point_city -> test11 = %d\n",test11);
@@ -1168,7 +1135,7 @@ Test(all,countPointRoad)
     struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,PRE,PRE);
     struct Tile *tile7 = init_tile(ROUTE,ROUTE,PRE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,ROUTE,ROUTE,ROUTE,VILLAGE);
     struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
-    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(PRE,ROUTE,PRE,PRE,ABBAYES);
+    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(ROUTE,ROUTE,PRE,ROUTE,ABBAYES);
     struct Tile *tile13= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);
     struct Tile *tile15= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
     struct Tile *tile17= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
@@ -1238,75 +1205,50 @@ Test(all,countPointRoad)
     unfinished=1;
     char test1=countPointRoad(G,&unfinished,RIGHT);
     printf("countPointRoad -> test1 = %d\n",test1);
-    /*
-        ici la fonction me renvoie 0 alors qu'on voit bien sur l'affichage que la route est finit et que finJeu=0;
-        ici la fonction devrais me renvoyer 6
-    */
-
+    
     unfinished=1;
     char test2=countPointRoad(G,&unfinished,LEFT);
     printf("countPointRoad -> test2 = %d\n",test2);
-    /*
-        ici la fonction me renvoie 0 alors qu'on voit bien sur l'affichage que la route est finit et que finJeu=0;
-        ici la fonction devrais me renvoyer 6
-    */
 
     unfinished=1;
     char test3=countPointRoad(G->right,&unfinished,RIGHT);
     printf("countPointRoad -> test3 = %d\n",test3);
-    /*
-        ici la fonction me renvoie 0 alors qu'on voit bien sur l'affichage que la route est finit et que finJeu=0;
-        ici la fonction devrais me renvoyer 6
-    */
-
+    
     unfinished=1;
     char test4=countPointRoad(G->right,&unfinished,LEFT);
     printf("countPointRoad -> test4 = %d\n",test4);
-    /*
-        ici la fonction me renvoie 0 alors qu'on voit bien sur l'affichage que la route est finit et que finJeu=0;
-        ici la fonction devrais me renvoyer 6
-    */
 
     unfinished=1;
     char test5=countPointRoad(G->left->top,&unfinished,BOT);
     printf("countPointRoad -> test5 = %d\n",test5);
-    /*
-        ici la fonction me renvoie 0 alors qu'on voit bien sur l'affichage que la route est finit et que finJeu=0;
-        ici la fonction devrais me renvoyer 6
-    */
 
     unfinished=1;
     char test6=countPointRoad(G->left->top,&unfinished,LEFT);
     printf("countPointRoad -> test6 = %d\n",test6);
-    /*
-        ici la fonction me renvoie 1 alors qu'on voit bien sur l'affichage que la route n'est pas finit et que finJeu=0;
-        ici la fonction devrais me renvoyer 0
-    */
 
     unfinished=1;
     char test7=countPointRoad(G->left->top,&unfinished,TOP);
     printf("countPointRoad -> test7 = %d\n",test7);
-    /*
-        ici la fonction me renvoie 1 alors qu'on voit bien sur l'affichage que la route n'est pas finit et que finJeu=0;
-        ici la fonction devrais me renvoyer 0
-    */
-
 
     unfinished=1;
     finJeu=1;
     char test8=countPointRoad(G->left->top,&unfinished,LEFT);
     printf("countPointRoad -> test8 = %d\n",test8);
-    /*
-        ici la fonction me renvoie 1 c'est bon car finJeu=1
-    */
 
     unfinished=1;
     finJeu=1;
     char test9=countPointRoad(G->left->top,&unfinished,TOP);
     printf("countPointRoad -> test9 = %d\n",test9);
-    /*
-        ici la fonction me renvoie 1 c'est bon car finJeu=1
-    */
+
+    unfinished=1;
+    finJeu=1;
+    char test10=countPointRoad(G->right->right->bot,&unfinished,RIGHT);
+    printf("countPointRoad -> test10 = %d\n",test10);
+    unfinished=1;
+    finJeu=1;
+    char test11=countPointRoad(G->right->right->bot,&unfinished,BOT);
+    printf("countPointRoad -> test11 = %d\n",test11);
+
 
     finJeu=0;
     cr_assert(test1==6,"countPointRoad : test1 faux");
@@ -1318,10 +1260,8 @@ Test(all,countPointRoad)
     cr_assert(test7==0,"countPointRoad : test7 faux");
     cr_assert(test8==1,"countPointRoad : test8 faux");
     cr_assert(test9==1,"countPointRoad : test9 faux");
-
-    
-
-
+    cr_assert(test10==1,"countPointRoad : test10 faux");
+    cr_assert(test11==1,"countPointRoad : test11 faux");
 }
 
 

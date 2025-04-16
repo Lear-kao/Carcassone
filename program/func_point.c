@@ -210,6 +210,38 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
     {
         return 0;
     }
+    
+    if(grille->tile->middle==VILLAGE || grille->tile->middle == ABBAYES){
+        switch (start)
+        {
+            case RIGHT:
+                if(grille->tile->right==ROUTE && grille->right !=NULL && is_a_potential_tile(grille->right->tile)){
+                    point++;
+                }
+                break;
+            
+            case TOP:
+                if(grille->tile->top==ROUTE && grille->top !=NULL && is_a_potential_tile(grille->top->tile)){
+                    point++;
+                }
+                break;
+            
+            case LEFT:
+                if(grille->tile->left==ROUTE && grille->left !=NULL && is_a_potential_tile(grille->left->tile)){
+                    point++;
+                }
+                break;
+            
+            case BOT:
+                if(grille->tile->bot==ROUTE && grille->bot !=NULL && is_a_potential_tile(grille->bot->tile)){
+                    point++;
+                }
+                break;
+        }
+
+    }
+
+
     return point;
 }
 
