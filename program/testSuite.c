@@ -1063,6 +1063,9 @@ Test(all ,count_point_city)
         avec MIDDLE comme parametre donc ici test2 est correct
     */
 
+    char test12=count_point_city(G->top->right,LEFT);
+    printf("count_point_city -> test12 = %d\n",test12);
+
     char test3=count_point_city(G->top->right,RIGHT);
     printf("count_point_city -> test3 = %d\n",test3);
     /*
@@ -1140,6 +1143,9 @@ Test(all ,count_point_city)
         je suis censé avoir test9=3
     */
 
+    char test11=count_point_city(G->top->right,LEFT);
+    printf("count_point_city -> test11 = %d\n",test11);
+
     cr_assert(test1==0,"count_point_city : test1 faux");
     cr_assert(test2==0,"count_point_city : test2 faux");
     cr_assert(test3==6,"count_point_city : test3 faux");
@@ -1150,6 +1156,8 @@ Test(all ,count_point_city)
     cr_assert(test8==12,"count_point_city : test8 faux");
     cr_assert(test9==3,"count_point_city : test9 faux");
     cr_assert(test10==3,"count_point_city : test10 faux");
+    cr_assert(test11==3,"count_point_city : test11 faux");
+    cr_assert(test12==0,"count_point_city : test12 faux");
     finJeu=0;
 }
 

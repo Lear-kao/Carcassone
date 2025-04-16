@@ -35,14 +35,14 @@ pas complètement entourée.
 
 char count_point_city( struct Grid *grille, enum places a )
 {
-    char point = 2;
-    char unfinished;
-    printf("count_point_city -> unfinished = %d\n",unfinished);
-    grille->marquer = v_marquer;
+    char point = 0;
+    char unfinished=0;
+    
     
     switch (a)
     {
         case RIGHT:
+            //grille->marquer = v_marquer;
             if(grille->right != NULL)
             {
                 point += isFinishedCity(grille->right, &unfinished);
@@ -51,6 +51,7 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
         
         case TOP:
+            //grille->marquer = v_marquer;
             if(grille->top != NULL)
             {
                 point += isFinishedCity(grille->top, &unfinished);
@@ -59,6 +60,7 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
     
         case LEFT:
+            //grille->marquer = v_marquer;
             if(grille->left != NULL)
             {
                 point += isFinishedCity(grille->left, &unfinished);
@@ -67,6 +69,7 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
         
         case BOT:
+            //grille->marquer = v_marquer;
             if(grille->bot != NULL)
             {
                 point += isFinishedCity(grille->bot, &unfinished);
@@ -78,10 +81,15 @@ char count_point_city( struct Grid *grille, enum places a )
             point = isFinishedCity(grille,&unfinished);
             break;
     }
+    v_marquer++;
+    //printf("count_point_city -> unfinished = %d\n",unfinished);
 
-    if( finJeu == 1 || unfinished  == 0)
-    return point;
-    return 0;
+    if(finJeu == 1)
+        return point/2;
+    if(unfinished  == 0)
+        return point;
+    else
+        return 0;
 }
 
 char isFinishedCity( struct Grid *grille, char *unfinished)
@@ -96,7 +104,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
 {
     if( is_a_potential_tile(grille->tile) == 1)
     {
-        *unfinished = 0;
+        *unfinished = 1;
         return 0;
     }
     if (grille->marquer == v_marquer) return 0;
@@ -109,10 +117,11 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
         {
             if(is_a_potential_tile(grille->top->tile))
             {
-                *unfinished = 0;
+                *unfinished = 1;
             }
             else
             {
+                if(grille->top->tile->bot==VILLE)
                 cmpt += isFinishedCity(grille->top,unfinished);
             }
         }
@@ -120,10 +129,11 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
         {
             if(is_a_potential_tile(grille->right->tile))
             {
-                *unfinished = 0;
+                *unfinished = 1;
             }
             else
             {
+                if(grille->right->tile->left==VILLE)
                 cmpt += isFinishedCity(grille->right,unfinished);
             }
         }
@@ -131,10 +141,11 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
         {
             if(is_a_potential_tile(grille->left->tile))
             {
-                *unfinished = 0;
+                *unfinished = 1;
             }
             else
             {
+                if(grille->left->tile->right==VILLE)
                 cmpt += isFinishedCity(grille->left,unfinished);
             }
         }
@@ -142,21 +153,22 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
         {
             if(is_a_potential_tile(grille->bot->tile))
             {
-                *unfinished = 0;
+                *unfinished = 1;
             }
             else
             {
+                if(grille->bot->tile->top==VILLE)
                 cmpt += isFinishedCity(grille->bot,unfinished);
             }
         }
     }
-    if (*unfinished == 0 && finJeu == 0) return 0;
+    if (*unfinished == 1 && finJeu == 0) return 0;
     return cmpt;
 }
 
 char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
 {
-    char  point = 1;
+    char  point = 0;
     switch(start)
     {
         case RIGHT:
@@ -192,6 +204,8 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
             point += isFinishedRoad(grille->bot,unfinished);
             break;
     }
+
+    v_marquer++;
     if (*unfinished == 1 && finJeu == 0)
     {
         return 0;
@@ -216,7 +230,7 @@ Commentaire à faire
     }
     grille->marquer = v_marquer;
     char cmp = 1;
-    if (grille->tile->meeple == ROUTE){
+    if (grille->tile->middle == ROUTE){
     if ( grille->tile->bot == ROUTE && grille->bot !=NULL )
     {
         cmp += isFinishedRoad(grille->bot,unfinished);

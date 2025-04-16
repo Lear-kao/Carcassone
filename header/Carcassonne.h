@@ -22,7 +22,7 @@ char turnTraker = 0;     // Numéro du joueur dont c'est le tour.
 char finJeu = 0;
 int nbPlayers;
 int nbBot;
-int v_marquer  = 0;
+int v_marquer  = 1;
 //-----------------------
 // ----Data structure----
 // ----------------------

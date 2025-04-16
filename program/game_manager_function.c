@@ -647,6 +647,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord 
     unsigned char t_x = 0, t_y;
     for (t_x = 0; t_x < y; t_x++)
     {
+        printf("\n");
         for (int j = 0; j < 3; j++)
         {
             t_y = 0;
@@ -689,6 +690,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord 
         if (temp_x != NULL)
             temp_x = temp_x->bot;
     }
+
 }
 
 
