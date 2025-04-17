@@ -188,91 +188,72 @@ Prend en paramètre une liste d'entiers et renvoie le plus grand
 char countMeepleRoad(struct Grid *grille, enum places start, int color)
 {
     char  nbmeeple = 0;
+    
     if(is_meeple_on_tile(grille->tile))
     {
         if (what_color_is_meeple(color,*(grille->tile)) &&
             where_is_meeple(ROUTE,*(grille->tile))) nbmeeple += 1;
     }
+
+    //grille->marquer = v_marquer;
     switch(start)
     {
         case RIGHT:
-            // if(grille->right == NULL  || is_a_potential_tile(grille->right->tile))
-            // {
-            //     point = 1;
-            //     break;
-            // }
             nbmeeple += meepleRoad(grille->right,color);
             break;
+
         case TOP:
-            // if(grille->top == NULL  || is_a_potential_tile(grille->top->tile))
-            // {
-            //     point = 1;
-            //     break;
-            // }
             nbmeeple += meepleRoad(grille->top,color);
             break;
+
         case LEFT:
-            // if(grille->left == NULL  || is_a_potential_tile(grille->left->tile))
-            // {
-            //     point = 1;
-            //     break;
-            // }
             nbmeeple += meepleRoad(grille->left,color);
             break;
+
         case BOT:
-            // if(grille->bot == NULL  || is_a_potential_tile(grille->bot->tile))
-            // {
-            //     point = 1;
-            //     break;
-            // }
             nbmeeple += meepleRoad(grille->bot,color);
             break;
     }
+
+    v_marquer++;
     return nbmeeple;
 }
 
 
 char meepleRoad(struct Grid *grille, int color)// Commentaire à faire !!! unfinished initialisé à 1
 {
-    /*
-    if( is_a_potential_tile(grille->tile) == 1)
+    char cmp=0;
+    if( grille->marquer == v_marquer) return 0;
+
+    if(is_meeple_on_tile(grille->tile))
     {
-        return 0;
+        if(what_color_is_meeple(color,*(grille->tile)) &&
+           where_is_meeple(ROUTE,*(grille->tile))){
+            cmp+=1;
+        }
     }
-    if( grille->marquer == v_marquer)
-    {
-        *unfinished = 0;
-        return 0;
-    }
+
     grille->marquer = v_marquer;
-    char cmp = 1;
-    if (grille->tile->meeple == ROUTE){
-    if ( grille->tile->bot == ROUTE && grille->bot !=NULL )
+
+    if (grille->tile->middle == ROUTE)
     {
-        cmp += isFinishedRoad(grille->bot,unfinished);
+        if ( grille->tile->bot == ROUTE && grille->bot !=NULL )
+        {
+            cmp += meepleRoad(grille->bot,color);
+        }
+        if ( grille->tile->left == ROUTE && grille->left !=NULL )
+        {
+            cmp += meepleRoad(grille->left,color);
+        }
+        if ( grille->tile->top == ROUTE && grille->top !=NULL )
+        {
+            cmp += meepleRoad(grille->top,color);
+        }
+        if ( grille->tile->right == ROUTE && grille->right !=NULL )
+        {
+            cmp += meepleRoad(grille->right,color);
+        }
     }
-    if ( grille->tile->left == ROUTE && grille->left !=NULL )
-    {
-        cmp += isFinishedRoad(grille->left,unfinished);
-    }
-    if ( grille->tile->top == ROUTE && grille->top !=NULL )
-    {
-        cmp += isFinishedRoad(grille->top,unfinished);
-    }
-    if ( grille->tile->right == ROUTE && grille->right !=NULL )
-    {
-        cmp += isFinishedRoad(grille->right,unfinished);
-    }
-    }
-    if(grille->tile->middle == VILLAGE || grille->tile->middle == VILLE || grille->tile->middle == ABBAYES)
-    {
-        *unfinished = 0;
-        return 1;
-    }
-    if (*unfinished == 1 && finJeu == 0)
-    {
-        return 0;
-    }
+
     return cmp;
-    */
 }

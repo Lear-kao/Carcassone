@@ -551,6 +551,7 @@ struct Grid* searchAbbaye(struct Grid* grille); //tester (normalement)
 char searchMeeple(struct Tile tile ,int where);
 /*verifie si il y a un meeple a l'endroit souhaiter*/
 
-char meepleRoad(struct Grid *grille, int color);
+char countMeepleRoad(struct Grid *grille, enum places start, int color);//tester
+char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
 
 #endif // CARCASSONNE_H
