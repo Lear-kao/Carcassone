@@ -503,7 +503,7 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
 /* compte les points après la pose d'un tuile pour les  structures en dehors de celle du millieu */
 void *end_game_points_counter( struct list_player list ); // à tester (axel)
 /* affiche les points en fin de partie */
-int max(char *list);
+int max(char *list);//tester
 /* calcule le maximum d'un tableau de charactère */
 
 /* 
@@ -514,13 +514,30 @@ int max(char *list);
 --------------------------------------
 */
 
-char nbMeepleVille( struct Grid *grille,  int coul_player);
+char nbMeepleVille( struct Grid *grille,  int coul_player); //tester
 /* compte le nombre de meeple dans une ville d'une couleur précise */
-char nbMeepleVille_nocolor( struct Grid *grille);
 
-char nbMeepleAbbaye( struct Grid *grille, int i);
+char nbMeepleVilleEncap(struct Grid *grille, int coul_player); //tester
+/* 
+    on appel cette fonction pour appeler nbMeepleVille et pouvoir 
+    incrementer v_marquer
+*/
+
+char nbMeepleVille_nocolor( struct Grid *grille); //tester
+
+char nbMeepleVille_nocolorEncap(struct Grid *grille,int where); //tester
+/* 
+    Parametre:
+        grille: la grille a tester
+        where: ou chercher le meeple (parametre de recursion)
+
+    on appel cette fonction pour appeler nbMeepleVille_nocolor et pouvoir 
+    incrementer v_marquer
+*/
+
+char nbMeepleAbbaye( struct Grid *grille, int i); //tester
 /* vérifie si un meeple d'une couleur précise est présent dans l'abbaye */
-char nbMeepleAbbaye_nocolor(struct Grid *grille);
+char nbMeepleAbbaye_nocolor(struct Grid *grille);//tester
 /* pareil mais sans la couleur du meeple */
 
 char where_is_meeple(  int type, struct Tile tile);//tester 
@@ -530,6 +547,9 @@ char what_color_is_meeple(int color, struct Tile tile);//tester
 /* vérifie si le meeple posée sur la  tuile est bien de la bonne couleur */
 struct Grid* searchAbbaye(struct Grid* grille); //tester (normalement)
 /* cherche et renvoie la grille d'une tuile abbaye si celle-ce est présente autour de la case en entrée et renvoie NULL sinon */
+
+char searchMeeple(struct Tile tile ,int where);
+/*verifie si il y a un meeple a l'endroit souhaiter*/
 
 char meepleRoad(struct Grid *grille, int color);
 

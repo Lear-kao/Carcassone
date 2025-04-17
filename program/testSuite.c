@@ -1051,16 +1051,16 @@ Test(all ,count_point_city)
     */
 
     char test1=count_point_city(G,TOP); 
-    printf("count_point_city -> test1 = %d\n",test1);
+    //printf("count_point_city -> test1 = %d\n",test1);
 
     char test2=count_point_city(G->top,MIDDLE);
-    printf("count_point_city -> test2 = %d\n",test2);
+    //printf("count_point_city -> test2 = %d\n",test2);
 
     char test12=count_point_city(G->top->right,LEFT);
-    printf("count_point_city -> test12 = %d\n",test12);
+    //printf("count_point_city -> test12 = %d\n",test12);
 
     char test3=count_point_city(G->top->right,RIGHT);
-    printf("count_point_city -> test3 = %d\n",test3);
+    //printf("count_point_city -> test3 = %d\n",test3);
     /*
         G->top->right=[P,P,P]
                       [V,R,V]
@@ -1068,7 +1068,7 @@ Test(all ,count_point_city)
     */
 
     char test4=count_point_city(G->top->right->right,MIDDLE);
-    printf("count_point_city -> test4 = %d\n",test4);
+    //printf("count_point_city -> test4 = %d\n",test4);
     /*
         G->top->right->right=[P,P,P]
                              [V,V,P]
@@ -1076,7 +1076,7 @@ Test(all ,count_point_city)
     */
 
     char test5=count_point_city(G->right->right,TOP);
-    printf("count_point_city -> test5 = %d\n",test5);
+    //printf("count_point_city -> test5 = %d\n",test5);
     /*
         G->right->right=[P,V,P]
                         [P,P,P]
@@ -1092,7 +1092,7 @@ Test(all ,count_point_city)
     */
 
     char test7=count_point_city(G->bot,LEFT);
-    printf("count_point_city -> test7 = %d\n",test7);
+    //printf("count_point_city -> test7 = %d\n",test7);
     /*
         G->bot=[V,V,V]
                [V,V,V]
@@ -1100,7 +1100,7 @@ Test(all ,count_point_city)
     */
 
     char test8=count_point_city(G->bot,RIGHT);
-    printf("count_point_city -> test8 = %d\n",test8);
+    //printf("count_point_city -> test8 = %d\n",test8);
     /*
         G->bot=[V,V,V]
                [V,V,V]
@@ -1109,13 +1109,13 @@ Test(all ,count_point_city)
    
     finJeu=1;
     char test9=count_point_city(G,TOP);
-    printf("count_point_city -> test9 = %d\n",test9);
+    //printf("count_point_city -> test9 = %d\n",test9);
 
     char test10=count_point_city(G->top,MIDDLE);
-    printf("count_point_city -> test10 = %d\n",test10);
+    //printf("count_point_city -> test10 = %d\n",test10);
 
     char test11=count_point_city(G->top->right,LEFT);
-    printf("count_point_city -> test11 = %d\n",test11);
+    //printf("count_point_city -> test11 = %d\n",test11);
 
     cr_assert(test1==0,"count_point_city : test1 faux");
     cr_assert(test2==0,"count_point_city : test2 faux");
@@ -1208,50 +1208,50 @@ Test(all,countPointRoad)
 
     unfinished=1;
     char test1=countPointRoad(G,&unfinished,RIGHT);
-    printf("countPointRoad -> test1 = %d\n",test1);
+    //printf("countPointRoad -> test1 = %d\n",test1);
     
     unfinished=1;
     char test2=countPointRoad(G,&unfinished,LEFT);
-    printf("countPointRoad -> test2 = %d\n",test2);
+    //printf("countPointRoad -> test2 = %d\n",test2);
 
     unfinished=1;
     char test3=countPointRoad(G->right,&unfinished,RIGHT);
-    printf("countPointRoad -> test3 = %d\n",test3);
+    //printf("countPointRoad -> test3 = %d\n",test3);
     
     unfinished=1;
     char test4=countPointRoad(G->right,&unfinished,LEFT);
-    printf("countPointRoad -> test4 = %d\n",test4);
+    //printf("countPointRoad -> test4 = %d\n",test4);
 
     unfinished=1;
     char test5=countPointRoad(G->left->top,&unfinished,BOT);
-    printf("countPointRoad -> test5 = %d\n",test5);
+    //printf("countPointRoad -> test5 = %d\n",test5);
 
     unfinished=1;
     char test6=countPointRoad(G->left->top,&unfinished,LEFT);
-    printf("countPointRoad -> test6 = %d\n",test6);
+    //printf("countPointRoad -> test6 = %d\n",test6);
 
     unfinished=1;
     char test7=countPointRoad(G->left->top,&unfinished,TOP);
-    printf("countPointRoad -> test7 = %d\n",test7);
+    //printf("countPointRoad -> test7 = %d\n",test7);
 
     unfinished=1;
     finJeu=1;
     char test8=countPointRoad(G->left->top,&unfinished,LEFT);
-    printf("countPointRoad -> test8 = %d\n",test8);
+    //printf("countPointRoad -> test8 = %d\n",test8);
 
     unfinished=1;
     finJeu=1;
     char test9=countPointRoad(G->left->top,&unfinished,TOP);
-    printf("countPointRoad -> test9 = %d\n",test9);
+    //printf("countPointRoad -> test9 = %d\n",test9);
 
     unfinished=1;
     finJeu=1;
     char test10=countPointRoad(G->right->right->bot,&unfinished,RIGHT);
-    printf("countPointRoad -> test10 = %d\n",test10);
+    //printf("countPointRoad -> test10 = %d\n",test10);
     unfinished=1;
     finJeu=1;
     char test11=countPointRoad(G->right->right->bot,&unfinished,BOT);
-    printf("countPointRoad -> test11 = %d\n",test11);
+    //printf("countPointRoad -> test11 = %d\n",test11);
 
 
     finJeu=0;
@@ -1417,6 +1417,7 @@ Test(all ,what_color_is_meeple)
 Test(all ,nbMeepleVille)
 {
     
+    nbPlayers=8;
     struct list_player *list_player=init_player_list(0);
     struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE); struct Tile *tile2 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);
     struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);     struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
@@ -1446,10 +1447,12 @@ Test(all ,nbMeepleVille)
 
     tile1->meeple=list_player->player[0];
     tile1->meeplePlace=MP_TOP;
-    tile3->meeple=list_player->player[1];
-    tile3->meeplePlace=MP_LEFT;
+    tile6->meeple=list_player->player[1];
+    tile6->meeplePlace=MP_LEFT;
     tile8->meeple=list_player->player[2];
     tile8->meeplePlace=MP_BOT;
+    tile10->meeple=list_player->player[3];
+    tile10->meeplePlace=MP_MIDDLE;
 
     struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
     G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
@@ -1483,4 +1486,351 @@ Test(all ,nbMeepleVille)
     G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
 
     char test1 =nbMeepleVille(G->top,0);
+    char test2 =nbMeepleVille(G->top,1);
+    char test3 =nbMeepleVille(G->top,2);
+    char test4 =nbMeepleVille(G->top->right->right,0);
+    char test5 =nbMeepleVille(G->top->right->right,3);
+
+
+    cr_assert(test1==1,"test1 echoué");
+    cr_assert(test2==1,"test2 echoué");
+    cr_assert(test3==0,"test3 echoué");
+    cr_assert(test4==0,"test4 echoué");
+    cr_assert(test5==1,"test5 echoué");
+}
+
+Test(all ,nbMeepleVille_nocolor)
+{
+        
+    nbPlayers=8;
+    struct list_player *list_player=init_player_list(0);
+    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE); struct Tile *tile2 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);
+    struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);     struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
+    struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,PRE,PRE);
+    struct Tile *tile7 = init_tile(ROUTE,ROUTE,PRE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,ROUTE,ROUTE,ROUTE,VILLAGE);
+    struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
+    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(ROUTE,ROUTE,PRE,ROUTE,ABBAYES);
+    struct Tile *tile13= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);
+    struct Tile *tile15= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile17= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
+    struct Tile *tile19= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile20= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
+    struct Tile *tile21= init_tile(PRE,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile22= init_tile(ROUTE,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile23= init_tile(PRE,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile24= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile25= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile26= init_tile(RIEN,RIEN,RIEN,ROUTE,RIEN);
+    struct Tile *tile27= init_tile(RIEN,RIEN,RIEN,VILLE,RIEN);      struct Tile *tile28= init_tile(RIEN,RIEN,RIEN,PRE,RIEN);
+    struct Tile *tile29= init_tile(RIEN,RIEN,RIEN,PRE,RIEN);      struct Tile *tile30= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Coord *C1=init_coord(0,0);   struct Coord *C2=init_coord(1,0);       struct Coord *C3=init_coord(1,-1);
+    struct Coord *C4=init_coord(-1,0);  struct Coord *C5=init_coord(0,1);       struct Coord *C6=init_coord(1,1);
+    struct Coord *C7=init_coord(-1,0);  struct Coord *C8=init_coord(-1,1);      struct Coord *C9=init_coord(-1,-1);
+    struct Coord *C10=init_coord(2,1);  struct Coord *C11=init_coord(2,0);      struct Coord *C12=init_coord(2,-1);
+    struct Coord *C13=init_coord(3,0);  struct Coord *C14=init_coord(3,1);      struct Coord *C15=init_coord(3,-1);
+    struct Coord *C16=init_coord(3,-2); struct Coord *C17=init_coord(2,-2);     struct Coord *C18=init_coord(1,-2);
+    struct Coord *C19=init_coord(0,-2); struct Coord *C20=init_coord(-1,-2);    struct Coord *C21=init_coord(-2,0);
+    struct Coord *C22=init_coord(-2,1); struct Coord *C23=init_coord(-2,-1);    struct Coord *C24=init_coord(-2,-2);
+    struct Coord *C25=init_coord(-2,2); struct Coord *C26=init_coord(-1,2);     struct Coord *C27=init_coord(0,2);
+    struct Coord *C28=init_coord(1,2);  struct Coord *C29=init_coord(2,2);      struct Coord *C30=init_coord(3,2);
+
+    tile1->meeple=list_player->player[0];
+    tile1->meeplePlace=MP_TOP;
+
+    tile6->meeple=list_player->player[1];
+    tile6->meeplePlace=MP_LEFT;
+
+    tile8->meeple=list_player->player[2];
+    tile8->meeplePlace=MP_BOT;
+
+    tile10->meeple=list_player->player[3];
+    tile10->meeplePlace=MP_MIDDLE;
+
+    tile4->meeple=list_player->player[0];
+    tile4->meeplePlace=MP_MIDDLE;
+
+    tile7->meeple=list_player->player[1];
+    tile7->meeplePlace=MP_BOT;
+
+    tile2->meeple=list_player->player[2];
+    tile2->meeplePlace=MP_BOT;
+
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,NULL,G->right);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,NULL,G);
+    G->top=init_grid(tile5,C5,NULL,NULL,G,NULL);
+    G->top->right=init_grid(tile6,C6,NULL,G->top,G->right,NULL);
+    G->left=init_grid(tile7,C7,G,NULL,NULL,NULL);
+    G->left->top=init_grid(tile8,C8,G->top,NULL,G->left,NULL);
+    G->left->bot=init_grid(tile9,C9,G->bot,NULL,NULL,G->left);
+    G->right->top->right=init_grid(tile10,C10,NULL,G->right->top,NULL,NULL);
+    G->right->right=init_grid(tile11,C11,NULL,G->right,NULL,G->right->top->right);
+    G->right->right->bot=init_grid(tile12,C12,NULL,G->right->bot,NULL,G->right->right);
+    G->right->right->right=init_grid(tile13,C13,NULL,G->right->right,NULL,NULL);
+    G->right->right->right->top=init_grid(tile14,C14,NULL,G->top->right->right,G->right->right,NULL);
+    G->right->right->right->bot=init_grid(tile15,C15,NULL,G->bot->right->right,NULL,G->right->right);
+    G->right->right->right->bot->bot=init_grid(tile16,C16,NULL,NULL,NULL,G->right->right->right->bot);
+    G->right->right->bot->bot=init_grid(tile17,C17,G->right->right->right->bot->bot,NULL,NULL,G->right->right->bot);
+    G->right->bot->bot=init_grid(tile18,C18,G->right->right->bot->bot,NULL,NULL,G->right->bot);
+    G->bot->bot=init_grid(tile19,C19,G->right->bot->bot,NULL,NULL,G->bot);
+    G->left->bot->bot=init_grid(tile20,C20,G->bot->bot,NULL,NULL,G->left->bot);
+    G->left->left=init_grid(tile21,C21,G->left,NULL,NULL,NULL);
+    G->left->left->top=init_grid(tile22,C22,G->left->top,NULL,G->left->left,NULL);
+    G->left->left->bot=init_grid(tile23,C23,G->left->bot,NULL,NULL,G->left->left);
+    G->left->left->bot->bot=init_grid(tile24,C24,G->left->bot->bot,NULL,NULL,G->left->left->bot);
+    G->left->left->top->top=init_grid(tile25,C25,NULL,NULL,G->left->left->top,NULL);
+    G->left->top->top=init_grid(tile26,C26,NULL,G->left->left->top->top,G->left->top,NULL);
+    G->top->top=init_grid(tile27,C27,NULL,G->left->top->top,G->top,NULL);
+    G->right->top->top=init_grid(tile28,C28,NULL,G->top->top,G->right->top,NULL);
+    G->right->right->top->top=init_grid(tile29,C29,NULL,G->right->top->top,G->right->right->top,NULL);
+    G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
+
+    char test1=nbMeepleVille_nocolor(G->top);
+    char test2=nbMeepleVille_nocolor(G->bot);
+    char test3=nbMeepleVille_nocolor(G->bot->right);
+    char test4=nbMeepleVille_nocolor(G->bot->left);
+    char test5=nbMeepleVille_nocolor(G->top->right->right);
+
+    cr_assert(test1==2,"test1 echoué");
+    cr_assert(test2==3,"test2 echoué");
+    cr_assert(test3==3,"test3 echoué");
+    cr_assert(test4==3,"test4 echoué");
+    cr_assert(test5==1,"test5 echoué");
+}
+
+Test(all ,nbMeepleAbbaye)
+{
+    nbPlayers=8;
+    struct list_player *list_player=init_player_list(0);
+    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE); struct Tile *tile2 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);
+    struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);     struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
+    struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,PRE,PRE);
+    struct Tile *tile7 = init_tile(ROUTE,ROUTE,PRE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,ROUTE,ROUTE,ROUTE,VILLAGE);
+    struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
+    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(ROUTE,ROUTE,PRE,ROUTE,ABBAYES);
+    struct Tile *tile13= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);
+    struct Tile *tile15= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile17= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
+    struct Tile *tile19= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile20= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
+    struct Tile *tile21= init_tile(PRE,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile22= init_tile(ROUTE,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile23= init_tile(PRE,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile24= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile25= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile26= init_tile(RIEN,RIEN,RIEN,ROUTE,RIEN);
+    struct Tile *tile27= init_tile(RIEN,RIEN,RIEN,VILLE,RIEN);      struct Tile *tile28= init_tile(RIEN,RIEN,RIEN,PRE,RIEN);
+    struct Tile *tile29= init_tile(RIEN,RIEN,RIEN,PRE,RIEN);      struct Tile *tile30= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Coord *C1=init_coord(0,0);   struct Coord *C2=init_coord(1,0);       struct Coord *C3=init_coord(1,-1);
+    struct Coord *C4=init_coord(-1,0);  struct Coord *C5=init_coord(0,1);       struct Coord *C6=init_coord(1,1);
+    struct Coord *C7=init_coord(-1,0);  struct Coord *C8=init_coord(-1,1);      struct Coord *C9=init_coord(-1,-1);
+    struct Coord *C10=init_coord(2,1);  struct Coord *C11=init_coord(2,0);      struct Coord *C12=init_coord(2,-1);
+    struct Coord *C13=init_coord(3,0);  struct Coord *C14=init_coord(3,1);      struct Coord *C15=init_coord(3,-1);
+    struct Coord *C16=init_coord(3,-2); struct Coord *C17=init_coord(2,-2);     struct Coord *C18=init_coord(1,-2);
+    struct Coord *C19=init_coord(0,-2); struct Coord *C20=init_coord(-1,-2);    struct Coord *C21=init_coord(-2,0);
+    struct Coord *C22=init_coord(-2,1); struct Coord *C23=init_coord(-2,-1);    struct Coord *C24=init_coord(-2,-2);
+    struct Coord *C25=init_coord(-2,2); struct Coord *C26=init_coord(-1,2);     struct Coord *C27=init_coord(0,2);
+    struct Coord *C28=init_coord(1,2);  struct Coord *C29=init_coord(2,2);      struct Coord *C30=init_coord(3,2);
+
+    tile12->meeple=list_player->player[3];
+    tile12->meeplePlace=MP_MIDDLE;
+
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,NULL,G->right);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,NULL,G);
+    G->top=init_grid(tile5,C5,NULL,NULL,G,NULL);
+    G->top->right=init_grid(tile6,C6,NULL,G->top,G->right,NULL);
+    G->left=init_grid(tile7,C7,G,NULL,NULL,NULL);
+    G->left->top=init_grid(tile8,C8,G->top,NULL,G->left,NULL);
+    G->left->bot=init_grid(tile9,C9,G->bot,NULL,NULL,G->left);
+    G->right->top->right=init_grid(tile10,C10,NULL,G->right->top,NULL,NULL);
+    G->right->right=init_grid(tile11,C11,NULL,G->right,NULL,G->right->top->right);
+    G->right->right->bot=init_grid(tile12,C12,NULL,G->right->bot,NULL,G->right->right);
+    G->right->right->right=init_grid(tile13,C13,NULL,G->right->right,NULL,NULL);
+    G->right->right->right->top=init_grid(tile14,C14,NULL,G->top->right->right,G->right->right,NULL);
+    G->right->right->right->bot=init_grid(tile15,C15,NULL,G->bot->right->right,NULL,G->right->right);
+    G->right->right->right->bot->bot=init_grid(tile16,C16,NULL,NULL,NULL,G->right->right->right->bot);
+    G->right->right->bot->bot=init_grid(tile17,C17,G->right->right->right->bot->bot,NULL,NULL,G->right->right->bot);
+    G->right->bot->bot=init_grid(tile18,C18,G->right->right->bot->bot,NULL,NULL,G->right->bot);
+    G->bot->bot=init_grid(tile19,C19,G->right->bot->bot,NULL,NULL,G->bot);
+    G->left->bot->bot=init_grid(tile20,C20,G->bot->bot,NULL,NULL,G->left->bot);
+    G->left->left=init_grid(tile21,C21,G->left,NULL,NULL,NULL);
+    G->left->left->top=init_grid(tile22,C22,G->left->top,NULL,G->left->left,NULL);
+    G->left->left->bot=init_grid(tile23,C23,G->left->bot,NULL,NULL,G->left->left);
+    G->left->left->bot->bot=init_grid(tile24,C24,G->left->bot->bot,NULL,NULL,G->left->left->bot);
+    G->left->left->top->top=init_grid(tile25,C25,NULL,NULL,G->left->left->top,NULL);
+    G->left->top->top=init_grid(tile26,C26,NULL,G->left->left->top->top,G->left->top,NULL);
+    G->top->top=init_grid(tile27,C27,NULL,G->left->top->top,G->top,NULL);
+    G->right->top->top=init_grid(tile28,C28,NULL,G->top->top,G->right->top,NULL);
+    G->right->right->top->top=init_grid(tile29,C29,NULL,G->right->top->top,G->right->right->top,NULL);
+    G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
+
+    char test1[8],test2[8],test3[8];
+
+    for(int i=0;i<8;i++){
+        test1[i]=nbMeepleAbbaye(G->right->right->bot,i);
+        test2[i]=nbMeepleAbbaye(G->right->right,i);
+        test3[i]=nbMeepleAbbaye(G->right,i);
+    }
+
+    G->right->right->bot->tile->meeplePlace=MP_TOP;
+
+
+    cr_assert(test1[0]==0);
+    cr_assert(test1[1]==0);
+    cr_assert(test1[2]==0);
+    cr_assert(test1[3]==1);//joueur 3
+    cr_assert(test1[4]==0);
+    cr_assert(test1[5]==0);
+    cr_assert(test1[6]==0);
+    cr_assert(test1[7]==0);
+    cr_assert(test2[0]==0);
+    cr_assert(test2[1]==0);
+    cr_assert(test2[2]==0);
+    cr_assert(test2[3]==1);//joueur 3
+    cr_assert(test2[4]==0);
+    cr_assert(test2[5]==0);
+    cr_assert(test2[6]==0);
+    cr_assert(test2[7]==0);
+    cr_assert(test3[0]==0);
+    cr_assert(test3[1]==0);
+    cr_assert(test3[2]==0);
+    cr_assert(test3[3]==1);//joueur 3
+    cr_assert(test3[4]==0);
+    cr_assert(test3[5]==0);
+    cr_assert(test3[6]==0);
+    cr_assert(test3[7]==0);
+
+    char test4[8],test5[8],test6[8];
+
+    for(int i=0;i<8;i++){
+        test4[i]=nbMeepleAbbaye(G->right->right->bot,i);
+        test5[i]=nbMeepleAbbaye(G->right->right,i);
+        test6[i]=nbMeepleAbbaye(G->right,i);
+    }
+
+    cr_assert(test4[0]==0);
+    cr_assert(test4[1]==0);
+    cr_assert(test4[2]==0);
+    cr_assert(test4[3]==0);
+    cr_assert(test4[4]==0);
+    cr_assert(test4[5]==0);
+    cr_assert(test4[6]==0);
+    cr_assert(test4[7]==0);
+    cr_assert(test5[0]==0);
+    cr_assert(test5[1]==0);
+    cr_assert(test5[2]==0);
+    cr_assert(test5[3]==0);
+    cr_assert(test5[4]==0);
+    cr_assert(test5[5]==0);
+    cr_assert(test5[6]==0);
+    cr_assert(test5[7]==0);
+    cr_assert(test6[0]==0);
+    cr_assert(test6[1]==0);
+    cr_assert(test6[2]==0);
+    cr_assert(test6[3]==0);
+    cr_assert(test6[4]==0);
+    cr_assert(test6[5]==0);
+    cr_assert(test6[6]==0);
+    cr_assert(test6[7]==0);
+}
+
+Test(all ,nbMeepleAbbaye_nocolor)
+{
+    nbPlayers=8;
+    struct list_player *list_player=init_player_list(0);
+    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE); struct Tile *tile2 = init_tile(ROUTE,PRE,ROUTE,VILLE,ROUTE);
+    struct Tile *tile3 = init_tile(PRE,VILLE,VILLE,PRE,VILLE);     struct Tile *tile4 = init_tile(VILLE,VILLE,VILLE,PRE,VILLE);
+    struct Tile *tile5 = init_tile(VILLE,VILLE,VILLE,VILLE,VILLE); struct Tile *tile6 = init_tile(VILLE,PRE,VILLE,PRE,PRE);
+    struct Tile *tile7 = init_tile(ROUTE,ROUTE,PRE,VILLE,ROUTE);   struct Tile *tile8 = init_tile(PRE,ROUTE,ROUTE,ROUTE,VILLAGE);
+    struct Tile *tile9 = init_tile(VILLE,VILLE,PRE,PRE,VILLE);     struct Tile *tile10= init_tile(PRE,PRE,VILLE,VILLE,VILLE);
+    struct Tile *tile11= init_tile(PRE,VILLE,ROUTE,ROUTE,ROUTE);   struct Tile *tile12= init_tile(ROUTE,ROUTE,PRE,ROUTE,ABBAYES);
+    struct Tile *tile13= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile14= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);
+    struct Tile *tile15= init_tile(RIEN,RIEN,PRE,RIEN,RIEN);      struct Tile *tile16= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile17= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile18= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
+    struct Tile *tile19= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);      struct Tile *tile20= init_tile(RIEN,PRE,RIEN,RIEN,RIEN);
+    struct Tile *tile21= init_tile(PRE,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile22= init_tile(ROUTE,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile23= init_tile(PRE,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile24= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Tile *tile25= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);      struct Tile *tile26= init_tile(RIEN,RIEN,RIEN,ROUTE,RIEN);
+    struct Tile *tile27= init_tile(RIEN,RIEN,RIEN,VILLE,RIEN);      struct Tile *tile28= init_tile(RIEN,RIEN,RIEN,PRE,RIEN);
+    struct Tile *tile29= init_tile(RIEN,RIEN,RIEN,PRE,RIEN);      struct Tile *tile30= init_tile(RIEN,RIEN,RIEN,RIEN,RIEN);
+    struct Coord *C1=init_coord(0,0);   struct Coord *C2=init_coord(1,0);       struct Coord *C3=init_coord(1,-1);
+    struct Coord *C4=init_coord(-1,0);  struct Coord *C5=init_coord(0,1);       struct Coord *C6=init_coord(1,1);
+    struct Coord *C7=init_coord(-1,0);  struct Coord *C8=init_coord(-1,1);      struct Coord *C9=init_coord(-1,-1);
+    struct Coord *C10=init_coord(2,1);  struct Coord *C11=init_coord(2,0);      struct Coord *C12=init_coord(2,-1);
+    struct Coord *C13=init_coord(3,0);  struct Coord *C14=init_coord(3,1);      struct Coord *C15=init_coord(3,-1);
+    struct Coord *C16=init_coord(3,-2); struct Coord *C17=init_coord(2,-2);     struct Coord *C18=init_coord(1,-2);
+    struct Coord *C19=init_coord(0,-2); struct Coord *C20=init_coord(-1,-2);    struct Coord *C21=init_coord(-2,0);
+    struct Coord *C22=init_coord(-2,1); struct Coord *C23=init_coord(-2,-1);    struct Coord *C24=init_coord(-2,-2);
+    struct Coord *C25=init_coord(-2,2); struct Coord *C26=init_coord(-1,2);     struct Coord *C27=init_coord(0,2);
+    struct Coord *C28=init_coord(1,2);  struct Coord *C29=init_coord(2,2);      struct Coord *C30=init_coord(3,2);
+
+    tile12->meeple=list_player->player[3];
+    tile12->meeplePlace=MP_MIDDLE;
+
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    G->right=init_grid(tile2,C2,NULL,G,NULL,NULL);
+    G->right->bot=init_grid(tile3,C3,NULL,NULL,NULL,G->right);
+    G->bot=init_grid(tile4,C4,G->right->bot,NULL,NULL,G);
+    G->top=init_grid(tile5,C5,NULL,NULL,G,NULL);
+    G->top->right=init_grid(tile6,C6,NULL,G->top,G->right,NULL);
+    G->left=init_grid(tile7,C7,G,NULL,NULL,NULL);
+    G->left->top=init_grid(tile8,C8,G->top,NULL,G->left,NULL);
+    G->left->bot=init_grid(tile9,C9,G->bot,NULL,NULL,G->left);
+    G->right->top->right=init_grid(tile10,C10,NULL,G->right->top,NULL,NULL);
+    G->right->right=init_grid(tile11,C11,NULL,G->right,NULL,G->right->top->right);
+    G->right->right->bot=init_grid(tile12,C12,NULL,G->right->bot,NULL,G->right->right);
+    G->right->right->right=init_grid(tile13,C13,NULL,G->right->right,NULL,NULL);
+    G->right->right->right->top=init_grid(tile14,C14,NULL,G->top->right->right,G->right->right,NULL);
+    G->right->right->right->bot=init_grid(tile15,C15,NULL,G->bot->right->right,NULL,G->right->right);
+    G->right->right->right->bot->bot=init_grid(tile16,C16,NULL,NULL,NULL,G->right->right->right->bot);
+    G->right->right->bot->bot=init_grid(tile17,C17,G->right->right->right->bot->bot,NULL,NULL,G->right->right->bot);
+    G->right->bot->bot=init_grid(tile18,C18,G->right->right->bot->bot,NULL,NULL,G->right->bot);
+    G->bot->bot=init_grid(tile19,C19,G->right->bot->bot,NULL,NULL,G->bot);
+    G->left->bot->bot=init_grid(tile20,C20,G->bot->bot,NULL,NULL,G->left->bot);
+    G->left->left=init_grid(tile21,C21,G->left,NULL,NULL,NULL);
+    G->left->left->top=init_grid(tile22,C22,G->left->top,NULL,G->left->left,NULL);
+    G->left->left->bot=init_grid(tile23,C23,G->left->bot,NULL,NULL,G->left->left);
+    G->left->left->bot->bot=init_grid(tile24,C24,G->left->bot->bot,NULL,NULL,G->left->left->bot);
+    G->left->left->top->top=init_grid(tile25,C25,NULL,NULL,G->left->left->top,NULL);
+    G->left->top->top=init_grid(tile26,C26,NULL,G->left->left->top->top,G->left->top,NULL);
+    G->top->top=init_grid(tile27,C27,NULL,G->left->top->top,G->top,NULL);
+    G->right->top->top=init_grid(tile28,C28,NULL,G->top->top,G->right->top,NULL);
+    G->right->right->top->top=init_grid(tile29,C29,NULL,G->right->top->top,G->right->right->top,NULL);
+    G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
+
+    char test1[8],test2[8],test3[8];
+
+    for(int i=0;i<8;i++){
+        test1[i]=nbMeepleAbbaye_nocolor(G->right->right->bot);
+        test2[i]=nbMeepleAbbaye_nocolor(G->right->right);
+        test3[i]=nbMeepleAbbaye_nocolor(G->right);
+    }
+
+    
+
+    G->right->right->bot->tile->meeplePlace=MP_TOP;
+
+    char test4[8],test5[8],test6[8];
+
+    for(int i=0;i<8;i++){
+        test4[i]=nbMeepleAbbaye_nocolor(G->right->right->bot);
+        test5[i]=nbMeepleAbbaye_nocolor(G->right->right);
+        test6[i]=nbMeepleAbbaye_nocolor(G->right);
+    }
+
+    for(int i=0;i<8;i++){
+        cr_assert(test1[i]==1);
+        cr_assert(test2[i]==1);
+        cr_assert(test3[i]==1);
+    }
+
+    for(int i=0;i<8;i++){
+        cr_assert(test4[i]==0);
+        cr_assert(test5[i]==0);
+        cr_assert(test6[i]==0);
+    }
+
+}
+
+Test(all ,max)
+{
+    nbPlayers=8;
+    char test[8]={4,1,5,6,101,118,99,41};
+    char restest=max(test);
+    cr_assert(restest==118);
 }

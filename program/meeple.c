@@ -1,6 +1,11 @@
 #include "../header/Carcassonne.h"
 
 
+char searchMeeple(struct Tile tile,int where)
+{
+    return tile.meeplePlace==where;
+}
+
 struct Grid* searchAbbaye(struct Grid* grille)
 {
     if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->tile)) return grille;
@@ -48,7 +53,13 @@ char what_color_is_meeple(int color, struct Tile tile)
 
 }
 
-char nbMeepleVille( struct Grid *grille, int coul_player)
+char nbMeepleVille(struct Grid *grille, int coul_player){
+    char res=nbMeepleVilleEncap(grille,coul_player);
+    v_marquer++;
+    return res;
+}
+
+char nbMeepleVilleEncap( struct Grid *grille, int coul_player)
 {
     //pour l'instant la fonction ne fait que compter le nombre de meeple sans discinction
     char cmpt = 0;
@@ -56,7 +67,9 @@ char nbMeepleVille( struct Grid *grille, int coul_player)
     if(is_meeple_on_tile(grille->tile)) //temp devient grille
     {
         if (what_color_is_meeple(coul_player,*(grille->tile)) &&
-            where_is_meeple(VILLE,*(grille->tile))) cmpt+= 1;
+            where_is_meeple(VILLE,*(grille->tile))){
+                cmpt+= 1;
+            }
     }    
     grille->marquer = v_marquer;
 
@@ -64,49 +77,64 @@ char nbMeepleVille( struct Grid *grille, int coul_player)
     {
         if(grille->tile->top == VILLE)
         {
-            cmpt += nbMeepleVille(grille->top,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->top,coul_player);
         }
         if(grille->tile->right == VILLE)
         {
-            cmpt += nbMeepleVille(grille->right,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->right,coul_player);
         }
         if(grille->tile->left == VILLE)
         {
-            cmpt += nbMeepleVille(grille->left,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->left,coul_player);
 
         }
         if(grille->tile->bot == VILLE)
         {
-            cmpt += nbMeepleVille(grille->bot,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->bot,coul_player);
         }
     }
     return cmpt;
 }
 
-char nbMeepleVille_nocolor( struct Grid *grille)
+char nbMeepleVille_nocolor(struct Grid *grille){
+    char res=nbMeepleVille_nocolorEncap(grille,NO_MEEPLE);
+    v_marquer++;
+    return res;
+}
+
+char nbMeepleVille_nocolorEncap( struct Grid *grille,int where)
 {
     //pour l'instant la fonction ne fait que compter le nombre de meeple sans discinction
     char cmpt = 0;
     if (grille->marquer == v_marquer) return 0;
+
+    if(is_meeple_on_tile(grille->tile))
+    {
+        if(where_is_meeple(VILLE,*(grille->tile)) && 
+          (searchMeeple(*(grille->tile),where) || searchMeeple(*(grille->tile),MP_MIDDLE))){
+            cmpt+=1;
+        }
+    }
+
     grille->marquer = v_marquer;
     if( grille->tile->middle == VILLE )
     {
         if(grille->tile->top == VILLE)
         {
-            cmpt += nbMeepleVille_nocolor(grille->top);
+            cmpt += nbMeepleVille_nocolorEncap(grille->top,MP_BOT);
         }
         if(grille->tile->right == VILLE)
         {
-            cmpt += nbMeepleVille_nocolor(grille->right);
+            cmpt += nbMeepleVille_nocolorEncap(grille->right,MP_LEFT);
         }
         if(grille->tile->left == VILLE)
         {
-            cmpt += nbMeepleVille_nocolor(grille->left);
+            cmpt += nbMeepleVille_nocolorEncap(grille->left,MP_RIGHT);
 
         }
         if(grille->tile->bot == VILLE)
         {
-            cmpt += nbMeepleVille_nocolor(grille->bot);
+            cmpt += nbMeepleVille_nocolorEncap(grille->bot,MP_TOP);
         }
     }
     return cmpt;
@@ -122,8 +150,8 @@ Retour : la présence ou non d'un meeple dela couleur fournie
     if(temp == NULL) return 0;
     if(is_meeple_on_tile(temp->tile))
     {
-        if (what_color_is_meeple(color,*(grille->tile)) &&
-            where_is_meeple(ABBAYES,*(grille->tile))) return 1;
+        if (what_color_is_meeple(color,*(temp->tile)) &&
+            where_is_meeple(ABBAYES,*(temp->tile))) return 1;
     }
     return 0;
 }
@@ -138,7 +166,7 @@ Retour : la présence ou non d'un meeple dela couleur fournie
     if(temp == NULL) return 0;
     if(is_meeple_on_tile(temp->tile))
     {
-        if (where_is_meeple(ABBAYES,*(grille->tile))) return 1;
+        if (where_is_meeple(ABBAYES,*(temp->tile))) return 1;
     }
     return 0;
 }
