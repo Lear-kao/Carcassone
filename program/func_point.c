@@ -43,7 +43,7 @@ char count_point_city( struct Grid *grille, enum places a )
     {
         case RIGHT:
             //grille->marquer = v_marquer;
-            if(grille->right != NULL)
+            if(grille->right != NULL && grille->tile->right==VILLE)
             {
                 point += isFinishedCity(grille->right, &unfinished);
             }
@@ -52,7 +52,7 @@ char count_point_city( struct Grid *grille, enum places a )
         
         case TOP:
             //grille->marquer = v_marquer;
-            if(grille->top != NULL)
+            if(grille->top != NULL && grille->tile->top==VILLE)
             {
                 point += isFinishedCity(grille->top, &unfinished);
             }
@@ -61,7 +61,7 @@ char count_point_city( struct Grid *grille, enum places a )
     
         case LEFT:
             //grille->marquer = v_marquer;
-            if(grille->left != NULL)
+            if(grille->left != NULL && grille->tile->left==VILLE)
             {
                 point += isFinishedCity(grille->left, &unfinished);
             }
@@ -70,7 +70,7 @@ char count_point_city( struct Grid *grille, enum places a )
         
         case BOT:
             //grille->marquer = v_marquer;
-            if(grille->bot != NULL)
+            if(grille->bot != NULL && grille->tile->bot==VILLE)
             {
                 point += isFinishedCity(grille->bot, &unfinished);
             }
@@ -78,7 +78,12 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
         
         case MIDDLE:
-            point = isFinishedCity(grille,&unfinished);
+            if(grille->tile->middle==VILLE)
+            {
+                point = isFinishedCity(grille,&unfinished);
+            }
+
+
             break;
     }
     v_marquer++;
@@ -177,7 +182,9 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
                 *unfinished = 1;
                 break;
             }
-            point += isFinishedRoad(grille->right,unfinished);
+
+            if(grille!=NULL && grille->tile !=NULL && grille->tile->right == ROUTE)
+                point += isFinishedRoad(grille->right,unfinished);
             break;
         case TOP:
             if(grille->top == NULL  || is_a_potential_tile(grille->top->tile))
@@ -185,7 +192,8 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
                 *unfinished = 1;
                 break;
             }
-            point += isFinishedRoad(grille->top,unfinished);
+            if(grille!=NULL && grille->tile !=NULL && grille->tile->top == ROUTE)
+                point += isFinishedRoad(grille->top,unfinished);
             break;
         case LEFT:
             if(grille->left == NULL  || is_a_potential_tile(grille->left->tile))
@@ -193,7 +201,8 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
                 *unfinished = 1;
                 break;
             }
-            point += isFinishedRoad(grille->left,unfinished);
+            if(grille!=NULL && grille->tile !=NULL && grille->tile->left == ROUTE)
+                point += isFinishedRoad(grille->left,unfinished);
             break;
         case BOT:
             if(grille->bot == NULL  || is_a_potential_tile(grille->bot->tile))
@@ -201,7 +210,8 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
                 *unfinished = 1;
                 break;
             }
-            point += isFinishedRoad(grille->bot,unfinished);
+            if(grille!=NULL && grille->tile !=NULL && grille->tile->bot == ROUTE)
+                point += isFinishedRoad(grille->bot,unfinished);
             break;
     }
 
@@ -299,12 +309,13 @@ void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
     switch (justPlaced->tile->middle)
     {
         case VILLE:
-            point = count_point_city(justPlaced,4);
+            point = count_point_city(justPlaced,MIDDLE);
             for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
             give_point(list_meeple,listPlayer,point);
             break;
         case ABBAYES:
-            point = count_point_city(justPlaced,4);
+            //point = count_point_city(justPlaced,4);
+            point = isFinishedAbbaye(justPlaced);
             for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleAbbaye(justPlaced, i);
             give_point(list_meeple,listPlayer,point);
             break;
@@ -324,7 +335,7 @@ Prend en  paramètre :
     int max_L = max(list_meeple_player);
     for( int i = 0; i < nbPlayers; i++)
     {
-        if(list_meeple_player[i] == max(list_meeple_player)) list->player[i]->points += point; 
+        if(list_meeple_player[i] == max_L) list->player[i]->points += point; 
     }
     
 }

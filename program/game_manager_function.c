@@ -175,9 +175,9 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
-            *grid = place_tile(*grid,coord); //ligne probleme
-            pointPlacedTile  //besoin de la fonction de théo
-            secondary_verification()    //idem
+            //*grid = place_tile(*grid,coord); //ligne probleme
+            //pointPlacedTile  //besoin de la fonction de théo
+            //secondary_verification()    //idem
         }
     }
 }
