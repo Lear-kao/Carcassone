@@ -301,8 +301,9 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
         {
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             struct Coord *tmpCoord = malloc(sizeof(struct Coord));
-            tmpCoord->x = *largeur;
-            tmpCoord->y = i;
+            tmpCoord->x = (*leftTopGrid)->coord->x + *largeur;
+            tmpCoord->y = (*leftTopGrid)->coord->y - i;
+
             newGrid = init_grid(newTile, tmpCoord, NULL, NULL, NULL, NULL);
             newGrid->left = tmpGrid;
             tmpGrid->right = newGrid;
@@ -325,8 +326,8 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
         {
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             struct Coord *tmpCoord = malloc(sizeof(struct Coord));
-            tmpCoord->x = xMin - 1;
-            tmpCoord->y = i;
+            tmpCoord->x = (*leftTopGrid)->coord->x - 1;
+            tmpCoord->y = (*leftTopGrid)->coord->y - i;
             newGrid = init_grid(newTile, tmpCoord, NULL, NULL, NULL, NULL);
             newGrid->right = tmpGrid;
             tmpGrid->left = newGrid;
@@ -348,8 +349,8 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
         {
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             struct Coord *tmpCoord = malloc(sizeof(struct Coord));
-            tmpCoord->x = i;
-            tmpCoord->y = *hauteur;
+            tmpCoord->x = (*leftTopGrid)->coord->x + i;
+            tmpCoord->y = (*leftTopGrid)->coord->y + 1;
             newGrid = init_grid(newTile, tmpCoord, NULL, NULL, NULL, NULL);
             newGrid->bot = tmpGrid;
             tmpGrid->top = newGrid;
@@ -376,9 +377,8 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
         {
             newTile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
             struct Coord *tmpCoord = malloc(sizeof(struct Coord));
-            tmpCoord->x = i;
-            tmpCoord->y = yMin - 1;
-
+            tmpCoord->x = (*leftTopGrid)->coord->x + i;
+            tmpCoord->y = (*leftTopGrid)->coord->y - *hauteur;
             newGrid = init_grid(newTile, tmpCoord, NULL, NULL, NULL, NULL);
             newGrid->top = tmpGrid;
             tmpGrid->bot = newGrid;
@@ -541,30 +541,33 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     // Actualisation des tuiles pottentielles adjacente
     struct Tile *right_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *right_grid = init_grid(right_tile, NULL, NULL, NULL, NULL, NULL);
-    update_potential_tile(grid, RIGHT); // n'a aucun sens rajouter gridPosé confusion entre grid et gridPosé non ?// ici
+    printf("coord utile : %d,%d\n", grid->right->bot->coord->x, grid->right->bot->coord->y);
+    update_potential_tile(grid->right->bot, RIGHT); 
     puts("update potential RIGHT pass ");
 
     struct Tile *top_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *top_grid = init_grid(top_tile, NULL, NULL, NULL, NULL, NULL);
-    update_potential_tile(grid, TOP);
+    update_potential_tile(grid->right->bot, TOP);
     puts("update potential TOP pass ");
 
     struct Tile *left_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *left_grid = init_grid(left_tile, NULL, NULL, NULL, NULL, NULL);
-    update_potential_tile(grid, LEFT);
+    update_potential_tile(grid->right->bot, LEFT);
     puts("update potential LEFT pass ");
 
     struct Tile *bot_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *bot_grid = init_grid(bot_tile, NULL, NULL, NULL, NULL, NULL);
-    update_potential_tile(grid, BOT);
+    update_potential_tile(grid->right->bot, BOT);
     puts("update potential BOT pass ");
 
     // actualisation de dllist
+    puts("----début DLList----");
+
     DLList_push_end(dllist, right_grid);
     DLList_push_end(dllist, top_grid);
     DLList_push_end(dllist, left_grid);
     DLList_push_end(dllist, bot_grid);
-    return grid->top->left;
+    return grid;
 }
 
 struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
@@ -588,7 +591,11 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
     if (topLeftGrid == NULL && coord->x == 0 && coord->y == 0) // Cas début de partie
     {
         struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
-        struct Grid *topLeftgrid= first_grid(firstGrid, hauteur, largeur, NULL);
+        struct DLList *dllist = malloc(sizeof(struct DLList));
+        dllist->data = NULL;
+        dllist->next = NULL;
+        dllist->prev = NULL;
+        struct Grid *topLeftgrid= first_grid(firstGrid, hauteur, largeur, dllist);
     }
     upscale(topLeftGrid, largeur, hauteur, *coord);
     struct Grid *gridFind = find(*topLeftGrid, *coord);
