@@ -760,7 +760,7 @@ Test(all, count_point_city3)
 //     cr_assert(test==1);
 // }
 
-Test(all, first_grid_and_upscale)
+Test(all, first_grid) // test aussi upsacle init_grid et update potential tile
 {
     struct Coord *coord = malloc(sizeof(struct Coord));
     coord->x = 0;
@@ -773,16 +773,11 @@ Test(all, first_grid_and_upscale)
     dllist->next = NULL;
     dllist->prev = NULL;
 
-    puts("init grid début");
     struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
     hauteur = 1;
     largeur = 1;
-    puts("init grid fin");
-    puts("init first_grid début");
+
     struct Grid *grid = first_grid(firstGrid, &largeur, &hauteur, dllist);
-    puts("init first_grid fin");
-
-
 
     cr_assert(grid->right != NULL); // upscale
 }

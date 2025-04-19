@@ -277,8 +277,6 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
     int yMax = (*leftTopGrid)->coord->y;
     int xMax = xMin + *largeur - 1; // -1 car (0,0) existe (toujours).
     int yMin = yMax - *hauteur + 1; // ou géométriquement yMin = -(hauteur - 1 - yMax) 
-    printf("yMax : %d\n", yMax);
-    printf("xMin : %d\n", yMax);
 
     struct Grid *tmpGrid = *leftTopGrid;
 
@@ -286,11 +284,7 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
     struct Grid *preGrid = NULL;
     struct Grid *newGrid;
     // Vérification que la coord est en dehors de la zone
-    printf("--coord donné x,y : %d,%d--\n", coord.x, coord.y);
-    printf("%d\n", coord.x > xMax);
-    printf("%d\n", coord.x < xMin);
-    printf("%d\n", coord.y > yMax);
-    printf("%d\n", coord.y < yMin);
+
     if (coord.x > xMax) // right
     {
         for (int i = 0; i < *largeur - 1; i++) // plante si largeur mal innitialisé
@@ -406,12 +400,10 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
     Cette fonction a pour but d'actualiser une des tuiles pottentielles qui se trouve autours d'une tuile qui vient d'être posé.
 */
 {
-    puts("start update_potential_tile");
     switch(place)
     {
         case RIGHT:
         {
-            puts("RIGHT_case");
             struct Grid *potentialGrid = trueGrid->right;
             potentialGrid->coord->x = (trueGrid->coord->x) + 1;
             potentialGrid->coord->y = (trueGrid->coord->y);
@@ -419,17 +411,14 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
             potentialGrid->tile->left = trueGrid->tile->right;
             trueGrid->right = potentialGrid;
             potentialGrid->left = trueGrid;
-            puts("RIGHT_case END");
             break;
         }
         
 
         case TOP:
         {
-            puts("TOP CASE");
             struct Grid *potentialGrid = trueGrid->top;
             potentialGrid->coord->x = (trueGrid->coord->x); // potentialGrid->coord->x crash
-            puts("crash");
             potentialGrid->coord->y = (trueGrid->coord->y) + 1;
 
             potentialGrid->tile->bot = trueGrid->tile->top;
@@ -441,7 +430,6 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
 
         case LEFT:
         {
-            puts("LEFT CASE");
             struct Grid *potentialGrid = trueGrid->left;
             potentialGrid->coord->x = (trueGrid->coord->x) - 1;
             potentialGrid->coord->y = (trueGrid->coord->y);
@@ -449,7 +437,6 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
             potentialGrid->tile->right = trueGrid->tile->left;
             trueGrid->left = potentialGrid;
             potentialGrid->right = trueGrid;
-            puts("LEFT CASE END");
             break;
         }
 
@@ -469,7 +456,6 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
             //ERROR  CASE
         break;
     }
-    puts("end update_potential_tile");
     return;
 }
 
@@ -514,8 +500,6 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     Return value : L'élément le plus en haut à gauche de la grid.
 */
 {
-    puts("----Début first_grid----");
-
     // Adaptation de la taille de la grid
     struct Coord tmpCoord;
 
@@ -524,44 +508,34 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     upscale(&grid, largeur, hauteur, tmpCoord); // (1,0)
     tmpCoord.x = -1;
     tmpCoord.y = 0;
-    printf("hauteur : %d, largeur : %d\n", *hauteur, *largeur);
 
     upscale(&grid, largeur, hauteur, tmpCoord); // (-1,0)
     tmpCoord.x = 0;
     tmpCoord.y = 1;
-    printf("hauteur : %d, largeur : %d\n", *hauteur, *largeur);
 
     upscale(&grid, largeur, hauteur, tmpCoord); // (0,1)
     tmpCoord.x = 0;
     tmpCoord.y = -1;
-    printf("hauteur : %d, largeur : %d\n", *hauteur, *largeur);
     upscale(&grid, largeur, hauteur, tmpCoord); // (0,-1)
-    puts("upscale 4 pass");
 
     // Actualisation des tuiles pottentielles adjacente
     struct Tile *right_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *right_grid = init_grid(right_tile, NULL, NULL, NULL, NULL, NULL);
-    printf("coord utile : %d,%d\n", grid->right->bot->coord->x, grid->right->bot->coord->y);
     update_potential_tile(grid->right->bot, RIGHT); 
-    puts("update potential RIGHT pass ");
 
     struct Tile *top_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *top_grid = init_grid(top_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, TOP);
-    puts("update potential TOP pass ");
 
     struct Tile *left_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *left_grid = init_grid(left_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, LEFT);
-    puts("update potential LEFT pass ");
 
     struct Tile *bot_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
     struct Grid *bot_grid = init_grid(bot_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, BOT);
-    puts("update potential BOT pass ");
 
     // actualisation de dllist
-    puts("----début DLList----");
 
     DLList_push_end(dllist, right_grid);
     DLList_push_end(dllist, top_grid);
