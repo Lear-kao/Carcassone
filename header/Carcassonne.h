@@ -15,12 +15,14 @@
 #include <time.h>
 
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
-enum meeplePlace {NO_MEEPLE, MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE};
+enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 
-
+char turnTraker = 0;     // Numéro du joueur dont c'est le tour.
 char finJeu = 0;
-int v_marquer  = 0;
+int nbPlayers;
+int nbBot;
+int v_marquer  = 1;
 //-----------------------
 // ----Data structure----
 // ----------------------
@@ -41,7 +43,7 @@ struct DLList
 };
 
 
-struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid);
+struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid); //tester valider
 /*
     DLList : La liste chainé
     grid : Un pointer sur un espace mémoire ou se trouve grid
@@ -50,7 +52,7 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid);
 */
 
 
-void DLList_pop(struct DLList **DLList, struct Grid **gridSlot);
+void DLList_pop(struct DLList **DLList, struct Grid **gridSlot); // tester valider
 /*
     DLList : L'élément de la liste chainé à supprimer. Une fois l'élément supprimé le pointeur prend la valeur de l'élément précédent si il existe sinon l'élément suivant sinon NULL
     gridSlot : Un pointer sur un espace mémoire ou mettre le grid pop
@@ -105,8 +107,6 @@ struct Coord
     int y;
 };
 
-struct Coord *init_coord(unsigned char x, unsigned char y);
-
 struct Grid
 /*
     Un morceau de grille permettant de relier les tiles entre elles
@@ -122,9 +122,9 @@ struct Grid
 };
 
 
-struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);
+struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);//tester mais peut être a approfondir
 
-struct Coord *init_coord(unsigned char x, unsigned char y);
+struct Coord *init_coord(unsigned char x, unsigned char y);//tester valider
 /*
     x: coordonnée x
     y: coordonnee y
@@ -136,17 +136,7 @@ struct Coord *init_coord(unsigned char x, unsigned char y);
 */
 
 
-/* NON UTILISE
-//-------------
-//-plateboard--
-//-------------
-struct l_ch
-{
-    struct Grid *place;
-    struct l_ch *col;
-    struct l_ch *line;
-}
-*/
+
 // ------------
 // ----Tile----
 // ------------
@@ -185,7 +175,7 @@ char is_meeple_on_tile(struct Tile *tile); // FAIT theo
     - 1 si un Meeple est sur la tile
 */
 
-struct Tile *turn_tile(struct Tile *tile); // A TESTER
+struct Tile *turn_tile(struct Tile *tile); // tester valider
 /*
     tile : Une tuile
 
@@ -203,6 +193,7 @@ struct Player
         points : Nombre de points du joueur
         coulPLayer : ?????????????????????
     */
+    char bot;
     char coulPlayer;
     char nbMeeple;
     short points; 
@@ -215,11 +206,12 @@ struct list_player
     vas  aussi  permettre d'y ajouer les bots plus tards
     */
     struct Player **player;
-};
+    char nbbot;
+}; // penser a la fin a l'optimiser et l'enlever 
 
 // ----PLayers fonctions----
 
-void init_player(struct Player *player, int couleur); // FAIT theo
+struct Player *init_player(int couleur,char bot); // FAIT theo
 /*
     Innitialise l'objet player
 */
@@ -261,17 +253,17 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
-struct list_player *init_player_list(char nbPlayers); // Fait (Axel) 
+
+struct list_player *init_player_list(char nbbot); // Fait (Axel) 
 /*
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
 */
 
-void shuffle(struct Tile **tileArray, char size); // Valentin c'est peut-être mieux si size est une macro
+void shuffle(struct Tile **tileArray); // Valentin c'est peut-être mieux si size est une macro
 /*S
     tileArray : Une liste de pointeurs sur Tile.
-    size : La taille de la liste (normalement 72)
 
     Mélange les tuiles
 */
@@ -427,7 +419,7 @@ struct Grid *place_tile(struct Grid **topLeftgrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 
-void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid **grid, unsigned int nb_coord); // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -447,12 +439,12 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Th�
 */
 
 
-void show_grid( struct Grid *tab, unsigned char x, unsigned char  y ); // A tester ( Valentin )
+void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord **w_place); // A tester ( Valentin )
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Tile *start_game(struct list_player **list_player, char nbPlayerchar, char *turnTraker,  struct Grid *grid); // fait (Axel)
+struct Stack *start_game( struct list_player **list_player, struct Grid **grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -463,16 +455,7 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayerchar, cha
     !!! a voir si il faut pas passer la  liste de  struct  tile  en paramètre
 */
 
-
-char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // Axel A FAIRE
-/*
-    grid : la case de départ
-    nbPLayers : Le nombre de joueurs
-
-    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
-*/
-
-void free_Grid( struct Grid *grid); // fait (Axel)
+void free_Grid( struct Grid **grid); // fait (Axel)
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
 */
@@ -485,7 +468,7 @@ prend en paramètre une struct grid initialisée et la free pour être réutilis
 --------------------------------------
 */
 
-char isFinishedAbbaye(struct Grid *grille);
+char isFinishedAbbaye(struct Grid *grille);// tester valider ? (verifier quand même une fois les test svp)
 /* 
 Compter les points abbaye.
 La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
@@ -494,7 +477,7 @@ la fonction envoie les points même si elle n'est pas complètement entourée, s
 pas complètement entourée.
 */
 
-char isFinishedCity( struct Grid *grille, char *unfinished );
+char isFinishedCity( struct Grid *grille, char *unfinished ); //tester (avec count_point_city)
 /* 
 Compter les points villes
 Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
@@ -504,12 +487,77 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
-void nbMeepleVille( struct Grid *grille, int *nbmeeple, char coul_player);
+char isFinishedRoad(struct Grid *grille, char *unfinished); //tester (avec countPointRoad)
+/* vérifie la completion d'une ville et sa valeur en terme de points */
+char countPointRoad(struct Grid *grille,char *unfinished, enum places start); //tester
+/* 
+A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
+Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 
-char count_point_city(struct Grid *grille, char where);
+char count_point_city(struct Grid *grille, enum places a); //tester
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
 Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
+
+void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer);
+/* premier tour pour compter si une structure est finie et si c'est le cas distribuer les points aux joueurs concernés */
+void give_point(char *list_meeple_player, struct list_player *list, char point);//tester
+/* distribue les points aux différents joueurs */
+void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle);
+/* compte les points après la pose d'un tuile pour les  structures en dehors de celle du millieu */
+void *end_game_points_counter( struct list_player list ); // à tester (axel)
+/* affiche les points en fin de partie */
+int max(char *list);//tester
+/* calcule le maximum d'un tableau de charactère */
+
+/* 
+--------------------------------------
+--------------------------------------
+-----------fonction meeple------------
+--------------------------------------
+--------------------------------------
+*/
+
+char nbMeepleVille( struct Grid *grille,  int coul_player); //tester
+/* compte le nombre de meeple dans une ville d'une couleur précise */
+
+char nbMeepleVilleEncap(struct Grid *grille, int coul_player); //tester
+/* 
+    on appel cette fonction pour appeler nbMeepleVille et pouvoir 
+    incrementer v_marquer
+*/
+
+char nbMeepleVille_nocolor( struct Grid *grille); //tester
+
+char nbMeepleVille_nocolorEncap(struct Grid *grille,int where); //tester
+/* 
+    Parametre:
+        grille: la grille a tester
+        where: ou chercher le meeple (parametre de recursion)
+
+    on appel cette fonction pour appeler nbMeepleVille_nocolor et pouvoir 
+    incrementer v_marquer
+*/
+
+char nbMeepleAbbaye( struct Grid *grille, int i); //tester
+/* vérifie si un meeple d'une couleur précise est présent dans l'abbaye */
+char nbMeepleAbbaye_nocolor(struct Grid *grille);//tester
+/* pareil mais sans la couleur du meeple */
+
+char where_is_meeple(  int type, struct Tile tile);//tester 
+/* vérifie si le meeple posée estbien sur le type  de structure (ABBAYE/VILLE/VILLAGE/ROUTE) recherché */
+
+char what_color_is_meeple(int color, struct Tile tile);//tester
+/* vérifie si le meeple posée sur la  tuile est bien de la bonne couleur */
+struct Grid* searchAbbaye(struct Grid* grille); //tester (normalement)
+/* cherche et renvoie la grille d'une tuile abbaye si celle-ce est présente autour de la case en entrée et renvoie NULL sinon */
+
+char searchMeeple(struct Tile tile ,int where);
+/*verifie si il y a un meeple a l'endroit souhaiter*/
+
+char countMeepleRoad(struct Grid *grille, enum places start, int color);//tester
+char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
 
 #endif // CARCASSONNE_H

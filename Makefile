@@ -2,16 +2,15 @@ CC=gcc
 PROG = program
 CFLAGS=-std=c99 -pedantic
 GDBFLAGS=-g
-TESTFLAGS=-lcriterion
+TESTFLAGS=-lcriterion	
 INC_Dir = header
 SRC_Dir= program
 OBJ_Dir = oFile
 all = exe
-
 default = $(all)
 
 
-all: $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o $(OBJ_Dir)/test.o $(OBJ_Dir)/func_point.o
+all: $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o $(OBJ_Dir)/func_point.o $(OBJ_Dir)/test.o 
 
 $(OBJ_Dir)/data_structure.o : $(SRC_Dir)/data_structure.c $(INC_Dir)/Carcassonne.h
 	$(CC) -c $(SRC_Dir)/data_structure.c $(CFLAGS) -o $(OBJ_Dir)/data_structure.o

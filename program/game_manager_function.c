@@ -74,39 +74,22 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     return tileArray;
 }
 
-struct list_player *init_player_list(char nbPlayers) // Axel
-/*
-    Crée une liste de pointeurs qui pointe sur un Player,
-    un pointer sur NULL est ajouté à la fin pour faciliter
-    les iterations sur la liste (condition d'arrêt)
-*/
-{
-    struct list_player *list_players = malloc(sizeof(struct list_player));
-    list_players->player = malloc(sizeof(struct Player*) * (nbPlayers + 1));
-    for( int i = 0; i < nbPlayers; i++ )
-    {
-        init_player((list_players)->player[i],i);
-    }
-    list_players->player[nbPlayers] = NULL;
-    return list_players;
-}
 
-void shuffle(struct Tile **tileArray, char size) // Valentin c'est peut-être mieux si size est une macro A FAIRE
+void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size est une macro A FAIRE
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
     la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
-
 */
 {
     srand(time(NULL)); // initialisation de la seed pour la generation de nombre aléatoire
     short i, rand1, rand2;
     struct Tile *temp;
 
-    for (i = 0; i < size * size; i++)
+    for (i = 0; i < (NBTILE-1) * (NBTILE-1); i++)
     {
-        rand1 = rand() % size;
-        rand2 = rand() % size;
+        rand1 =1+ rand() % (NBTILE-1);
+        rand2 =1+ rand() % (NBTILE-1);
         if (rand1 != rand2)
         {
             temp = tileArray[rand1];
@@ -128,21 +111,9 @@ void array_to_stack(struct Tile **tileArray, struct Stack **stack) // Valentin A
         *stack = stack_push(*stack, tileArray[i]);
     }
 }
-void reset_points(struct Player *player) // Fait
-/*
-    Réinitialise les points du joueur
-*/
-{
-    player->points = 0;
-}
 
-void reset_meeples(struct Player *player) // Fait
-/*
-    Réinitialise le compteur de Meeple du joueur
-*/
-{
-    player->nbMeeple = NBMEEPLE_DEFAULT;
-}
+
+
 
 struct Tile *rot_tile(struct Tile *tile)
 /*
@@ -166,8 +137,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-// void player_turn(char playerNumber, struct Player **PlayerArray, struct Stack *pioche, struct Grid **grid, unsigned int nb_coord) // A FAIRE
-
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -176,8 +146,8 @@ struct Tile *rot_tile(struct Tile *tile)
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
 */
-/*
 {
+    int nb_coord=1;
     printf("Tour du joueur %d\n", playerNumber);
     struct Tile *turn_tile = malloc(sizeof(struct Tile *));
     pioche = stack_pop(pioche, &turn_tile);
@@ -187,8 +157,8 @@ struct Tile *rot_tile(struct Tile *tile)
     unsigned int token = -1;
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
-        show_Grid( &grid );
-        play_coord = where_i_can_play(turn_tile, grid);
+        play_coord = where_i_can_play(turn_tile, *grid);
+        show_grid( *grid, x, y ,play_coord); //ligne probleme
         index = 0;
         while (*(play_coord + index) != NULL)
         {
@@ -205,18 +175,19 @@ struct Tile *rot_tile(struct Tile *tile)
         else
         {
             pose = 1;
-            //place_tile(struct grid grid, struct coord * coord);
+            *grid = place_tile(*grid,coord); //ligne probleme
+            //pointPlacedTile //besoin de la fonction de théo
         }
     }
 }
-*/
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo TESTER AVEC LE GAMEMANAGER
+
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo à faire
 /*
     tile : La tile précedement pioché par le joueur
 
     dllist : Une liste doublement chainé contenant les tuiles potentiels pour cette fonction.
 
-    return : La liste malloc des endroit ou il est possible de jouer.
+    return : La liste malloc des endroit ou il est possible de jouer (position tuile fixe)
 */
 {
     struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc
@@ -237,6 +208,7 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     }
     return gridArrray;
 }
+
 char is_a_potential_tile(struct Tile *tile) // Théo FAIT
 /*
     Return 0 si ce n'est pas une tuile potentielle
@@ -587,37 +559,45 @@ void enum_to_char(enum types type)
 {
     switch(type){
         case RIEN:
-            printf("Z");
+            printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
+            printf(" Z ");
+            printf("\x1b[0m");
             break;
             
         case ROUTE:
-            printf("\x1b[48;5;130m");
+            printf("\x1b[48;2;%d;%d;%dm",168, 92, 33);
             printf(" R ");
             printf("\x1b[0m");
             break;
 
         case VILLE:
-            printf("\x1b[48;5;244m");
+            printf("\x1b[48;2;%d;%d;%dm",110,110,110);
             printf(" V ");
             printf("\x1b[0m");
             break;
 
         case ABBAYES:
-            printf("A");
+            printf("\x1b[48;2;%d;%d;%dm",241,196,15);
+            printf(" A ");
+            printf("\x1b[0m");
             break;
 
         case PRE:
-            printf("\x1b[48;5;2m");
+            printf("\x1b[48;2;%d;%d;%dm",35,155,86);
             printf(" P ");
             printf("\x1b[0m");
             break;
 
         case VILLAGE:
-            printf("v");
+            printf("\x1b[48;2;%d;%d;%dm",102,188,186);
+            printf(" v ");
+            printf("\x1b[0m");
             break;
 
         case BLASON:
-            printf("B");
+            printf("\x1b[48;2;%d;%d;%dm",101,112,255);
+            printf(" B ");
+            printf("\x1b[0m");
             break;
 
         default:
@@ -626,6 +606,16 @@ void enum_to_char(enum types type)
     }
 }
 
+void show_wplace(int j, int h)
+{
+    if(j == 0 || j == 2)
+    {
+        printf("---");
+        return;
+    }
+    printf("-%d-",h);
+    
+}
 
 void choose_w_show(unsigned char y, struct Grid *tab)
 {
@@ -671,48 +661,67 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             }
             else enum_to_char(PRE);
     }
+    printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
 
 
-void show_grid(struct Grid *tab, unsigned  char x, unsigned char y)
-// en cours (Axel)
-
-    //Affiche la grille du jeu en ascii art en minimisant l'espace occupé
-
-
+void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord **w_place)
 {
-    struct Grid *temp_x = tab, *temp_y; //temp_x pas initialisé 
-    unsigned char t_x = 0, t_y = 0;
-    for (; t_x < x; t_x++)
+    char mrkr = 0;
+    struct Grid *temp_x = tab, *temp_y;
+    unsigned char t_x = 0, t_y;
+    for (t_x = 0; t_x < y; t_x++)
     {
-        for( int j = 0; j < 3; j++)
+        printf("\n");
+        for (int j = 0; j < 3; j++)
         {
-            temp_y = temp_x; //la temp_y va prend un pointeur pas initialisé
-            for( t_y = 0; t_y < y; t_y++)
+            t_y = 0;
+            temp_y = temp_x;
+            for (; t_y < x; t_y++)
             {
-                if (temp_y->tile == NULL)
+                mrkr = 0;
+                int h = 0;
+
+                while (w_place[h] != NULL)
                 {
-                    enum_to_char(PRE);
-                    enum_to_char(PRE);
-                    enum_to_char(PRE);
+                    if (w_place[h]->x == t_x && w_place[h]->y == t_y)
+                    {
+                        show_wplace(j, h);
+                        mrkr = 1;
+                        break;
+                    }
+                    h++;
                 }
-                else
+
+                if (temp_y == NULL || temp_y->tile == NULL)
                 {
-                    //printf("%d\n",temp_y->tile->left); //mon test de print la tile fait crash
-                    choose_w_show(j, temp_y); //cette ligne semble faire crash
+                    if (mrkr == 0)
+                    {
+                        enum_to_char(PRE);
+                        enum_to_char(PRE);
+                        enum_to_char(PRE);
+                    }
                 }
-                temp_y = temp_y->right;
+                else if (mrkr == 0)
+                {
+                    choose_w_show(j, temp_y);
+                }
+
+                if (temp_y != NULL)
+                    temp_y = temp_y->right;
             }
             printf("\n");
         }
-        temp_x = temp_x->bot;
+        if (temp_x != NULL)
+            temp_x = temp_x->bot;
     }
-    printf("\n fin affichage \n");
+
 }
 
 
 
-struct Tile *start_game(struct list_player **list_player, char nbPlayer,char *turnTraker, struct Grid *grid) // en cour ( Axel )
+
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -722,46 +731,75 @@ struct Tile *start_game(struct list_player **list_player, char nbPlayer,char *tu
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
 {
+    printf("combien  de joueur : \n");
+    scanf("%d",&nbPlayers);
+
+    printf("combien  de bot: \n");
+    scanf("%d",&nbBot);
+
     if (list_player == NULL)
     {
-        init_player_list(nbPlayer);
+        *list_player = init_player_list(nbBot);
     }
         
-    if ( grid != NULL)
+    if ( *grid != NULL)
     {
         free_Grid( grid );
     }
-    struct Tile *tile_array;
-    /* create_tile_array();
-    shuffle(&(tile_array));
-    init_Grid(); */
-    return tile_array;
+    
+    struct Tile **tile_array;
+    char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
+    tile_array = create_tile_array(CSV_TILE,tokenArray, MAX_TOKEN_SIZE);
+    
+    struct Coord *start_coord=init_coord(0,0);
+    *grid = init_grid(tile_array[0],start_coord,NULL,NULL,NULL,NULL);
+
+    shuffle(tile_array);
+    struct Stack  *stack=NULL;
+    array_to_stack(tile_array,&stack);
+    struct Tile *variable_crée_à_cause_dune_decision_stupide;
+    stack = stack_pop(stack,&variable_crée_à_cause_dune_decision_stupide);
+
+    
+
+    printf("%d %d\n",variable_crée_à_cause_dune_decision_stupide->top,variable_crée_à_cause_dune_decision_stupide->right);
+    return stack;
+    
+    
+}
+
+
+void *end_game_points_counter( struct list_player list ) // à tester (Axel)
+/*
+    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+*/
+{
+    for( int  i = 0; i < nbPlayers ; i++)
+    {
+        printf("Le joueur n°%d possède %d points",i, list.player[i]->points );
+    }
 }
 
 
 
-char *end_game_points_counter(struct Grid *grid, struct Player nbPlayers); // A FAIRE
-/*
-    grid : la case de départ
-    bPLayers : Le nombre de joueurs
-
-    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
-*/
-
-void free_Grid( struct Grid *grid) // a tester
+void free_Grid( struct Grid **grid) // a tester
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
 !!! S'assurer que le pointeur vers grid sois bien en haut à gauche du graph
 */
 {
-    if ( grid->right != NULL)
+    struct Grid *tmp1;
+    struct Grid *tmp2;
+    while(tmp2!=NULL)
     {
-        free_Grid( grid->right );
+        tmp2=(*grid)->bot;
+        while(tmp1!=NULL)
+        {
+            tmp1=(*grid)->right;
+            free(*grid);
+            *grid=tmp1;
+        }
+        *grid=tmp2;
     }
-    if ( grid->bot != NULL )
-    {
-        free_Grid( grid->bot);
-    }
-    free(grid);
     return;
 }

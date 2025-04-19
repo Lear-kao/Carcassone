@@ -166,13 +166,29 @@ struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *righ
 {
     // il aurait fallut faire le malloc de Coord ici mais c'est trop tard cette fonction ne peut être modifier sans casser tout le projet
     struct Grid *new_grid= malloc(sizeof(struct Grid));
-    new_grid->marquer  = -1;
+    new_grid->marquer  = 0;
     new_grid->coord = coord;
     new_grid->tile= tile;
     new_grid->right = right;
     new_grid->left = left;
     new_grid->bot = bot;
     new_grid->top = top;
+
+    if(new_grid->right!=NULL && new_grid->right->left==NULL){
+        new_grid->right->left=new_grid;
+    }
+
+    if(new_grid->top!=NULL && new_grid->top->bot==NULL){
+        new_grid->top->bot=new_grid;
+    }
+
+    if(new_grid->left!=NULL && new_grid->left->right==NULL){
+        new_grid->left->right=new_grid;
+    }
+
+    if(new_grid->bot!=NULL && new_grid->bot->top==NULL){
+        new_grid->bot->top=new_grid;
+    }
     return new_grid;
 }
 
