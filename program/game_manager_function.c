@@ -143,7 +143,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
 
     Cette fonction pop la stack de tile
     et propose ensuite au joueur de choisir
-    un emplacmement pour poser sa tuile
+    un emplacemement pour poser sa tuile
     avec la fonction where_i_can_play
 */
 {
@@ -160,11 +160,6 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         play_coord = where_i_can_play(turn_tile, *grid);
         show_grid( *grid, x, y ,play_coord); //ligne probleme
         index = 0;
-        while (*(play_coord + index) != NULL)
-        {
-            printf("%u- x : %d, y : %d\n", index, play_coord[index]->x, play_coord[index]->y);
-            index++;
-        }
         printf("Pour tourner la tuile rentrez 0/n");
         printf("Pour poser la tuile rentrez l'une des valeurs suivante :/n");
         scanf("%u", &token);
@@ -175,8 +170,9 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
+            
             *grid = place_tile(*grid,coord); //ligne probleme
-            //pointPlacedTile //besoin de la fonction de théo
+            pointPlacedTile(,p_list) //besoin de la fonction de théo
         }
     }
 }
