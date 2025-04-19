@@ -497,7 +497,7 @@ Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,mil
 
 void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer);
 /* premier tour pour compter si une structure est finie et si c'est le cas distribuer les points aux joueurs concernés */
-void give_point(char *list_meeple_player, struct list_player *list, char point);
+void give_point(char *list_meeple_player, struct list_player *list, char point);//tester
 /* distribue les points aux différents joueurs */
 void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle);
 /* compte les points après la pose d'un tuile pour les  structures en dehors de celle du millieu */
