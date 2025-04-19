@@ -88,8 +88,8 @@ void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size
 
     for (i = 0; i < (NBTILE-1) * (NBTILE-1); i++)
     {
-        rand1 = rand() % (NBTILE-1);
-        rand2 = rand() % (NBTILE-1);
+        rand1 =1+ rand() % (NBTILE-1);
+        rand2 =1+ rand() % (NBTILE-1);
         if (rand1 != rand2)
         {
             temp = tileArray[rand1];
@@ -158,7 +158,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
         play_coord = where_i_can_play(turn_tile, *grid);
-        //show_grid( *grid, x, y ,play_coord); ligne probleme
+        show_grid( *grid, x, y ,play_coord); //ligne probleme
         index = 0;
         while (*(play_coord + index) != NULL)
         {
@@ -175,9 +175,9 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
-            //*grid = place_tile(*grid,coord); ligne probleme
-            //pointPlacedTile  besoin de la fonction de théo
-            //secondary_verification()    idem
+            *grid = place_tile(*grid,coord); //ligne probleme
+            pointPlacedTile  //besoin de la fonction de théo
+            secondary_verification()    //idem
         }
     }
 }
@@ -696,7 +696,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord 
 
 
 
-struct Stack *start_game(struct list_player **list_player, struct Grid *grid) // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -706,10 +706,10 @@ struct Stack *start_game(struct list_player **list_player, struct Grid *grid) //
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
 {
-    printf("combien  de joueur : ");
+    printf("combien  de joueur : \n");
     scanf("%d",&nbPlayers);
 
-    printf("combien  de bot: ");
+    printf("combien  de bot: \n");
     scanf("%d",&nbBot);
 
     if (list_player == NULL)
@@ -717,21 +717,30 @@ struct Stack *start_game(struct list_player **list_player, struct Grid *grid) //
         *list_player = init_player_list(nbBot);
     }
         
-    if ( grid != NULL)
+    if ( *grid != NULL)
     {
         free_Grid( grid );
     }
+    
     struct Tile **tile_array;
     char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
-    tile_array = create_tile_array("tuiles_base_csv_simplifiees.csv",tokenArray, MAX_TOKEN_SIZE);
-    shuffle(tile_array   );
-    struct Stack  *stack;
+    tile_array = create_tile_array(CSV_TILE,tokenArray, MAX_TOKEN_SIZE);
+    
+    struct Coord *start_coord=init_coord(0,0);
+    *grid = init_grid(tile_array[0],start_coord,NULL,NULL,NULL,NULL);
+
+    shuffle(tile_array);
+    struct Stack  *stack=NULL;
     array_to_stack(tile_array,&stack);
     struct Tile *variable_crée_à_cause_dune_decision_stupide;
     stack = stack_pop(stack,&variable_crée_à_cause_dune_decision_stupide);
-    struct Coord *start_coord=init_coord(0,0);
-    grid = init_grid(variable_crée_à_cause_dune_decision_stupide,start_coord,NULL,NULL,NULL,NULL);
+
+    
+
+    printf("%d %d\n",variable_crée_à_cause_dune_decision_stupide->top,variable_crée_à_cause_dune_decision_stupide->right);
     return stack;
+    
+    
 }
 
 
@@ -746,20 +755,26 @@ void *end_game_points_counter( struct list_player list ) // à tester (Axel)
     }
 }
 
-void free_Grid( struct Grid *grid) // a tester
+
+
+void free_Grid( struct Grid **grid) // a tester
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
 !!! S'assurer que le pointeur vers grid sois bien en haut à gauche du graph
 */
 {
-    if ( grid->right != NULL)
+    struct Grid *tmp1;
+    struct Grid *tmp2;
+    while(tmp2!=NULL)
     {
-        free_Grid( grid->right );
+        tmp2=(*grid)->bot;
+        while(tmp1!=NULL)
+        {
+            tmp1=(*grid)->right;
+            free(*grid);
+            *grid=tmp1;
+        }
+        *grid=tmp2;
     }
-    if ( grid->bot != NULL )
-    {
-        free_Grid( grid->bot);
-    }
-    free(grid);
     return;
 }

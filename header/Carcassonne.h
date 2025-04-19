@@ -207,7 +207,7 @@ struct list_player
     */
     struct Player **player;
     char nbbot;
-};
+}; // penser a la fin a l'optimiser et l'enlever 
 
 // ----PLayers fonctions----
 
@@ -438,7 +438,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord 
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Stack *start_game( struct list_player **list_player, struct Grid *grid); // fait (Axel)
+struct Stack *start_game( struct list_player **list_player, struct Grid **grid); // fait (Axel)
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -449,7 +449,7 @@ struct Stack *start_game( struct list_player **list_player, struct Grid *grid); 
     !!! a voir si il faut pas passer la  liste de  struct  tile  en paramètre
 */
 
-void free_Grid( struct Grid *grid); // fait (Axel)
+void free_Grid( struct Grid **grid); // fait (Axel)
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
 */
@@ -471,7 +471,7 @@ la fonction envoie les points même si elle n'est pas complètement entourée, s
 pas complètement entourée.
 */
 
-char isFinishedCity( struct Grid *grille, char *unfinished );
+char isFinishedCity( struct Grid *grille, char *unfinished ); //tester (avec count_point_city)
 /* 
 Compter les points villes
 Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
@@ -481,15 +481,15 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     pour connaitre la valeur du marquer (-1 ou 1)
 */
 
-char isFinishedRoad(struct Grid *grille, char *unfinished);
+char isFinishedRoad(struct Grid *grille, char *unfinished); //tester (avec countPointRoad)
 /* vérifie la completion d'une ville et sa valeur en terme de points */
-char countPointRoad(struct Grid *grille,char *unfinished, enum places start);
+char countPointRoad(struct Grid *grille,char *unfinished, enum places start); //tester
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
 Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
 
-char count_point_city(struct Grid *grille, enum places a);
+char count_point_city(struct Grid *grille, enum places a); //tester
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
 Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]

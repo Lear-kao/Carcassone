@@ -43,7 +43,7 @@ int main()
         // Fin dans start game
         struct list_player *p_list;
         struct Grid *grid;
-        struct Stack *stack = start_game(&p_list, grid);        
+        struct Stack *stack = start_game(&p_list, &grid);        
         // ---------------------------
         // ----Phase 3 : La partie----
         // ---------------------------
@@ -60,7 +60,7 @@ int main()
         // -------------------------------
         end_game_points_counter(*p_list);
         printf("voulez-vous continuer?(0:non/1:oui)\n");
-        free_Grid(grid);
+        free_Grid(&grid);
         scanf("%d",&gameRuns);
     }
 }
