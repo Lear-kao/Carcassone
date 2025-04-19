@@ -544,6 +544,8 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     return grid;
 }
 
+// init_plateauw
+
 struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
