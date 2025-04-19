@@ -2123,3 +2123,4 @@ Test(all ,pointPlacedTile)
     cr_assert(test1->player[3]->points==0);
     cr_assert(test1->player[4]->points==0);
 }
+//a
