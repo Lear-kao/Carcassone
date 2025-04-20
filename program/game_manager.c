@@ -7,7 +7,7 @@ int main()
     int gameRuns = 1;       // Vaut 1 le temps que le jeu doit continuer, 0 sinon.
     unsigned char nbHumanPlayers = 0; // Nombre de joueurs humain
     unsigned char nbBotPlayers = 0;   // Nombre de bots
-    struct DLList *dllist = NULL;
+    struct DLList *dllist = NULL; // set dans init_plateau
     struct list_player *p_list = NULL;
     struct Grid *leftTopGrid = NULL;
     struct Stack *stack = NULL;
@@ -20,7 +20,7 @@ int main()
     {
         // ----Phase 1 : Paramètrage de la partie----
 
-        stack = start_game(&p_list, &leftTopGrid);
+        stack = start_game(&p_list, &leftTopGrid, dllist, &hauteur, &largeur);
 
         // ---------------------------
         // ----Phase 2 : La partie----

@@ -514,7 +514,20 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     return grid;
 }
 
-// init_plateauw
+void init_plateau(struct Grid **topLeftGrid, struct DLList *dllist, int *hauteur, int *largeur)
+{
+    struct Tile *startTile = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE); // tuile de départ hard code
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
+
+    struct Grid *firstGrid = init_grid(startTile, coord, NULL, NULL, NULL, NULL);
+    dllist = malloc(sizeof(struct DLList));
+    dllist->data = NULL;
+    dllist->next = NULL;
+    dllist->prev = NULL;
+    *topLeftGrid = first_grid(firstGrid, hauteur, largeur, dllist);
+}
 
 struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
 /*
@@ -534,18 +547,9 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 {
-    if (topLeftGrid == NULL && coord->x == 0 && coord->y == 0) // Cas début de partie
-    {
-        struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
-        struct DLList *dllist = malloc(sizeof(struct DLList));
-        dllist->data = NULL;
-        dllist->next = NULL;
-        dllist->prev = NULL;
-        struct Grid *topLeftgrid= first_grid(firstGrid, hauteur, largeur, dllist);
-    }
     upscale(topLeftGrid, largeur, hauteur, *coord);
-    struct Grid *gridFind = find(*topLeftGrid, *coord);
-    gridFind->tile = tile;
+    struct Grid *gridFind = find(*topLeftGrid, *coord); // trouve ou poser la tuile aussi possible pour plus d'optimisation de trouver la tuile dans dllist
+    gridFind->tile = tile; // pose la tuile
     update_potential_tile(gridFind, RIGHT);
     update_potential_tile(gridFind, TOP);
     update_potential_tile(gridFind, LEFT);
@@ -727,7 +731,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
 
 
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid) // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -766,12 +770,10 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid) /
     struct Tile *variable_crée_à_cause_dune_decision_stupide;
     stack = stack_pop(stack,&variable_crée_à_cause_dune_decision_stupide);
 
-    // init plateau
+    init_plateau(grid, dllist, hauteur, largeur);
 
     printf("%d %d\n",variable_crée_à_cause_dune_decision_stupide->top,variable_crée_à_cause_dune_decision_stupide->right);
     return stack;
-    
-    
 }
 
 

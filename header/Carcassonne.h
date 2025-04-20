@@ -444,7 +444,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid); // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur); // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
