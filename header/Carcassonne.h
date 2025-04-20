@@ -419,7 +419,7 @@ struct Grid *place_tile(struct Grid **topLeftgrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid); // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -439,12 +439,12 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Th�
 */
 
 
-void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord **w_place); // A tester ( Valentin )
+void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place);
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Stack *start_game( struct list_player **list_player, struct Grid **grid); // fait (Axel)
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid); // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)

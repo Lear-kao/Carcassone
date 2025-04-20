@@ -137,7 +137,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid) // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -147,22 +147,25 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     avec la fonction where_i_can_play
 */
 {
-    int nb_coord=1;
     printf("Tour du joueur %d\n", playerNumber);
+
     struct Tile *turn_tile = malloc(sizeof(struct Tile *));
-    pioche = stack_pop(pioche, &turn_tile);
-    struct Coord **play_coord = malloc(sizeof(struct Coord *) * nb_coord);
+    struct Grid **play_grid = NULL;
     unsigned int index = 0;
-    char pose = 0;
+    char pose = 0; // bool
     unsigned int token = -1;
+
+    pioche = stack_pop(pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
+    play_grid = where_i_can_play(turn_tile, dllist);
+
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
-        play_coord = where_i_can_play(turn_tile, *grid);
-        show_grid( *grid, x, y ,play_coord); //ligne probleme
+        play_grid = where_i_can_play(turn_tile, dllist);
+        show_grid(*leftTopGrid, *largeur, *hauteur ,play_grid);
         index = 0;
-        while (*(play_coord + index) != NULL)
+        while (play_grid[index] != NULL) // affiche la liste des endroit ou il est possible de jouer
         {
-            printf("%u- x : %d, y : %d\n", index, play_coord[index]->x, play_coord[index]->y);
+            printf("%u- x : %d, y : %d\n", index, play_grid[index]->coord->x, play_grid[index]->coord->y);
             index++;
         }
         printf("Pour tourner la tuile rentrez 0/n");
@@ -175,7 +178,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         else
         {
             pose = 1;
-            *grid = place_tile(*grid,coord); //ligne probleme
+            *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
             //pointPlacedTile //besoin de la fonction de théo
         }
     }
@@ -190,7 +193,7 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     return : La liste malloc des endroit ou il est possible de jouer (position tuile fixe)
 */
 {
-    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc
+    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
     struct DLList *tmpDllist = dllist;
     int index = 0;
     for (int i = 0; i < 4; i++)
@@ -665,7 +668,17 @@ void choose_w_show(unsigned char y, struct Grid *tab)
 }
 
 
-void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord **w_place)
+void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
+/*
+ * Affiche la grille de jeu avec les tuiles et les emplacements possibles.
+ *
+ *  tab    :  Pointeur vers le coin supérieur gauche de la grille (structure Grid chaînée).
+ *  x      :  Largeur de la grille (nombre de colonnes). ?????
+ *  y      :  Hauteur de la grille (nombre de lignes). ?????
+ * w_place : Tableau de pointeurs vers des grid où une tuile peut être placée (se termine par NULL).
+ *
+ * @return         Cette fonction ne retourne rien. Elle affiche directement la grille sur la sortie standard (printf).
+ */
 {
     char mrkr = 0;
     struct Grid *temp_x = tab, *temp_y;
@@ -682,9 +695,9 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Coord 
                 mrkr = 0;
                 int h = 0;
 
-                while (w_place[h] != NULL)
+                while (w_place[h]->coord != NULL)
                 {
-                    if (w_place[h]->x == t_x && w_place[h]->y == t_y)
+                    if (w_place[h]->coord->x == t_x && w_place[h]->coord->y == t_y)
                     {
                         show_wplace(j, h);
                         mrkr = 1;
