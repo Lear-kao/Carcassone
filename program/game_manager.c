@@ -12,7 +12,7 @@ int main()
 
     while (gameRuns)
     {
-        // ----Phase 1 : Paramètrage de la partie----
+        // ---Phase 1 : Paramètrage de la partie---
         start_game()
 
         // ----------------------------------------
