@@ -844,7 +844,32 @@ Test(all, count_point_city3)
 //     cr_assert(test==1);
 // }
 
-Test(all, upscale)
+Test(all, first_grid) // test aussi upsacle init_grid et update potential tile
+{
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
+    struct Tile *tile = malloc(sizeof(struct Tile));
+    int hauteur = 0;
+    int largeur = 0;
+    struct DLList *dllist = malloc(sizeof(struct DLList));
+    dllist->data = NULL;
+    dllist->next = NULL;
+    dllist->prev = NULL;
+
+    struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
+    hauteur = 1;
+    largeur = 1;
+
+    struct Grid *grid = first_grid(firstGrid, &largeur, &hauteur, dllist);
+
+    cr_assert(grid->right != NULL); // upscale
+}
+
+
+
+/*
+Test(all, upscale_old)
 {
     struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
     struct Tile *tile2 = init_tile(VILLE, PRE, VILLE, PRE, VILLE);
@@ -910,11 +935,12 @@ Test(all, upscale)
 struct Coord C7={0,-1};
 
 
-    //upscale(G,&l,&h,C5); //upscale vers la droite crash
-    //upscale(G,&l,&h,C6); //upscale vers la gauche crash
-    //upscale(G,&l,&h,C7); //upscale vers le bas crash
+    //upscale(G,&l,&h,C5); upscale vers la droite crash
+    //upscale(G,&l,&h,C6); upscale vers la gauche crash
+    //upscale(G,&l,&h,C7); upscale vers le bas crash
 }
 
+<<<<<<< HEAD
 Test(all ,turn_tile)
 {
     struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
@@ -2124,3 +2150,5 @@ Test(all ,pointPlacedTile)
     cr_assert(test1->player[4]->points==0);
 }
 //a
+=======
+>>>>>>> b77d080364ba256666c337a6daa51f8f926f0061
