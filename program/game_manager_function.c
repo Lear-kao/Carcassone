@@ -148,7 +148,6 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
 */
 {
     printf("Tour du joueur %d\n", playerNumber);
-
     struct Tile *turn_tile = malloc(sizeof(struct Tile *));
     struct Grid **play_grid = NULL;
     unsigned int index = 0;
@@ -156,15 +155,18 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     unsigned int token = -1;
 
     pioche = stack_pop(pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
-    play_grid = where_i_can_play(turn_tile, dllist);
+
+    // play_grid = where_i_can_play(turn_tile, dllist);
+
 
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
         play_grid = where_i_can_play(turn_tile, dllist);
         show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
         index = 0;
-        printf("Pour tourner la tuile rentrez 0/n");
-        printf("Pour poser la tuile rentrez l'une des valeurs suivante :/n");
+        printf("Pour tourner la tuile rentrez 0\n");
+        printf("Pour poser la tuile rentrez l'une des valeurs suivante :\n");
+        //affiche un truc AXEL ICI
         scanf("%u", &token);
         if (token == 0)
         {
@@ -191,18 +193,14 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
     struct DLList *tmpDllist = dllist;
     int index = 0;
-    for (int i = 0; i < 4; i++)
+    while (tmpDllist->next != NULL)
     {
-        while (tmpDllist->next != NULL)
+        if ((tile->right == tmpDllist->data->tile->right || tile->right == RIEN) && (tile->top == tmpDllist->data->tile->top || tile->right == RIEN) && (tile->left == tmpDllist->data->tile->left || tile->right == RIEN) && (tile->bot == tmpDllist->data->tile->bot || tile->right == RIEN))
         {
-            if ((tile->right == tmpDllist->data->tile->right || tile->right == RIEN) && (tile->top == tmpDllist->data->tile->top || tile->right == RIEN) && (tile->left == tmpDllist->data->tile->left || tile->right == RIEN) && (tile->bot == tmpDllist->data->tile->bot || tile->right == RIEN))
-            {
-                gridArrray[index] = tmpDllist->data;
-                index++;
-            }
-            tmpDllist = tmpDllist->next;
+            gridArrray[index] = tmpDllist->data;
+            index++;
         }
-        turn_tile(tile);
+        tmpDllist = tmpDllist->next;
     }
     return gridArrray;
 }
@@ -741,11 +739,11 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
     - Réinitialise le turn tracker (le joueur 1 commence)
 */
 {
-    printf("combien  de joueur : \n");
-    scanf("%d",&nbPlayers);
+    printf("Combien de joueur : \n");
+    scanf("%d", &nbPlayers);
 
-    printf("combien  de bot: \n");
-    scanf("%d",&nbBot);
+    printf("Combien de bot: \n");
+    scanf("%d", &nbBot);
 
     if (list_player == NULL)
     {
@@ -759,20 +757,18 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
     
     struct Tile **tile_array;
     char *tokenArray[MAX_TOKEN_SIZE + 1] = {"route", "ville", "abbaye", "pre", "village", "blason"};
-    tile_array = create_tile_array(CSV_TILE,tokenArray, MAX_TOKEN_SIZE);
+    tile_array = create_tile_array(CSV_TILE, tokenArray, MAX_TOKEN_SIZE);
     
     struct Coord *start_coord=init_coord(0,0);
-    *grid = init_grid(tile_array[0],start_coord,NULL,NULL,NULL,NULL);
+    *grid = init_grid(tile_array[0], start_coord,NULL,NULL,NULL,NULL);
 
     shuffle(tile_array);
-    struct Stack  *stack=NULL;
-    array_to_stack(tile_array,&stack);
+    struct Stack  *stack = NULL;
+    array_to_stack(tile_array, &stack);
     struct Tile *variable_crée_à_cause_dune_decision_stupide;
     stack = stack_pop(stack,&variable_crée_à_cause_dune_decision_stupide);
 
-    init_plateau(grid, dllist, hauteur, largeur);
-
-    printf("%d %d\n",variable_crée_à_cause_dune_decision_stupide->top,variable_crée_à_cause_dune_decision_stupide->right);
+    init_plateau(grid, dllist, hauteur, largeur); // dllist ressort et vaut NULL erreur de pointeur ?
     return stack;
 }
 
