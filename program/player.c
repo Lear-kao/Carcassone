@@ -34,6 +34,7 @@ struct list_player *init_player_list(char nbbot) // Axel
     Crée une liste de pointeurs qui pointe sur un Player,
     un pointer sur NULL est ajouté à la fin pour faciliter
     les iterations sur la liste (condition d'arrêt)
+    Nbplayer est une variable globale 
 */
 {
     struct list_player *list_players = (struct list_player*)malloc(sizeof(struct list_player));
@@ -46,9 +47,6 @@ struct list_player *init_player_list(char nbbot) // Axel
         else{
             list_players->player[i]=init_player(i,0);
         }
-        
-
-        
     }
     list_players->player[nbPlayers] = NULL;
     return list_players;
