@@ -2147,3 +2147,91 @@ Test(all ,pointPlacedTile)
     cr_assert(test1->player[3]->points==0);
     cr_assert(test1->player[4]->points==0);
 }
+
+Test(all ,upscale_new)
+{
+
+    printf("||| UPSCALE |||\n");
+    int x=1,y=1;
+    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE);
+    struct Coord *C1=init_coord(0,0); 
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    struct Grid **t = calloc(sizeof(struct Grid *), 1);
+    show_grid(G,x,y,t);
+    struct Grid *coin=G;
+
+
+    int tt=1;
+
+    struct Coord *C[tt];
+    for(int i=0;i<tt;i++){
+        C[i]=init_coord(0,2+i);
+        upscale(&coin,&x,&y,*C[i]);
+    }
+
+    struct Coord *C2[tt];
+    for(int i=0;i<tt;i++){
+        C2[i]=init_coord(2+i,0);
+        upscale(&coin,&x,&y,*C2[i]);
+    }
+
+    struct Coord *C3[tt];
+    for(int i=0;i<tt;i++){
+        C3[i]=init_coord(-2-i,0);
+        upscale(&coin,&x,&y,*C3[i]);
+    }
+
+    struct Coord *C4[tt];
+    for(int i=0;i<tt;i++){
+        C4[i]=init_coord(0,-2-i);
+        upscale(&coin,&x,&y,*C4[i]);
+    }
+    show_grid(coin,x,y,t);
+
+    cr_assert(x==1+2*tt && y==1+2*tt);
+    
+}
+
+Test(all ,update_potential_tile)
+{
+    printf("||| update_potential_tile |||\n");
+    int x=1,y=1;
+    struct Tile *tile1 = init_tile(ROUTE,VILLE,ROUTE,VILLE,ROUTE);
+    struct Coord *C1=init_coord(0,0); 
+    struct Grid *G=init_grid(tile1,C1,NULL,NULL,NULL,NULL);
+    struct Grid **t = calloc(sizeof(struct Grid *), 1);
+    struct Grid *coin=G;
+
+
+    int tt=1;
+
+    struct Coord *C[tt];
+    for(int i=0;i<tt;i++){
+        C[i]=init_coord(0,2+i);
+        upscale(&coin,&x,&y,*C[i]);
+    }
+
+    struct Coord *C2[tt];
+    for(int i=0;i<tt;i++){
+        C2[i]=init_coord(2+i,0);
+        upscale(&coin,&x,&y,*C2[i]);
+    }
+
+    struct Coord *C3[tt];
+    for(int i=0;i<tt;i++){
+        C3[i]=init_coord(-2-i,0);
+        upscale(&coin,&x,&y,*C3[i]);
+    }
+
+    struct Coord *C4[tt];
+    for(int i=0;i<tt;i++){
+        C4[i]=init_coord(0,-2-i);
+        upscale(&coin,&x,&y,*C4[i]);
+    }
+
+    update_potential_tile(G,RIGHT);
+    update_potential_tile(G,TOP);
+    update_potential_tile(G,BOT);
+    update_potential_tile(G,LEFT);
+    show_grid(coin,x,y,t);
+}
