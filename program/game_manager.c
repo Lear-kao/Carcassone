@@ -13,32 +13,12 @@ int main()
     while (gameRuns)
     {
         // ----Phase 1 : Paramètrage de la partie----
-        char phase1 = 1;
-        while (phase1)
-        {
-            printf("Entrez le nombre de joueurs humains : ");
-            scanf("%hhu", &nbHumanPlayers);
-            printf("Entrez le nombre de robots participant à la partie : ");
-            scanf("%hhu", &nbBotPlayers);
-            nbPlayers = nbHumanPlayers + nbBotPlayers;
-            if ((nbPlayers) <= 6) // Phase 1 terminé
-            {
-                phase1 = 0;
-            }
-            else // boucle sur Phase 1
-            {
-                printf("Le nombre de joueurs et de bot doit être compris entre 0 et 6\n");
-            }
-            // Créer la liste des joueur (humain + bot)
-            // struct list_player *playerList = init_player_list(nbBotPlayers); Axel
-        }
+        start_game()
 
         // ----------------------------------------
         // ----Phase 2 : Lancement de la partie----
         // ----------------------------------------
         
-        // start_game()
-
         struct list_player *p_list;
         struct Grid *grid;
         struct Stack *stack = start_game(&p_list, &grid);        
