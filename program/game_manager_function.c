@@ -137,7 +137,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur) // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -179,7 +179,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
         {
             pose = 1;
             *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
-            //pointPlacedTile //besoin de la fonction de théo
+            pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
         }
     }
 }
@@ -771,7 +771,7 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid) /
     struct Tile *variable_crée_à_cause_dune_decision_stupide;
     stack = stack_pop(stack,&variable_crée_à_cause_dune_decision_stupide);
 
-    
+    // init plateau
 
     printf("%d %d\n",variable_crée_à_cause_dune_decision_stupide->top,variable_crée_à_cause_dune_decision_stupide->right);
     return stack;

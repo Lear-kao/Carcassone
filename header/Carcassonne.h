@@ -419,7 +419,7 @@ struct Grid *place_tile(struct Grid **topLeftgrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur); // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
