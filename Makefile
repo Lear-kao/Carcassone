@@ -10,8 +10,8 @@ all = exe
 default = $(all)
 
 
-all: $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o $(OBJ_Dir)/func_point.o $(OBJ_Dir)/test.o 
-	$(CC) ${CFLAGS} $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o $(OBJ_Dir)/func_point.o -o Carcassonne
+all: $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/meeple.o $(OBJ_Dir)/tile.o $(OBJ_Dir)/func_point.o
+	$(CC) ${CFLAGS} $(OBJ_Dir)/data_structure.o $(OBJ_Dir)/meeple.o $(OBJ_Dir)/game_manager.o $(OBJ_Dir)/game_manager_function.o $(OBJ_Dir)/player.o $(OBJ_Dir)/tile.o $(OBJ_Dir)/func_point.o -o Carcassonne
 
 $(OBJ_Dir)/data_structure.o : $(SRC_Dir)/data_structure.c $(INC_Dir)/Carcassonne.h
 	$(CC) -c $(SRC_Dir)/data_structure.c $(CFLAGS) -o $(OBJ_Dir)/data_structure.o
@@ -33,6 +33,9 @@ $(OBJ_Dir)/func_point.o : $(SRC_Dir)/func_point.c $(INC_Dir)/Carcassonne.h
 
 $(OBJ_Dir)/test.o : $(SRC_Dir)/testSuite.c $(INC_Dir)/Carcassonne.h
 	$(CC) -c $(SRC_Dir)/testSuite.c $(CFLAGS) -o $(OBJ_Dir)/test.o
+
+$(OBJ_Dir)/meeple.o : $(SRC_Dir)/meeple.c $(INC_Dir)/Carcassonne.h
+	$(CC) -c $(SRC_Dir)/meeple.c $(CFLAGS) -o $(OBJ_Dir)/meeple.o
 
 test : $(OBJ_Dir)/test.o
 	${CC} ${CFLAGS} ${TESTFLAGS} $(OBJ_Dir)/test.o -o testSuite
