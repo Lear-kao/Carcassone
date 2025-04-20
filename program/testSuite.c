@@ -226,8 +226,8 @@ Test(all ,show_gridv1)
     G->right->bot=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
     G->bot=init_grid(tile4,C4,G->right->bot,NULL,G,NULL);
 
-    struct Grid **t= NULL;
-
+    struct Grid **t = calloc(sizeof(struct Grid *), 1);
+    
     show_grid(G,2,2,t);
 }
 
@@ -291,8 +291,8 @@ Test(all ,showgridv2)
     G->right->right->top->top=init_grid(tile29,C29,NULL,G->right->top->top,G->right->right->top,NULL);
     G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
 
-    struct Grid **t= NULL;
-
+    struct Grid **t = calloc(sizeof(struct Grid *), 1);
+    
     show_grid(G->left->left->top->top,6,5,t);
 }
 

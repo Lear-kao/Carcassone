@@ -161,7 +161,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
         play_grid = where_i_can_play(turn_tile, dllist);
-        show_grid(*leftTopGrid, (*leftTopGrid)->coord->x, (*leftTopGrid)->coord->y ,play_grid);
+        show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
         index = 0;
         while (play_grid[index] != NULL) // affiche la liste des endroit ou il est possible de jouer
         {
@@ -669,11 +669,14 @@ void choose_w_show(unsigned char y, struct Grid *tab)
 
 
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
+// w_place résultat de where_i_can_place
+// x *largeur
+// y *hauteur
+// tab grille en haut à droite
 {
     char mrkr = 0;
     struct Grid *temp_x = tab, *temp_y;
     unsigned char t_x = 0, t_y;
-    puts("---start---");
     for (t_x = 0; t_x < y; t_x++)
     {
         printf("\n");
@@ -685,11 +688,13 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
             {
                 mrkr = 0;
                 int h = 0;
-
-                while (w_place[h]->coord != NULL)
+                if (w_place == NULL) {
+                    puts("Erreur : w_place est NULL");
+                    return;
+                }
+                
+                while (w_place[h] != NULL && w_place[h]->coord != NULL)
                 {
-                    puts("ok");
-
                     if (w_place[h]->coord->x == t_x && w_place[h]->coord->y == t_y)
                     {
                         show_wplace(j, h);
