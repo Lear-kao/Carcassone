@@ -49,7 +49,7 @@ int main()
         {
             for (char i = 0; i < nbPlayers; i++) 
             {
-                player_turn(i,p_list,stack,&grid);
+                //player_turn(i,p_list,stack,&grid);
             }
         }
 

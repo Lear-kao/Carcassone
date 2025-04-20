@@ -124,7 +124,7 @@ struct Grid
 
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);//tester mais peut être a approfondir
 
-struct Coord *init_coord(unsigned char x, unsigned char y);//tester valider
+struct Coord *init_coord(int x, int y);//tester valider
 /*
     x: coordonnée x
     y: coordonnee y
