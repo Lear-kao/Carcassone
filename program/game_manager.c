@@ -1,5 +1,10 @@
 #include "../header/Carcassonne.h"
 
+int turnTraker = 0;
+int finJeu = 0;
+int nbPlayers = 0;
+int nbBot = 0;
+int v_marquer = 0;
 
 
 int main()

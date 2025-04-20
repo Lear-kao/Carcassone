@@ -18,11 +18,12 @@ enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
 
-char turnTraker = 0;     // Numéro du joueur dont c'est le tour.
-char finJeu = 0;
-int nbPlayers;
-int nbBot;
-int v_marquer  = 1;
+extern int turnTraker;
+extern int finJeu;
+extern int nbPlayers;
+extern int nbBot;
+extern int v_marquer;
+
 //-----------------------
 // ----Data structure----
 // ----------------------
