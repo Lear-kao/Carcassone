@@ -29,18 +29,16 @@ int main()
             {
                 printf("Le nombre de joueurs et de bot doit être compris entre 0 et 6\n");
             }
+            // Créer la liste des joueur (humain + bot)
+            // struct list_player *playerList = init_player_list(nbBotPlayers); Axel
         }
 
         // ----------------------------------------
         // ----Phase 2 : Lancement de la partie----
         // ----------------------------------------
         
-        // Dans start game
-        //struct **create_players_array(char nbPlayers);
-        //struct Tile **create_tile_array(FILE * stream);
-        //void shuffle(struct Tile * *tileArray, char size);
-        //void array_to_stack(struct Tile * *tileArray, struct Stack * stack);
-        // Fin dans start game
+        // start_game()
+
         struct list_player *p_list;
         struct Grid *grid;
         struct Stack *stack = start_game(&p_list, &grid);        

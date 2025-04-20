@@ -226,9 +226,8 @@ Test(all ,show_gridv1)
     G->right->bot=init_grid(tile3,C3,NULL,NULL,G->right,NULL);
     G->bot=init_grid(tile4,C4,G->right->bot,NULL,G,NULL);
 
-    struct Coord **t=(struct Coord**)malloc(sizeof(struct Coord*));
-    t[0]=NULL;
-
+    struct Grid **t = calloc(sizeof(struct Grid *), 1);
+    
     show_grid(G,2,2,t);
 }
 
@@ -292,9 +291,8 @@ Test(all ,showgridv2)
     G->right->right->top->top=init_grid(tile29,C29,NULL,G->right->top->top,G->right->right->top,NULL);
     G->right->right->right->top->top=init_grid(tile30,C30,NULL,G->right->right->top->top,G->right->right->right->top,NULL);
 
-    struct Coord **t=(struct Coord**)malloc(sizeof(struct Coord*));
-    t[0]=NULL;
-
+    struct Grid **t = calloc(sizeof(struct Grid *), 1);
+    
     show_grid(G->left->left->top->top,6,5,t);
 }
 
@@ -844,7 +842,32 @@ Test(all, count_point_city3)
 //     cr_assert(test==1);
 // }
 
-Test(all, upscale)
+Test(all, first_grid) // test aussi upsacle init_grid et update potential tile
+{
+    struct Coord *coord = malloc(sizeof(struct Coord));
+    coord->x = 0;
+    coord->y = 0;
+    struct Tile *tile = malloc(sizeof(struct Tile));
+    int hauteur = 0;
+    int largeur = 0;
+    struct DLList *dllist = malloc(sizeof(struct DLList));
+    dllist->data = NULL;
+    dllist->next = NULL;
+    dllist->prev = NULL;
+
+    struct Grid *firstGrid = init_grid(tile, coord, NULL, NULL, NULL, NULL);
+    hauteur = 1;
+    largeur = 1;
+
+    struct Grid *grid = first_grid(firstGrid, &largeur, &hauteur, dllist);
+
+    cr_assert(grid->right != NULL); // upscale
+}
+
+
+
+/*
+Test(all, upscale_old)
 {
     struct Tile *tile1 = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE);
     struct Tile *tile2 = init_tile(VILLE, PRE, VILLE, PRE, VILLE);
@@ -910,10 +933,11 @@ Test(all, upscale)
 struct Coord C7={0,-1};
 
 
-    //upscale(G,&l,&h,C5); //upscale vers la droite crash
-    //upscale(G,&l,&h,C6); //upscale vers la gauche crash
-    //upscale(G,&l,&h,C7); //upscale vers le bas crash
+    //upscale(G,&l,&h,C5); upscale vers la droite crash
+    //upscale(G,&l,&h,C6); upscale vers la gauche crash
+    //upscale(G,&l,&h,C7); upscale vers le bas crash
 }
+*/
 
 Test(all ,turn_tile)
 {
