@@ -137,7 +137,8 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // A FAIRE
+
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -148,7 +149,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
 */
 {
     printf("Tour du joueur %d\n", playerNumber);
-    struct Tile *turn_tile = malloc(sizeof(struct Tile *));
+    struct Tile *turn_tile = malloc(sizeof(struct Tile));
     struct Grid **play_grid = NULL;
     unsigned int index = 0;
     char pose = 0; // bool
@@ -156,13 +157,14 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     struct Grid **tmpGrid;
 
 
-    pioche = stack_pop(pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
+    *pioche = stack_pop(*pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
 
     // play_grid = where_i_can_play(turn_tile, dllist);
 
 
     while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
     {
+        show_tile(turn_tile);
         play_grid = where_i_can_play(turn_tile, dllist);
         show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
         tmpGrid = play_grid;
@@ -187,6 +189,8 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
             pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
         }
     }
+
+    
 }
 
 struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Théo à faire
@@ -542,14 +546,40 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 {
-    upscale(topLeftGrid, largeur, hauteur, *coord);
+    
     struct Grid *gridFind = find(*topLeftGrid, *coord); // trouve ou poser la tuile aussi possible pour plus d'optimisation de trouver la tuile dans dllist
+
+    if(gridFind->left==NULL){
+        printf("left\n");
+        coord->x=coord->x-1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+    }
+
+    if(gridFind->right==NULL){
+        printf("right\n");
+        coord->x=coord->x+1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+    }
+
+    if(gridFind->top==NULL){
+        printf("top\n");
+        coord->y=coord->y+1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+    }
+
+    if(gridFind->bot==NULL){
+        printf("bot\n");
+        coord->y=coord->y-1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+    }
+
     gridFind->tile = tile; // pose la tuile
+    
     update_potential_tile(gridFind, RIGHT);
     update_potential_tile(gridFind, TOP);
     update_potential_tile(gridFind, LEFT);
     update_potential_tile(gridFind, BOT);
-    return NULL;
+    return *topLeftGrid;
 }
 
 void enum_to_char(enum types type)

@@ -423,7 +423,7 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
 void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteur, int *largeur);
 
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 

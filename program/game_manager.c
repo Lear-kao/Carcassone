@@ -34,7 +34,7 @@ int main()
         {
             for (char i = 0; i < nbPlayers; i++) 
             {
-                player_turn(i + 1, p_list,stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
             }
         }
         // -------------------------------
