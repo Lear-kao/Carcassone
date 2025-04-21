@@ -607,10 +607,10 @@ void show_wplace(int j, int h)
 {
     if(j == 0 || j == 2)
     {
-        printf("---");
+        printf("---------  ");
         return;
     }
-    printf("-%d-",h);
+    printf("----%d----  ",h+1);
     
 }
 
@@ -661,7 +661,20 @@ void choose_w_show(unsigned char y, struct Grid *tab)
     printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
 
-
+void show_tile( struct Tile *tile )
+{
+    enum_to_char(PRE);
+    enum_to_char(tile->top);
+    enum_to_char(PRE);
+    printf("\n");
+    enum_to_char(tile->left);
+    enum_to_char(tile->middle);
+    enum_to_char(tile->right);
+    printf("\n");
+    enum_to_char(PRE);
+    enum_to_char(tile->bot);
+    enum_to_char(PRE);
+}
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
 // w_place résultat de where_i_can_place
 // x *largeur
