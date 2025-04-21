@@ -24,7 +24,7 @@ int main()
     while (gameRuns)
     {
         // ----Phase 1 : Paramètrage de la partie----
-        stack = start_game(&p_list, &leftTopGrid, dllist, &hauteur, &largeur);
+        stack = start_game(&p_list, &leftTopGrid, &dllist, &hauteur, &largeur);
 
         // ---------------------------
         // ----Phase 2 : La partie----
@@ -33,7 +33,7 @@ int main()
         {
             for (char i = 0; i < nbPlayers; i++) 
             {
-                player_turn(i + 1, p_list,stack, &leftTopGrid, dllist, &hauteur, &largeur, p_list);
+                player_turn(i + 1, p_list,stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
             }
         }
         // -------------------------------
