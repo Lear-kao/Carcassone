@@ -195,7 +195,7 @@ struct Player
         coulPLayer : ?????????????????????
     */
     char bot;
-    char coulPlayer;
+    int coulPlayer;
     char nbMeeple;
     short points; 
 };
@@ -289,7 +289,7 @@ struct Tile *rot_tile(struct Tile *tile); //Fait
     Tourne la tuile de 90° dans le sens trigo.
 */
 
-void enum_to_char(enum types type); //Fait
+void enum_to_char(enum types type, int coul);
 /*
     Convertie un enum en char affichable (V pour ville et v pour village).
 */
