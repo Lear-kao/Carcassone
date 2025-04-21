@@ -202,12 +202,11 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Th�
     return : La liste malloc des endroit ou il est possible de jouer (position tuile fixe)
 */
 {
-    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
+    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid*)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
     struct DLList *tmpDllist = *dllist;
     int index = 0;
-    while (tmpDllist->next != NULL)
+    while (tmpDllist!= NULL)
     {
-
         if ((tile->right == tmpDllist->data->tile->right || tmpDllist->data->tile->right == RIEN) 
         && (tile->top == tmpDllist->data->tile->top || tmpDllist->data->tile->top == RIEN) 
         && (tile->left == tmpDllist->data->tile->left || tmpDllist->data->tile->left == RIEN) 
@@ -553,32 +552,53 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
         printf("left\n");
         coord->x=coord->x-1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->x=coord->x+1;
     }
 
     if(gridFind->right==NULL){
         printf("right\n");
         coord->x=coord->x+1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->x=coord->x-1;
     }
 
     if(gridFind->top==NULL){
         printf("top\n");
         coord->y=coord->y+1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->y=coord->y-1;
     }
 
     if(gridFind->bot==NULL){
         printf("bot\n");
         coord->y=coord->y-1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->y=coord->y+1;
+
     }
 
     gridFind->tile = tile; // pose la tuile
-    
     update_potential_tile(gridFind, RIGHT);
     update_potential_tile(gridFind, TOP);
     update_potential_tile(gridFind, LEFT);
     update_potential_tile(gridFind, BOT);
+
+    if(is_a_potential_tile(gridFind->right->tile) && gridFind->tile->right==gridFind->right->tile->left){
+        *dllist=DLList_push_end(*dllist,gridFind->right);
+    }
+
+    if(is_a_potential_tile(gridFind->left->tile) && gridFind->tile->left==gridFind->left->tile->right){
+        *dllist=DLList_push_end(*dllist,gridFind->left);
+    }
+
+    if(is_a_potential_tile(gridFind->top->tile) && gridFind->tile->top==gridFind->top->tile->bot){
+        *dllist=DLList_push_end(*dllist,gridFind->top);
+    }
+
+    if(is_a_potential_tile(gridFind->bot->tile) && gridFind->tile->bot==gridFind->bot->tile->top){
+        *dllist=DLList_push_end(*dllist,gridFind->bot);
+    }
+
     return *topLeftGrid;
 }
 
@@ -704,6 +724,7 @@ void show_tile( struct Tile *tile )
     enum_to_char(PRE);
     enum_to_char(tile->bot);
     enum_to_char(PRE);
+    printf("\n");
 }
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
 // w_place résultat de where_i_can_place
