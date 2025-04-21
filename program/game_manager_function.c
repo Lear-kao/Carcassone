@@ -137,7 +137,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -153,6 +153,8 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     unsigned int index = 0;
     char pose = 0; // bool
     unsigned int token = -1;
+    struct Grid **tmpGrid;
+
 
     pioche = stack_pop(pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
 
@@ -163,9 +165,15 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     {
         play_grid = where_i_can_play(turn_tile, dllist);
         show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
+        tmpGrid = play_grid;
         index = 0;
         printf("Pour tourner la tuile rentrez 0\n");
         printf("Pour poser la tuile rentrez l'une des valeurs suivante :\n");
+        while(tmpGrid[index] !=NULL)
+        {
+            printf("%d - x = %d et y = %d\n", index + 1, tmpGrid[index]->coord->x, tmpGrid[index]->coord->y);
+            index++;
+        }
         //affiche un truc AXEL ICI
         scanf("%u", &token);
         if (token == 0)
@@ -181,7 +189,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     }
 }
 
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo à faire
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Théo à faire
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -191,11 +199,15 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
 */
 {
     struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
-    struct DLList *tmpDllist = dllist;
+    struct DLList *tmpDllist = *dllist;
     int index = 0;
     while (tmpDllist->next != NULL)
     {
-        if ((tile->right == tmpDllist->data->tile->right || tile->right == RIEN) && (tile->top == tmpDllist->data->tile->top || tile->right == RIEN) && (tile->left == tmpDllist->data->tile->left || tile->right == RIEN) && (tile->bot == tmpDllist->data->tile->bot || tile->right == RIEN))
+
+        if ((tile->right == tmpDllist->data->tile->right || tmpDllist->data->tile->right == RIEN) 
+        && (tile->top == tmpDllist->data->tile->top || tmpDllist->data->tile->top == RIEN) 
+        && (tile->left == tmpDllist->data->tile->left || tmpDllist->data->tile->left == RIEN) 
+        && (tile->bot == tmpDllist->data->tile->bot || tmpDllist->data->tile->bot == RIEN))
         {
             gridArrray[index] = tmpDllist->data;
             index++;
@@ -458,7 +470,7 @@ struct Grid *find(struct Grid *grid, struct Coord coord) // Théo FAIT
     return tmpGrid;
 }
 
-struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist) // Théo A TESTER
+struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist) // Théo A TESTER
 /*
     Place la première tuile et actualise la grille en conséquence.
     grid : La grid originelle de coord (0,0)
@@ -487,32 +499,21 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     upscale(&grid, largeur, hauteur, tmpCoord); // (0,-1)
 
     // Actualisation des tuiles pottentielles adjacente
-    struct Tile *right_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *right_grid = init_grid(right_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, RIGHT); 
-
-    struct Tile *top_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *top_grid = init_grid(top_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, TOP);
-
-    struct Tile *left_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *left_grid = init_grid(left_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, LEFT);
-
-    struct Tile *bot_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *bot_grid = init_grid(bot_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, BOT);
 
     // actualisation de dllist
 
-    DLList_push_end(dllist, right_grid);
-    DLList_push_end(dllist, top_grid);
-    DLList_push_end(dllist, left_grid);
-    DLList_push_end(dllist, bot_grid);
+    *dllist = DLList_push_end(*dllist, grid->right); // (0,1)
+    *dllist = DLList_push_end(*dllist, grid->right->bot->right); // (1,0)
+    *dllist = DLList_push_end(*dllist, grid->bot); // (-1, 0)
+    *dllist = DLList_push_end(*dllist, grid->bot->right->bot); // (0, -1)
     return grid;
 }
 
-void init_plateau(struct Grid **topLeftGrid, struct DLList *dllist, int *hauteur, int *largeur)
+void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteur, int *largeur)
 {
     struct Tile *startTile = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE); // tuile de départ hard code
     struct Coord *coord = malloc(sizeof(struct Coord));
@@ -520,14 +521,10 @@ void init_plateau(struct Grid **topLeftGrid, struct DLList *dllist, int *hauteur
     coord->y = 0;
 
     struct Grid *firstGrid = init_grid(startTile, coord, NULL, NULL, NULL, NULL);
-    dllist = malloc(sizeof(struct DLList));
-    dllist->data = NULL;
-    dllist->next = NULL;
-    dllist->prev = NULL;
     *topLeftGrid = first_grid(firstGrid, hauteur, largeur, dllist);
 }
 
-struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 
@@ -729,7 +726,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
 
 
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur) // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
