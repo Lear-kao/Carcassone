@@ -24,18 +24,15 @@ int main()
     while (gameRuns)
     {
         // ----Phase 1 : Paramètrage de la partie----
-        printf("\n1");
         stack = start_game(&p_list, &leftTopGrid, dllist, &hauteur, &largeur);
 
         // ---------------------------
         // ----Phase 2 : La partie----
         // ---------------------------
-        printf("\n2");
         while (is_stack_not_empty(stack))
         {
             for (char i = 0; i < nbPlayers; i++) 
             {
-                printf("\n%d",i+2);
                 player_turn(i + 1, p_list,stack, &leftTopGrid, dllist, &hauteur, &largeur, p_list);
             }
         }

@@ -392,7 +392,7 @@ short points_ville(struct Grid *grid); // Axel et blason
 short points_abbayes(struct Grid *grid); // Axel
 short points_pre(struct Grid *grid); // Axel
 
-struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist); // Théo A TESTER
+struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist); // Théo A TESTER
 /*
     Place la première tuile et actualise la grille en conséquence.
     grid : La grid originelle de coord (0,0)
@@ -402,7 +402,7 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     Return value : L'élément le plus en haut à gauche de la grid.
 */
 
-struct Grid *place_tile(struct Grid **topLeftgrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur); // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur); // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 
@@ -420,7 +420,10 @@ struct Grid *place_tile(struct Grid **topLeftgrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
+void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteur, int *largeur);
+
+
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -430,7 +433,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     avec la fonction where_i_can_play
 */
 
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Théo A TESTER
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist); // Théo à faire
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -445,7 +448,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur); // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur); // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
