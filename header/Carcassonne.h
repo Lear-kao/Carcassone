@@ -564,4 +564,11 @@ char searchMeeple(struct Tile tile ,int where);
 char countMeepleRoad(struct Grid *grille, enum places start, int color);//tester
 char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
 
+int* where_i_can_put(struct Grid *grid);
+char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
+char meepleRoad_nocolor(struct Grid *grille);
+
+
+
+
 #endif // CARCASSONNE_H
