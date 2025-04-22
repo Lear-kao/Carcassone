@@ -148,7 +148,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
     avec la fonction where_i_can_play
 */
 {
-    printf("Tour du joueur %d\n", playerNumber);
+    printf("\nTour du joueur %d\n", playerNumber);
     struct Tile *turn_tile = malloc(sizeof(struct Tile));
     struct Grid **play_grid = NULL;
     unsigned int index = 0;
@@ -203,7 +203,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
     }
 }
 
-void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer)
+void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer)
 /*
     playerNumber : Le numéro du joueur
 
@@ -213,7 +213,7 @@ void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioc
     avec la fonction where_i_can_play
 */
 {
-    printf("Tour du joueur(BOT) %d\n", playerNumber);
+    printf("\nTour du joueur(BOT) %d\n", playerNumber);
     struct Tile *turn_tile = malloc(sizeof(struct Tile));
     struct Grid **play_grid = NULL;
     unsigned int index = 0;
@@ -640,28 +640,24 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
     struct Grid *gridFind = find(*topLeftGrid, *coord); // trouve ou poser la tuile aussi possible pour plus d'optimisation de trouver la tuile dans dllist
 
     if(gridFind->left==NULL){
-        printf("left\n");
         coord->x=coord->x-1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
         coord->x=coord->x+1;
     }
 
     if(gridFind->right==NULL){
-        printf("right\n");
         coord->x=coord->x+1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
         coord->x=coord->x-1;
     }
 
     if(gridFind->top==NULL){
-        printf("top\n");
         coord->y=coord->y+1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
         coord->y=coord->y-1;
     }
 
     if(gridFind->bot==NULL){
-        printf("bot\n");
         coord->y=coord->y-1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
         coord->y=coord->y+1;
@@ -836,6 +832,13 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
         {
             t_y = 0;
             temp_y = temp_x;
+            if(j==1){
+                printf("Y=%3d ",temp_y->coord->y);
+            }
+            else
+            {
+                printf("      ");
+            }
             for (; t_y < x; t_y++)
             {
                 mrkr = 0;
@@ -879,12 +882,20 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
             temp_x = temp_x->bot;
     }
 
+    temp_x=tab;
+    printf("      ");
+    for(t_x=0;t_x<x;t_x++){
+        printf("  X=%3d    ",temp_x->coord->x);
+        temp_x=temp_x->right;
+    }
+    printf("\n");
+
 }
 
 
 
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur) // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur,int *bot_difficulty) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -899,6 +910,18 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
 
     printf("Combien de bot: \n");
     scanf("%d", &nbBot);
+
+    if(nbBot>0)
+    {
+        do{
+            printf("Quel difficulté pour les bot ?\n");
+            printf("1 = Tres Facile\n");
+            scanf("%d",bot_difficulty);
+            if(*bot_difficulty<1 || *bot_difficulty>NB_BOT_DIFFICULTY){
+                printf("donnée incorrect\n");
+            }
+        }while(*bot_difficulty<1 || *bot_difficulty>NB_BOT_DIFFICULTY);
+    }
 
     if (*list_player == NULL)
     {
@@ -961,4 +984,18 @@ prend en paramètre une struct grid initialisée et la free pour être réutilis
         *grid=tmp2;
     }
     return;
+}
+
+void bienvenue()
+/*
+    fonction qui affiche l'ensemble des règle de carcasonne et les texte de bienvenue
+*/
+{
+    printf("@@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @      @     @      @     @@@@@@@@\n");
+    printf("@            @      @     @      @     @            @      @     @            @            @      @     @@     @     @@     @     @       \n");
+    printf("@            @      @     @      @     @            @      @     @            @            @      @     @ @    @     @ @    @     @       \n");
+    printf("@            @@@@@@@@     @@@@@@@@     @            @@@@@@@@     @@@@@@@@     @@@@@@@@     @      @     @  @   @     @  @   @     @@@@@@@@\n");
+    printf("@            @      @     @    @       @            @      @            @            @     @      @     @   @  @     @   @  @     @       \n");
+    printf("@            @      @     @     @      @            @      @            @            @     @      @     @    @ @     @    @ @     @       \n");
+    printf("@@@@@@@@     @      @     @      @     @@@@@@@@     @      @     @@@@@@@@     @@@@@@@@     @@@@@@@@     @     @@     @     @@     @@@@@@@@\n");   
 }

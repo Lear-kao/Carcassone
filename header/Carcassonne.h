@@ -7,6 +7,7 @@
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 6
 #define NBMEEPLE_DEFAULT 8  // theo 
+#define NB_BOT_DIFFICULTY 1
 
 
 #include <stddef.h>
@@ -230,6 +231,11 @@ char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
 // ----Game manager fonctions----
 // ------------------------------
 
+void bienvenue();
+/*
+    fonction qui affiche l'ensemble des règle de carcasonne et les texte de bienvenue
+*/
+
 char token_to_enum_types(char *token, char *tokenArray[]); // theo si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
 /*
     La fonction effectue une bijection entre l'enum types et tokenArray
@@ -432,7 +438,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
 */
-void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
+void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
 /*
     playerNumber : Le numéro du joueur
 
@@ -440,6 +446,9 @@ void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioc
     et propose ensuite au joueur de choisir
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
+
+    premiere fonction de tour automatique pour les bot
+    il n'a aucune intelligence et ne fais que prendre le premier endroit disponible ou poser la tuile piocher
 */
 
 struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist); // Théo à faire
@@ -462,7 +471,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur); // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur,int *bot_difficulty); // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
