@@ -31,10 +31,16 @@ int main()
         // ---------------------------
         while (is_stack_not_empty(stack))
         {
-            for (char i = 0; i < nbPlayers; i++) 
+            char i=0;
+            while(i < nbPlayers && is_stack_not_empty(stack)) 
             {
-                player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                if(p_list->player[i]->bot==0)
+                    player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                else
+                    bot_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                i++;
             }
+            
         }
         // -------------------------------
         // ----Phase 3 : Fin de partie----

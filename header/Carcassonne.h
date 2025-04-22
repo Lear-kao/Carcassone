@@ -432,6 +432,15 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
 */
+void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
+/*
+    playerNumber : Le numéro du joueur
+
+    Cette fonction pop la stack de tile
+    et propose ensuite au joueur de choisir
+    un emplacmement pour poser sa tuile
+    avec la fonction where_i_can_play
+*/
 
 struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist); // Théo à faire
 /*
@@ -440,6 +449,11 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist); // Th
     dllist : Une liste doublement chainé contenant les tuiles potentiels pour cette fonction.
 
     return : La liste malloc des endroit ou il est possible de jouer.
+*/
+
+char is_possible_tile(struct Tile *tile, struct DLList **dllist);
+/*
+    verifie si avec une tuile donné elle est impossible a poser
 */
 
 
