@@ -99,6 +99,7 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player)
 char nbMeepleVille_nocolor(struct Grid *grille){
     char res=nbMeepleVille_nocolorEncap(grille,NO_MEEPLE);
     v_marquer++;
+    printf("ville passée");
     return res;
 }
 
@@ -331,6 +332,7 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
     }
 
     v_marquer++;
+    printf("road_passé\n");
     return nbmeeple;
 }
 
@@ -347,16 +349,22 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
 int* where_i_can_put(struct Grid *grid)
 {
     int tab[5] = {RIEN,RIEN,RIEN,RIEN,RIEN};
+    printf("wtf");
     if(grid->tile->right == VILLE && !nbMeepleVille_nocolor(grid)) tab[0] = 1;
     else if(grid->tile->right == ROUTE && !countMeepleRoad_nocolor(grid,RIGHT)) tab[0] = 1;
+    printf("right passé\n");
     if(grid->tile->top == VILLE && !nbMeepleVille_nocolor(grid)) tab[1] = 1;
     else if(grid->tile->top == ROUTE && !countMeepleRoad_nocolor(grid,TOP)) tab[1] = 1;
+    printf("top passé\n");
     if(grid->tile->left == VILLE && !nbMeepleVille_nocolor(grid)) tab[2] = 1;
     else if(grid->tile->left == ROUTE && !countMeepleRoad_nocolor(grid,LEFT)) tab[2] = 1;
+    printf("left passé\n");
     if(grid->tile->bot == VILLE && !nbMeepleVille_nocolor(grid)) tab[3] = 1;
     else if(grid->tile->bot == ROUTE && !countMeepleRoad_nocolor(grid,BOT)) tab[3] = 1;
+    printf("bot passé\n");
     if(grid->tile->middle == VILLE && !nbMeepleVille_nocolor(grid)) tab[4] = 1;
     else if(grid->tile->middle == ROUTE && !countMeepleRoad_nocolor(grid,MIDDLE)) tab[4] = 1;
     else if(grid->tile->middle == ABBAYES) tab[4] = 1;
+    printf("bot passé\n");
     return tab;
 }

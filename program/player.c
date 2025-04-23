@@ -19,13 +19,15 @@ struct Player *init_player(int couleur,char bot)
 }
 
 char is_meeple_on_player(struct Player *player)
-{/*
+/*
     Player : L'objet Player
 
     return :
     - 0 si le joueur n'a aucun Meeple
     - 1 si il reste au moins un Meeple au Joueur
 */
+{
+    printf("vraiment\n");
     return player->nbMeeple;
 }
 
@@ -74,7 +76,9 @@ void reset_meeples(struct Player *player) // Fait
 
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
 {
-    //if (!can_place_meeple()){ printf("vous ne pouvez pas poser de meeple\n");return;}
+    // problème aveclaliste  des  joueurs
+    printf("un crash est  généré par  la liste des  joueurs!!!\n");
+    printf("%d\n",p_list->player[pnumber]->nbMeeple);
     if (!is_meeple_on_player(p_list->player[pnumber]))
     {
         return;

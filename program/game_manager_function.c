@@ -186,7 +186,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
         {
             pose = 1;
             *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
-            put_meeple(play_grid[token - 1],p_list,playerNumber);
+            put_meeple(play_grid[token - 1],p_list,playerNumber - 1);
             pointPlacedTile(play_grid[token - 1], p_list); //besoin de la fonction de théo
         }
     }
