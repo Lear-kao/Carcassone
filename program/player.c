@@ -72,7 +72,7 @@ void reset_meeples(struct Player *player) // Fait
 
 //fonction pas finie je dois faire bcp de fct  à côté
 
-/* void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
+void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
 {
     //if (!can_place_meeple()){ printf("vous ne pouvez pas poser de meeple\n");return;}
     if (!is_meeple_on_player(p_list->player[pnumber]))
@@ -80,11 +80,29 @@ void reset_meeples(struct Player *player) // Fait
         return;
     }
     printf("voulez vous poser un meeple ? (0 : Non, 1 : Oui)");
-    int temp;
+    char temp;
     scanf("%d",temp);
-    if(temp) return;
-    printf("ou voulez vous poser votre meeple (0 = Droite, 1 = Haut, 2 = Gauche, 3 = Bas)");
-    scanf("%c",grid->tile->meeplePlace);
-    grid->tile->meeple = p_list->player[pnumber];
+    if(!temp) return;
+    int meep_put = 0;
+    int *tab_place = where_i_can_put(grid);
+    while( !meep_put )
+    {
+        if(tab_place[0] != RIEN) printf("vous pouvez  placer à droite - 0\n");
+        if(tab_place[1] != RIEN) printf("vous pouvez  placer en haut - 1\n");
+        if(tab_place[2] != RIEN) printf("vous pouvez  placer à gauche - 2\n");
+        if(tab_place[3] != RIEN) printf("vous pouvez  placer en bas - 3\n");
+        if(tab_place[4] != RIEN) printf("vous pouvez  placer au millieu - 4\n");
+        printf("sinon vous pouvez ne pas en placer - 5");
+        scanf("%d",temp);
+        if(temp == 5) return;
+        if(tab_place[temp] != RIEN)
+        {
+            grid->tile->meeplePlace = temp; 
+            grid->tile->meeple = p_list->player[pnumber];
+            meep_put = 1;
+        }
+        else printf("position invalide");
+
+    }
     return;
-} */
+}

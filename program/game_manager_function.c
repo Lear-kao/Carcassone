@@ -186,7 +186,6 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
         {
             pose = 1;
             *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
-            p_list->player[playerNumber]->coulPlayer
             pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
         }
     }
@@ -807,9 +806,6 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
     }
 
 }
-
-
-
 
 struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur) // en cour ( Axel )
 /*
