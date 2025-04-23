@@ -189,6 +189,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
             {
                 pose = 1;
                 *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
+                //put_meeple(leftTopGrid,p_list,playerNumber); problème liste des joueurs
                 pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
             }
             else
