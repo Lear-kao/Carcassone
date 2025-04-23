@@ -99,6 +99,7 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player)
 char nbMeepleVille_nocolor(struct Grid *grille){
     char res=nbMeepleVille_nocolorEncap(grille,NO_MEEPLE);
     v_marquer++;
+    printf("ville passée");
     return res;
 }
 
@@ -256,4 +257,114 @@ char meepleRoad(struct Grid *grille, int color)// Commentaire à faire !!! unfin
     }
 
     return cmp;
+}
+
+
+
+
+/* 
+Fonction pour  savoir il y a  des meeples sur la route que fait les tuiles quel que soit la couleur
+*/
+char meepleRoad_nocolor(struct Grid *grille)// Commentaire à faire !!! unfinished initialisé à 1
+{
+    char cmp=0;
+    if( grille->marquer == v_marquer) return 0;
+
+    if(is_meeple_on_tile(grille->tile))
+    {
+        if(where_is_meeple(ROUTE,*(grille->tile))){
+            cmp+=1;
+        }
+    }
+
+    grille->marquer = v_marquer;
+
+    if (grille->tile->middle == ROUTE)
+    {
+        if ( grille->tile->bot == ROUTE && grille->bot !=NULL )
+        {
+            cmp += meepleRoad_nocolor(grille->bot);
+        }
+        if ( grille->tile->left == ROUTE && grille->left !=NULL )
+        {
+            cmp += meepleRoad_nocolor(grille->left);
+        }
+        if ( grille->tile->top == ROUTE && grille->top !=NULL )
+        {
+            cmp += meepleRoad_nocolor(grille->top);
+        }
+        if ( grille->tile->right == ROUTE && grille->right !=NULL )
+        {
+            cmp += meepleRoad_nocolor(grille->right);
+        }
+    }
+
+    return cmp;
+}
+
+char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
+{
+    char  nbmeeple = 0;
+    
+    if(is_meeple_on_tile(grille->tile))
+    {
+        if (where_is_meeple(ROUTE,*(grille->tile))) nbmeeple += 1;
+    }
+
+    //grille->marquer = v_marquer;
+    switch(start)
+    {
+        case RIGHT:
+            nbmeeple += meepleRoad_nocolor(grille->right);
+            break;
+
+        case TOP:
+            nbmeeple += meepleRoad_nocolor(grille->top);
+            break;
+
+        case LEFT:
+            nbmeeple += meepleRoad_nocolor(grille->left);
+            break;
+
+        case BOT:
+            nbmeeple += meepleRoad_nocolor(grille->bot);
+            break;
+    }
+
+    v_marquer++;
+    printf("road_passé\n");
+    return nbmeeple;
+}
+
+
+
+
+
+
+
+
+
+
+
+int* where_i_can_put(struct Grid *grid)
+{
+    int tab[5] = {RIEN,RIEN,RIEN,RIEN,RIEN};
+    printf("wtf");
+    if(grid->tile->right == VILLE && !nbMeepleVille_nocolor(grid)) tab[0] = 1;
+    else if(grid->tile->right == ROUTE && !countMeepleRoad_nocolor(grid,RIGHT)) tab[0] = 1;
+    printf("right passé\n");
+    if(grid->tile->top == VILLE && !nbMeepleVille_nocolor(grid)) tab[1] = 1;
+    else if(grid->tile->top == ROUTE && !countMeepleRoad_nocolor(grid,TOP)) tab[1] = 1;
+    printf("top passé\n");
+    if(grid->tile->left == VILLE && !nbMeepleVille_nocolor(grid)) tab[2] = 1;
+    else if(grid->tile->left == ROUTE && !countMeepleRoad_nocolor(grid,LEFT)) tab[2] = 1;
+    printf("left passé\n");
+    if(grid->tile->bot == VILLE && !nbMeepleVille_nocolor(grid)) tab[3] = 1;
+    else if(grid->tile->bot == ROUTE && !countMeepleRoad_nocolor(grid,BOT)) tab[3] = 1;
+    printf("bot passé\n");
+    if(grid->tile->middle == VILLE && !nbMeepleVille_nocolor(grid)) tab[4] = 1;
+    else if(grid->tile->middle == ROUTE && !countMeepleRoad_nocolor(grid,MIDDLE)) tab[4] = 1;
+    else if(grid->tile->middle == ABBAYES) tab[4] = 1;
+    printf("bot passé\n");
+    return tab;
 }

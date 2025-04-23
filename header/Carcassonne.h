@@ -196,7 +196,7 @@ struct Player
         coulPLayer : ?????????????????????
     */
     char bot;
-    char coulPlayer;
+    int coulPlayer;
     char nbMeeple;
     short points; 
 };
@@ -295,7 +295,7 @@ struct Tile *rot_tile(struct Tile *tile); //Fait
     Tourne la tuile de 90° dans le sens trigo.
 */
 
-void enum_to_char(enum types type); //Fait
+void enum_to_char(enum types type, int coul);
 /*
     Convertie un enum en char affichable (V pour ville et v pour village).
 */
@@ -586,5 +586,13 @@ char searchMeeple(struct Tile tile ,int where);
 
 char countMeepleRoad(struct Grid *grille, enum places start, int color);//tester
 char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
+
+int* where_i_can_put(struct Grid *grid);
+char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
+char meepleRoad_nocolor(struct Grid *grille);
+void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
+
+
+
 
 #endif // CARCASSONNE_H
