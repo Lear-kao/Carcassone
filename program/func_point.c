@@ -304,23 +304,26 @@ Commentaire à faire
 
 void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
 {
-    char point;
-    char list_meeple[nbPlayers];
-    switch (justPlaced->tile->middle)
+    if(is_meeple_on_tile(justPlaced->tile))
     {
-        case VILLE:
-            point = count_point_city(justPlaced,MIDDLE);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
-            give_point(list_meeple,listPlayer,point);
-            break;
-        case ABBAYES:
-            //point = count_point_city(justPlaced,4);
-            point = isFinishedAbbaye(justPlaced);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleAbbaye(justPlaced, i);
-            give_point(list_meeple,listPlayer,point);
-            break;
-        case ROUTE:
-            break;
+        char point;
+        char list_meeple[nbPlayers];
+        switch (justPlaced->tile->middle)
+        {
+            case VILLE:
+                point = count_point_city(justPlaced,MIDDLE);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
+                give_point(list_meeple,listPlayer,point);
+                break;
+            case ABBAYES:
+                //point = count_point_city(justPlaced,4);
+                point = isFinishedAbbaye(justPlaced);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleAbbaye(justPlaced, i);
+                give_point(list_meeple,listPlayer,point);
+                break;
+            case ROUTE:
+                break;
+        }
     }
 }
 
