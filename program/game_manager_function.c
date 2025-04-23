@@ -88,8 +88,8 @@ void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size
 
     for (i = 0; i < (NBTILE-1) * (NBTILE-1); i++)
     {
-        rand1 =1+ rand() % (NBTILE-1);
-        rand2 =1+ rand() % (NBTILE-1);
+        rand1 =rand() % (NBTILE-1);
+        rand2 =rand() % (NBTILE-1);
         if (rand1 != rand2)
         {
             temp = tileArray[rand1];
@@ -148,7 +148,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
     avec la fonction where_i_can_play
 */
 {
-    printf("Tour du joueur %d\n", playerNumber);
+    printf("\nTour du joueur %d\n", playerNumber);
     struct Tile *turn_tile = malloc(sizeof(struct Tile));
     struct Grid **play_grid = NULL;
     unsigned int index = 0;
@@ -159,39 +159,106 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
 
     *pioche = stack_pop(*pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
 
+
     // play_grid = where_i_can_play(turn_tile, dllist);
 
-
-    while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
+    if(is_possible_tile(turn_tile,dllist))//verifie si la tuile est possible a poser 
     {
-        show_tile(turn_tile);
-        play_grid = where_i_can_play(turn_tile, dllist);
-        show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
-        tmpGrid = play_grid;
-        index = 0;
-        printf("Pour tourner la tuile rentrez 0\n");
-        printf("Pour poser la tuile rentrez l'une des valeurs suivante :\n");
-        while(tmpGrid[index] !=NULL)
+        while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
         {
-            printf("%d - x = %d et y = %d\n", index + 1, tmpGrid[index]->coord->x, tmpGrid[index]->coord->y);
-            index++;
-        }
-        //affiche un truc AXEL ICI
-        scanf("%u", &token);
-        if (token == 0)
-        {
-            rot_tile(turn_tile);
-        }
-        else
-        {
-            pose = 1;
-            *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
-            put_meeple(play_grid[token - 1],p_list,playerNumber - 1);
-            pointPlacedTile(play_grid[token - 1], p_list); //besoin de la fonction de théo
+            show_tile(turn_tile);
+            play_grid = where_i_can_play(turn_tile, dllist);
+            show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
+            tmpGrid = play_grid;
+            index = 0;
+            printf("Pour tourner la tuile rentrez 0\n");
+            printf("Pour poser la tuile rentrez l'une des valeurs suivante :\n");
+            while(tmpGrid[index] !=NULL)
+            {
+                printf("%d - x = %d et y = %d\n", index + 1, tmpGrid[index]->coord->x, tmpGrid[index]->coord->y);
+                index++;
+            }
+
+            //affiche un truc AXEL ICI
+            scanf("%u", &token);
+            if (token == 0)
+            {
+                rot_tile(turn_tile);
+            }
+            else if(token <= index)
+            {
+                pose = 1;
+                *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
+                pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
+            }
+            else
+            {
+                printf("vous ne pouvez pas faire ce choix\n");
+            }
         }
     }
+    else
+    {
+        printf("La tuile piocher ne peut pas être posé\n");
+    }
+}
 
-    
+void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer)
+/*
+    playerNumber : Le numéro du joueur
+
+    Cette fonction pop la stack de tile
+    et propose ensuite au joueur de choisir
+    un emplacmement pour poser sa tuile
+    avec la fonction where_i_can_play
+*/
+{
+    printf("\nTour du joueur(BOT) %d\n", playerNumber);
+    struct Tile *turn_tile = malloc(sizeof(struct Tile));
+    struct Grid **play_grid = NULL;
+    unsigned int index = 0;
+    char pose = 0; // bool
+    unsigned int token = -1;
+    struct Grid **tmpGrid;
+
+
+    *pioche = stack_pop(*pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
+
+
+    // play_grid = where_i_can_play(turn_tile, dllist);
+
+    if(is_possible_tile(turn_tile,dllist))//verifie si la tuile est possible a poser 
+    {
+        while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
+        {
+            show_tile(turn_tile);
+            play_grid = where_i_can_play(turn_tile, dllist);
+            show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
+            tmpGrid = play_grid;
+            index = 0;
+            while(tmpGrid[index] !=NULL)
+            {
+                printf("%d - x = %d et y = %d\n", index + 1, tmpGrid[index]->coord->x, tmpGrid[index]->coord->y);
+                index++;
+            }
+
+            if(index>=1)
+            {
+                token=1;
+                pose = 1;
+                *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
+                pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
+            }
+            else
+            {
+                rot_tile(turn_tile);
+            }
+        }
+    }
+    else
+    {
+        printf("La tuile piocher ne peut pas être posé\n");
+    }
 }
 
 struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Théo à faire
@@ -203,16 +270,16 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Th�
     return : La liste malloc des endroit ou il est possible de jouer (position tuile fixe)
 */
 {
-    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
+    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid*)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
     struct DLList *tmpDllist = *dllist;
     int index = 0;
-    while (tmpDllist->next != NULL)
+    while (tmpDllist!= NULL)
     {
-
         if ((tile->right == tmpDllist->data->tile->right || tmpDllist->data->tile->right == RIEN) 
         && (tile->top == tmpDllist->data->tile->top || tmpDllist->data->tile->top == RIEN) 
         && (tile->left == tmpDllist->data->tile->left || tmpDllist->data->tile->left == RIEN) 
-        && (tile->bot == tmpDllist->data->tile->bot || tmpDllist->data->tile->bot == RIEN))
+        && (tile->bot == tmpDllist->data->tile->bot || tmpDllist->data->tile->bot == RIEN)
+        && is_a_potential_tile(tmpDllist->data->tile))
         {
             gridArrray[index] = tmpDllist->data;
             index++;
@@ -220,6 +287,28 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Th�
         tmpDllist = tmpDllist->next;
     }
     return gridArrray;
+}
+
+char is_possible_tile(struct Tile *tile, struct DLList **dllist){
+    struct Grid **gridArray[4]={NULL,NULL,NULL,NULL};
+
+    for(int i=0;i<4;i++){
+        gridArray[i]=where_i_can_play(tile,dllist);
+        tile=rot_tile(tile);
+    }
+
+    int index[4]={0,0,0,0};
+
+    for(int i=0;i<4;i++){
+        while(gridArray[i][index[i]]!=NULL){
+            index[i]=index[i]+1;
+        }
+    }
+    
+    free(gridArray[0]);free(gridArray[1]);free(gridArray[2]);free(gridArray[3]);
+    char condition=index[0] || index[1] || index[2] || index[3] ;
+    return condition;
+
 }
 
 char is_a_potential_tile(struct Tile *tile) // Théo FAIT
@@ -551,35 +640,52 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
     struct Grid *gridFind = find(*topLeftGrid, *coord); // trouve ou poser la tuile aussi possible pour plus d'optimisation de trouver la tuile dans dllist
 
     if(gridFind->left==NULL){
-        printf("left\n");
         coord->x=coord->x-1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->x=coord->x+1;
     }
 
     if(gridFind->right==NULL){
-        printf("right\n");
         coord->x=coord->x+1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->x=coord->x-1;
     }
 
     if(gridFind->top==NULL){
-        printf("top\n");
         coord->y=coord->y+1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->y=coord->y-1;
     }
 
     if(gridFind->bot==NULL){
-        printf("bot\n");
         coord->y=coord->y-1;
         upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->y=coord->y+1;
+
     }
 
     gridFind->tile = tile; // pose la tuile
-    
     update_potential_tile(gridFind, RIGHT);
     update_potential_tile(gridFind, TOP);
     update_potential_tile(gridFind, LEFT);
     update_potential_tile(gridFind, BOT);
+
+    if(is_a_potential_tile(gridFind->right->tile) && gridFind->tile->right==gridFind->right->tile->left){
+        *dllist=DLList_push_end(*dllist,gridFind->right);
+    }
+
+    if(is_a_potential_tile(gridFind->left->tile) && gridFind->tile->left==gridFind->left->tile->right){
+        *dllist=DLList_push_end(*dllist,gridFind->left);
+    }
+
+    if(is_a_potential_tile(gridFind->top->tile) && gridFind->tile->top==gridFind->top->tile->bot){
+        *dllist=DLList_push_end(*dllist,gridFind->top);
+    }
+
+    if(is_a_potential_tile(gridFind->bot->tile) && gridFind->tile->bot==gridFind->bot->tile->top){
+        *dllist=DLList_push_end(*dllist,gridFind->bot);
+    }
+
     return *topLeftGrid;
 }
 
@@ -669,8 +775,11 @@ void show_wplace(int j, int h)
         printf("---------  ");
         return;
     }
-    printf("----%d----  ",h+1);
-    
+
+    if(h+1 >=10)
+        printf("----%d---  ",h+1);
+    else
+        printf("----%d----  ",h+1);     
 }
 
 void choose_w_show(unsigned char y, struct Grid *tab)
@@ -763,6 +872,13 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
         {
             t_y = 0;
             temp_y = temp_x;
+            if(j==1){
+                printf("Y=%3d ",temp_y->coord->y);
+            }
+            else
+            {
+                printf("      ");
+            }
             for (; t_y < x; t_y++)
             {
                 mrkr = 0;
@@ -774,7 +890,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
                 
                 while (w_place[h] != NULL && w_place[h]->coord != NULL)
                 {
-                    if (w_place[h]->coord->x == t_x && w_place[h]->coord->y == t_y)
+                    if (w_place[h]->coord->x == temp_y->coord->x && w_place[h]->coord->y == temp_y->coord->y)
                     {
                         show_wplace(j, h);
                         mrkr = 1;
@@ -806,9 +922,16 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
             temp_x = temp_x->bot;
     }
 
-}
+    temp_x=tab;
+    printf("      ");
+    for(t_x=0;t_x<x;t_x++){
+        printf("  X=%3d    ",temp_x->coord->x);
+        temp_x=temp_x->right;
+    }
+    printf("\n");
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur) // en cour ( Axel )
+}
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur,int *bot_difficulty) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -824,7 +947,19 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
     printf("Combien de bot: \n");
     scanf("%d", &nbBot);
 
-    if (list_player == NULL)
+    if(nbBot>0)
+    {
+        do{
+            printf("Quel difficulté pour les bot ?\n");
+            printf("1 = Tres Facile\n");
+            scanf("%d",bot_difficulty);
+            if(*bot_difficulty<1 || *bot_difficulty>NB_BOT_DIFFICULTY){
+                printf("donnée incorrect\n");
+            }
+        }while(*bot_difficulty<1 || *bot_difficulty>NB_BOT_DIFFICULTY);
+    }
+
+    if (*list_player == NULL)
     {
         *list_player = init_player_list(nbBot);
     }
@@ -859,7 +994,7 @@ void *end_game_points_counter( struct list_player list ) // à tester (Axel)
 {
     for( int  i = 0; i < nbPlayers ; i++)
     {
-        printf("Le joueur n°%d possède %d points",i, list.player[i]->points );
+        printf("Le joueur n°%d possède %d points\n",i+1, list.player[i]->points );
     }
 }
 
@@ -885,4 +1020,18 @@ prend en paramètre une struct grid initialisée et la free pour être réutilis
         *grid=tmp2;
     }
     return;
+}
+
+void bienvenue()
+/*
+    fonction qui affiche l'ensemble des règle de carcasonne et les texte de bienvenue
+*/
+{
+    printf("@@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @      @     @      @     @@@@@@@@\n");
+    printf("@            @      @     @      @     @            @      @     @            @            @      @     @@     @     @@     @     @       \n");
+    printf("@            @      @     @      @     @            @      @     @            @            @      @     @ @    @     @ @    @     @       \n");
+    printf("@            @@@@@@@@     @@@@@@@@     @            @@@@@@@@     @@@@@@@@     @@@@@@@@     @      @     @  @   @     @  @   @     @@@@@@@@\n");
+    printf("@            @      @     @    @       @            @      @            @            @     @      @     @   @  @     @   @  @     @       \n");
+    printf("@            @      @     @     @      @            @      @            @            @     @      @     @    @ @     @    @ @     @       \n");
+    printf("@@@@@@@@     @      @     @      @     @@@@@@@@     @      @     @@@@@@@@     @@@@@@@@     @@@@@@@@     @     @@     @     @@     @@@@@@@@\n");   
 }

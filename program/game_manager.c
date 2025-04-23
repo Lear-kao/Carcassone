@@ -18,23 +18,39 @@ int main()
     struct Stack *stack = NULL;
     int hauteur = 1;
     int largeur = 1;
+    int bot_difficulty=-1;
 
-    printf("Texte de bienvenu");
+    bienvenue();
 
     while (gameRuns)
     {
         // ----Phase 1 : Paramètrage de la partie----
-        stack = start_game(&p_list, &leftTopGrid, &dllist, &hauteur, &largeur);
+        stack = start_game(&p_list, &leftTopGrid, &dllist, &hauteur, &largeur,&bot_difficulty);
 
         // ---------------------------
         // ----Phase 2 : La partie----
         // ---------------------------
+        
         while (is_stack_not_empty(stack))
         {
-            for (char i = 0; i < nbPlayers; i++) 
+            char i=0;
+            while(i < nbPlayers && is_stack_not_empty(stack)) 
             {
-                player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                if(p_list->player[i]->bot==0)
+                    player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                else
+                {
+                    switch(bot_difficulty)
+                    {
+                        case 1:
+                            bot_turnLV1(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                            break;
+                    }
+                }
+                    
+                i++;
             }
+            
         }
         // -------------------------------
         // ----Phase 3 : Fin de partie----
