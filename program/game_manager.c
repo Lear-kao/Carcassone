@@ -19,6 +19,8 @@ int main()
     int hauteur = 1;
     int largeur = 1;
     int bot_difficulty=-1;
+    //srand(time(NULL)); // initialisation de la seed pour l'aléatoire du jeu
+    srand(0);
 
     bienvenue();
 

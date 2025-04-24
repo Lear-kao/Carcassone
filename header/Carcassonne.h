@@ -487,6 +487,8 @@ void free_Grid( struct Grid **grid); // fait (Axel)
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
 */
 
+void *show_point_and_nbmeeple(struct list_player list);
+
 /* 
 --------------------------------------
 --------------------------------------
@@ -547,10 +549,10 @@ int max(char *list);//tester
 --------------------------------------
 */
 
-char nbMeepleVille( struct Grid *grille,  int coul_player); //tester
+char nbMeepleVille( struct Grid *grille,  int coul_player , enum places a); //tester
 /* compte le nombre de meeple dans une ville d'une couleur précise */
 
-char nbMeepleVilleEncap(struct Grid *grille, int coul_player); //tester
+char nbMeepleVilleEncap(struct Grid *grille, int coul_player, enum meeplePlace origin); //tester
 /* 
     on appel cette fonction pour appeler nbMeepleVille et pouvoir 
     incrementer v_marquer
@@ -591,6 +593,7 @@ int* where_i_can_put(struct Grid *grid);
 char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
 char meepleRoad_nocolor(struct Grid *grille);
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
+void remove_meeple(struct Grid* justPlaced, struct list_player *p_list);
 
 
 

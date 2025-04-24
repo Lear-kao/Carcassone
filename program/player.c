@@ -77,15 +77,15 @@ void reset_meeples(struct Player *player) // Fait
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
 {
     // problème aveclaliste  des  joueurs
-    printf("un crash est  généré par  la liste des  joueurs!!!\n");
-    printf("%d\n",p_list->player[pnumber]->nbMeeple);
+    //printf("un crash est  généré par  la liste des  joueurs!!!\n");
+    //printf("%d\n",p_list->player[pnumber]->nbMeeple);
     if (!is_meeple_on_player(p_list->player[pnumber]))
     {
         return;
     }
     printf("voulez vous poser un meeple ? (0 : Non, 1 : Oui)");
-    char temp;
-    scanf("%d",temp);
+    int temp;
+    scanf("%d",&temp);
     if(!temp) return;
     int meep_put = 0;
     int *tab_place = where_i_can_put(grid);
@@ -97,16 +97,27 @@ void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
         if(tab_place[3] != RIEN) printf("vous pouvez  placer en bas - 3\n");
         if(tab_place[4] != RIEN) printf("vous pouvez  placer au millieu - 4\n");
         printf("sinon vous pouvez ne pas en placer - 5");
-        scanf("%d",temp);
+        scanf("%d",&temp);
         if(temp == 5) return;
         if(tab_place[temp] != RIEN)
         {
             grid->tile->meeplePlace = temp; 
             grid->tile->meeple = p_list->player[pnumber];
             meep_put = 1;
+            p_list->player[pnumber]->nbMeeple-=1;
         }
         else printf("position invalide");
 
     }
     return;
+}
+
+void remove_meeple(struct Grid *justPlaced, struct list_player *p_list)
+{
+    if(is_meeple_on_tile(justPlaced->tile))
+    {
+        p_list->player[justPlaced->tile->meeple->coulPlayer-1]+=1;
+        justPlaced->tile->meeple=NULL;
+        justPlaced->tile->meeplePlace=NO_MEEPLE;
+    }
 }

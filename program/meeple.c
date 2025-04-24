@@ -27,22 +27,32 @@ char where_is_meeple(  int type, struct Tile tile)
         case MP_RIGHT:
             if (type == ROUTE && (tile.right == VILLAGE || tile.right == ROUTE)) return 1;
             if (type == tile.right) return 1;
+            if (type == BLASON && tile.right==VILLE) return 1;
+            if (type == VILLE && tile.right==BLASON) return 1;
             break;
         case MP_TOP:
             if (type == ROUTE && (tile.top == VILLAGE || tile.top == ROUTE)) return 1;
-            if (type == tile.top) return 1;            
+            if (type == tile.top) return 1;
+            if (type == BLASON && tile.top==VILLE) return 1;
+            if (type == VILLE && tile.top==BLASON) return 1;            
             break;
         case MP_LEFT:
             if (type == ROUTE && (tile.left == VILLAGE || tile.left == ROUTE)) return 1;
-            if (type == tile.left) return 1;            
+            if (type == tile.left) return 1;
+            if (type == BLASON && tile.left==VILLE) return 1;
+            if (type == VILLE && tile.left==BLASON) return 1;            
             break;
         case MP_BOT:
             if (type == ROUTE && (tile.bot == VILLAGE || tile.bot == ROUTE)) return 1;
             if (type == tile.bot) return 1;
+            if (type == BLASON && tile.bot==VILLE) return 1;
+            if (type == VILLE && tile.bot==BLASON) return 1;
             break;
         case MP_MIDDLE:
             if (type == ROUTE && (tile.middle == VILLAGE || tile.middle == ROUTE)) return 1;
             if (type == tile.middle) return 1;
+            if (type == BLASON && tile.middle==VILLE) return 1;
+            if (type == VILLE && tile.middle==BLASON) return 1;
     }
     return 0;
 }
@@ -53,51 +63,121 @@ char what_color_is_meeple(int color, struct Tile tile)
 
 }
 
-char nbMeepleVille(struct Grid *grille, int coul_player){
-    char res=nbMeepleVilleEncap(grille,coul_player);
+char nbMeepleVille(struct Grid *grille, int coul_player,enum places a){
+    char res=0;
+    if(is_meeple_on_tile(grille->tile) && 
+       grille->tile->meeple->coulPlayer == coul_player && 
+       grille->tile->meeplePlace==a && 
+       (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile)))) res+=1;
+    
+    // printf("cond1=%d cond2=%d\n",is_meeple_on_tile(grille->tile),where_is_meeple(VILLE,*(grille->tile)));
+    // printf("res=%d\n",res);
+
+    // printf("DFS=%d\n",grille->right->tile->meeplePlace);
+
+    switch(a)
+    {
+        case RIGHT:
+            grille->marquer=v_marquer;
+            if(grille->right!=NULL && grille->tile->right==VILLE || grille->tile->right==BLASON)
+            {
+                res+=nbMeepleVilleEncap(grille->right,coul_player,MP_LEFT);
+            }
+            break;
+
+        case TOP:
+            grille->marquer=v_marquer;
+            if(grille->top!=NULL && grille->tile->top==VILLE || grille->tile->top==BLASON)
+            {
+                res+=nbMeepleVilleEncap(grille->top,coul_player,MP_BOT);
+            }
+            break;
+
+        case LEFT:
+            grille->marquer=v_marquer;
+            if(grille->left!=NULL && grille->tile->left==VILLE || grille->tile->left==BLASON)
+            {
+                res+=nbMeepleVilleEncap(grille->left,coul_player,MP_RIGHT);
+            }
+            break;
+            
+        case BOT:
+            grille->marquer=v_marquer;
+            if(grille->bot!=NULL && grille->tile->bot==VILLE || grille->tile->bot==BLASON)
+            {
+                res+=nbMeepleVilleEncap(grille->bot,coul_player,MP_TOP);
+            }
+            break;
+
+        case MIDDLE:
+            if(grille->tile->middle==VILLE || grille->tile->middle == BLASON)
+            {
+                res=nbMeepleVilleEncap(grille,coul_player,MP_MIDDLE);
+            }
+            break;
+        
+
+    }
     v_marquer++;
+    printf("meeple=%d\n",res);
     return res;
 }
 
-char nbMeepleVilleEncap( struct Grid *grille, int coul_player)
+char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace origin)
 {
     //pour l'instant la fonction ne fait que compter le nombre de meeple sans discinction
     char cmpt = 0;
+    //printf("exec1\n");
     if (grille->marquer == v_marquer) return 0;
-    if(is_meeple_on_tile(grille->tile)) //temp devient grille
+    //printf("exec2\n");
+    if(grille->tile->meeplePlace!=NO_MEEPLE) //temp devient grille
     {
-        if (what_color_is_meeple(coul_player,*(grille->tile)) &&
-            where_is_meeple(VILLE,*(grille->tile))){
-                cmpt+= 1;
-            }
+        if(grille->tile->middle == VILLE || grille->tile->middle==BLASON)
+        {
+            if (what_color_is_meeple(coul_player,*(grille->tile)) &&
+                (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile))))
+                {
+                    cmpt+= 1;
+                }
+        }
+
+        else
+        {
+            if (what_color_is_meeple(coul_player,*(grille->tile)) &&
+                (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile))) &&
+                searchMeeple(*(grille->tile),origin))
+                {
+                    cmpt+= 1;
+                }
+        }
     }    
     grille->marquer = v_marquer;
 
-    if( grille->tile->middle == VILLE )
+    if( grille->tile->middle == VILLE || grille->tile->middle==BLASON)
     {
-        if(grille->tile->top == VILLE)
+        if(grille->tile->top == VILLE || grille->tile->top==BLASON)
         {
-            cmpt += nbMeepleVilleEncap(grille->top,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->top,coul_player,MP_BOT);
         }
-        if(grille->tile->right == VILLE)
+        if(grille->tile->right == VILLE || grille->tile->right==BLASON)
         {
-            cmpt += nbMeepleVilleEncap(grille->right,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->right,coul_player,MP_LEFT);
         }
-        if(grille->tile->left == VILLE)
+        if(grille->tile->left == VILLE || grille->tile->left==BLASON)
         {
-            cmpt += nbMeepleVilleEncap(grille->left,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->left,coul_player,MP_RIGHT);
 
         }
-        if(grille->tile->bot == VILLE)
+        if(grille->tile->bot == VILLE || grille->tile->bot==BLASON)
         {
-            cmpt += nbMeepleVilleEncap(grille->bot,coul_player);
+            cmpt += nbMeepleVilleEncap(grille->bot,coul_player,MP_TOP);
         }
     }
     return cmpt;
 }
 
 char nbMeepleVille_nocolor(struct Grid *grille){
-    char res=nbMeepleVille_nocolorEncap(grille,NO_MEEPLE);
+    char res=nbMeepleVille_nocolorEncap(grille,6);
     v_marquer++;
     printf("ville passée");
     return res;
@@ -111,29 +191,29 @@ char nbMeepleVille_nocolorEncap( struct Grid *grille,int where)
 
     if(is_meeple_on_tile(grille->tile))
     {
-        if(where_is_meeple(VILLE,*(grille->tile)) && 
+        if((where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile))) && 
           (searchMeeple(*(grille->tile),where) || searchMeeple(*(grille->tile),MP_MIDDLE))){
             cmpt+=1;
         }
     }
 
     grille->marquer = v_marquer;
-    if( grille->tile->middle == VILLE )
+    if( grille->tile->middle == VILLE || grille->tile->middle == BLASON)
     {
-        if(grille->tile->top == VILLE)
+        if(grille->tile->top == VILLE || grille->tile->top==BLASON)
         {
             cmpt += nbMeepleVille_nocolorEncap(grille->top,MP_BOT);
         }
-        if(grille->tile->right == VILLE)
+        if(grille->tile->right == VILLE || grille->tile->right == BLASON)
         {
             cmpt += nbMeepleVille_nocolorEncap(grille->right,MP_LEFT);
         }
-        if(grille->tile->left == VILLE)
+        if(grille->tile->left == VILLE || grille->tile->left == BLASON)
         {
             cmpt += nbMeepleVille_nocolorEncap(grille->left,MP_RIGHT);
 
         }
-        if(grille->tile->bot == VILLE)
+        if(grille->tile->bot == VILLE || grille->tile->bot == BLASON)
         {
             cmpt += nbMeepleVille_nocolorEncap(grille->bot,MP_TOP);
         }
@@ -348,21 +428,25 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
 
 int* where_i_can_put(struct Grid *grid)
 {
-    int tab[5] = {RIEN,RIEN,RIEN,RIEN,RIEN};
+    //int tab[5] = {RIEN,RIEN,RIEN,RIEN,RIEN};
+
+    int *tab=(int*)malloc(5*sizeof(int));
+    tab[0]=RIEN;tab[1]=RIEN;tab[2]=RIEN;tab[3]=RIEN;tab[4]=RIEN;
+
     printf("wtf");
-    if(grid->tile->right == VILLE && !nbMeepleVille_nocolor(grid)) tab[0] = 1;
+    if((grid->tile->right == VILLE || grid->tile->right == BLASON) && !nbMeepleVille_nocolor(grid)) tab[0] = 1;
     else if(grid->tile->right == ROUTE && !countMeepleRoad_nocolor(grid,RIGHT)) tab[0] = 1;
     printf("right passé\n");
-    if(grid->tile->top == VILLE && !nbMeepleVille_nocolor(grid)) tab[1] = 1;
+    if((grid->tile->top == VILLE || grid->tile->top == BLASON) && !nbMeepleVille_nocolor(grid)) tab[1] = 1;
     else if(grid->tile->top == ROUTE && !countMeepleRoad_nocolor(grid,TOP)) tab[1] = 1;
     printf("top passé\n");
-    if(grid->tile->left == VILLE && !nbMeepleVille_nocolor(grid)) tab[2] = 1;
+    if((grid->tile->left == VILLE || grid->tile->left == BLASON) && !nbMeepleVille_nocolor(grid)) tab[2] = 1;
     else if(grid->tile->left == ROUTE && !countMeepleRoad_nocolor(grid,LEFT)) tab[2] = 1;
     printf("left passé\n");
-    if(grid->tile->bot == VILLE && !nbMeepleVille_nocolor(grid)) tab[3] = 1;
+    if((grid->tile->bot == VILLE || grid->tile->bot == BLASON) && !nbMeepleVille_nocolor(grid)) tab[3] = 1;
     else if(grid->tile->bot == ROUTE && !countMeepleRoad_nocolor(grid,BOT)) tab[3] = 1;
     printf("bot passé\n");
-    if(grid->tile->middle == VILLE && !nbMeepleVille_nocolor(grid)) tab[4] = 1;
+    if((grid->tile->middle == VILLE || grid->tile->middle == BLASON) && !nbMeepleVille_nocolor(grid)) tab[4] = 1;
     else if(grid->tile->middle == ROUTE && !countMeepleRoad_nocolor(grid,MIDDLE)) tab[4] = 1;
     else if(grid->tile->middle == ABBAYES) tab[4] = 1;
     printf("bot passé\n");

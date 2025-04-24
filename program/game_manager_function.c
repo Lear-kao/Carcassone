@@ -82,7 +82,6 @@ void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size
     la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
 */
 {
-    srand(time(NULL)); // initialisation de la seed pour la generation de nombre aléatoire
     short i, rand1, rand2;
     struct Tile *temp;
 
@@ -167,6 +166,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
         while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
         {
             show_tile(turn_tile);
+            show_point_and_nbmeeple(*p_list);
             play_grid = where_i_can_play(turn_tile, dllist);
             show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
             tmpGrid = play_grid;
@@ -189,7 +189,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
             {
                 pose = 1;
                 *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
-                //put_meeple(leftTopGrid,p_list,playerNumber); problème liste des joueurs
+                put_meeple(play_grid[token - 1],p_list,playerNumber-1); //problème liste des joueurs
                 pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
             }
             else
@@ -276,10 +276,10 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Th�
     int index = 0;
     while (tmpDllist!= NULL)
     {
-        if ((tile->right == tmpDllist->data->tile->right || tmpDllist->data->tile->right == RIEN) 
-        && (tile->top == tmpDllist->data->tile->top || tmpDllist->data->tile->top == RIEN) 
-        && (tile->left == tmpDllist->data->tile->left || tmpDllist->data->tile->left == RIEN) 
-        && (tile->bot == tmpDllist->data->tile->bot || tmpDllist->data->tile->bot == RIEN)
+        if ((tile->right == tmpDllist->data->tile->right || tmpDllist->data->tile->right == RIEN || (tile->right==VILLE && tmpDllist->data->tile->right==BLASON) || (tile->right==BLASON && tmpDllist->data->tile->right==VILLE)) 
+        && (tile->top == tmpDllist->data->tile->top || tmpDllist->data->tile->top == RIEN || (tile->top==VILLE && tmpDllist->data->tile->top==BLASON) || (tile->top==BLASON && tmpDllist->data->tile->top==VILLE)) 
+        && (tile->left == tmpDllist->data->tile->left || tmpDllist->data->tile->left == RIEN || (tile->left==VILLE && tmpDllist->data->tile->left==BLASON) || (tile->left==BLASON && tmpDllist->data->tile->left==VILLE)) 
+        && (tile->bot == tmpDllist->data->tile->bot || tmpDllist->data->tile->bot == RIEN || (tile->bot==VILLE && tmpDllist->data->tile->bot==BLASON) || (tile->bot==BLASON && tmpDllist->data->tile->bot==VILLE))
         && is_a_potential_tile(tmpDllist->data->tile))
         {
             gridArrray[index] = tmpDllist->data;
@@ -699,7 +699,7 @@ void enum_to_char(enum types type, int coul)
             {
                 printf(" Z ");
             }
-            else printf("%d",coul);
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
             
@@ -709,7 +709,7 @@ void enum_to_char(enum types type, int coul)
             {
                 printf(" R ");
             }
-            else printf("%d",coul);
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
@@ -719,7 +719,7 @@ void enum_to_char(enum types type, int coul)
             {
             printf(" V ");
             }
-            else printf("%d",coul);
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
@@ -729,7 +729,7 @@ void enum_to_char(enum types type, int coul)
             {
             printf(" A ");
             }
-            else printf("%d",coul);
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
@@ -739,7 +739,7 @@ void enum_to_char(enum types type, int coul)
             {
             printf(" P ");
             }
-            else printf("%d",coul);
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
@@ -749,7 +749,7 @@ void enum_to_char(enum types type, int coul)
             {
             printf(" v ");
             }
-            else printf("%d",coul);
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
@@ -759,7 +759,7 @@ void enum_to_char(enum types type, int coul)
             {
             printf(" B ");
             }
-            else printf("%d",coul);
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
@@ -815,7 +815,7 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == MIDDLE){
                 enum_to_char(tab->tile->middle,tab->tile->meeple->coulPlayer);
             }
-            enum_to_char(tab->tile->middle,0);
+            else enum_to_char(tab->tile->middle,0);
             if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == RIGHT){
                 enum_to_char(tab->tile->right,tab->tile->meeple->coulPlayer);
             }
@@ -856,6 +856,7 @@ void show_tile( struct Tile *tile )
     enum_to_char(PRE,0);
     enum_to_char(tile->bot,0);
     enum_to_char(PRE,0);
+    printf("\n");
 }
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
 // w_place résultat de where_i_can_place
@@ -999,6 +1000,13 @@ void *end_game_points_counter( struct list_player list ) // à tester (Axel)
     }
 }
 
+void *show_point_and_nbmeeple(struct list_player list)
+{
+    for( int  i = 0; i < nbPlayers ; i++)
+    {
+        printf("Le joueur n°%d possède %d points et %d meeple\n",i+1, list.player[i]->points,list.player[i]->nbMeeple);
+    }
+}
 
 
 void free_Grid( struct Grid **grid) // a tester
