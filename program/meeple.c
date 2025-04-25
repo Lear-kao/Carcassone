@@ -389,7 +389,10 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
 }
 
 
-char meepleRoad(struct Grid *grille, int color)// Commentaire à faire !!! unfinished initialisé à 1
+char meepleRoad(struct Grid *grille, int color)
+/* 
+Compte le nombre de meeple sur une structure route en fonction de la couleur passé en paramètre.
+*/
 {
     char cmp=0;
     if( grille->marquer == v_marquer) return 0;
@@ -434,7 +437,7 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
     if(is_meeple_on_tile(grille->tile))
     {
         if (where_is_meeple(ROUTE,*(grille->tile)) &&
-            grille->tile->meeplePlace == start) nbmeeple += 1;
+            grille->tile->meeplePlace == start ) nbmeeple += 1;
     }
 
     //grille->marquer = v_marquer;
@@ -543,7 +546,7 @@ int* where_i_can_put(struct Grid *grid)
     //int tab[5] = {RIEN,RIEN,RIEN,RIEN,RIEN};
 
     int *tab=(int*)malloc(5*sizeof(int));
-    tab[0]=RIEN;tab[1]=RIEN;tab[2]=RIEN;tab[3]=RIEN;tab[4]=RIEN;
+    for( int i = 0; i < 5; i++) tab[i]=RIEN;
 
     printf("wtf");
     if((grid->tile->right == VILLE || grid->tile->right == BLASON) && !nbMeepleVille_nocolor(grid,RIGHT)) tab[0] = 1;
