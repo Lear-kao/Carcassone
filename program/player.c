@@ -112,11 +112,14 @@ void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
     return;
 }
 
+
+
+
 void remove_meeple(struct Grid *justPlaced, struct list_player *p_list)
 {
     if(is_meeple_on_tile(justPlaced->tile))
     {
-        p_list->player[justPlaced->tile->meeple->coulPlayer-1]+=1;
+        p_list->player[justPlaced->tile->meeple->coulPlayer-1]->nbMeeple+=1;
         justPlaced->tile->meeple=NULL;
         justPlaced->tile->meeplePlace=NO_MEEPLE;
     }

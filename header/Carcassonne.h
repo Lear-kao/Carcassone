@@ -518,7 +518,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
 
 char isFinishedRoad(struct Grid *grille, char *unfinished); //tester (avec countPointRoad)
 /* vérifie la completion d'une ville et sa valeur en terme de points */
-char countPointRoad(struct Grid *grille,char *unfinished, enum places start); //tester
+char countPointRoad(struct Grid *grille,enum places start); //tester
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
 Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
@@ -558,9 +558,9 @@ char nbMeepleVilleEncap(struct Grid *grille, int coul_player, enum meeplePlace o
     incrementer v_marquer
 */
 
-char nbMeepleVille_nocolor( struct Grid *grille); //tester
+char nbMeepleVille_nocolor( struct Grid *grille,enum places a); //tester
 
-char nbMeepleVille_nocolorEncap(struct Grid *grille,int where); //tester
+char nbMeepleVille_nocolorEncap(struct Grid *grille,enum meeplePlace origin); //tester
 /* 
     Parametre:
         grille: la grille a tester
@@ -591,8 +591,9 @@ char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
 
 int* where_i_can_put(struct Grid *grid);
 char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
-char meepleRoad_nocolor(struct Grid *grille);
+char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
+void put_meeple_botLV1(struct Grid *grid,struct list_player *p_list, char pnumber);
 void remove_meeple(struct Grid* justPlaced, struct list_player *p_list);
 
 
