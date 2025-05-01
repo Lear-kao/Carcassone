@@ -15,6 +15,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
+
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};

@@ -139,36 +139,29 @@ void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber)
                     where=rand()%5;
                 }while(tab_place[where]==RIEN);
 
+                grid->tile->meeple=p_list->player[pnumber];
+                p_list->player[pnumber]->nbMeeple-=1;
+
                 switch(where)
                 {
                     case 0:
                         grid->tile->meeplePlace=MP_RIGHT;
-                        grid->tile->meeple=p_list->player[pnumber];
-                        p_list->player[pnumber]->nbMeeple-=1;
                         break;
                     
                     case 1:
                         grid->tile->meeplePlace=MP_TOP;
-                        grid->tile->meeple=p_list->player[pnumber];
-                        p_list->player[pnumber]->nbMeeple-=1;
                         break;
                     
                     case 2:
                         grid->tile->meeplePlace=MP_LEFT;
-                        grid->tile->meeple=p_list->player[pnumber];
-                        p_list->player[pnumber]->nbMeeple-=1;
                         break;
                     
                     case 3:
                         grid->tile->meeplePlace=MP_BOT;
-                        grid->tile->meeple=p_list->player[pnumber];
-                        p_list->player[pnumber]->nbMeeple-=1;
                         break;
                     
                     case 4:
                         grid->tile->meeplePlace=MP_MIDDLE;
-                        grid->tile->meeple=p_list->player[pnumber];
-                        p_list->player[pnumber]->nbMeeple-=1;
                         break;
 
                 }
