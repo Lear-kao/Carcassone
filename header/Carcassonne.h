@@ -438,7 +438,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
 */
-void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
+void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
 /*
     playerNumber : Le numéro du joueur
 
@@ -471,7 +471,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur,int *bot_difficulty); // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur); // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -593,8 +593,11 @@ int* where_i_can_put(struct Grid *grid);
 char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
 char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
-void put_meeple_botLV1(struct Grid *grid,struct list_player *p_list, char pnumber);
+void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber);
 void remove_meeple(struct Grid* justPlaced, struct list_player *p_list);
+
+void remove_meepleVille(struct Grid *grille,int coul_player , enum places a);
+void remove_meepleVilleEncap(struct Grid *grille,int coul_player , enum meeplePlace origin);
 
 
 
