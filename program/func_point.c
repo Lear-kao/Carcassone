@@ -35,15 +35,15 @@ pas complètement entourée.
 
 char count_point_city( struct Grid *grille, enum places a )
 {
-    char point = 0;
+    char point = 2;
     char unfinished=0;
     
     
     switch (a)
     {
         case RIGHT:
-            //grille->marquer = v_marquer;
-            if(grille->right != NULL && grille->tile->right==VILLE)
+            grille->marquer = v_marquer;
+            if(grille->right != NULL && (grille->tile->right==VILLE || grille->tile->right==BLASON))
             {
                 point += isFinishedCity(grille->right, &unfinished);
             }
@@ -51,8 +51,8 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
         
         case TOP:
-            //grille->marquer = v_marquer;
-            if(grille->top != NULL && grille->tile->top==VILLE)
+            grille->marquer = v_marquer;
+            if(grille->top != NULL && (grille->tile->top==VILLE || grille->tile->top==BLASON))
             {
                 point += isFinishedCity(grille->top, &unfinished);
             }
@@ -60,8 +60,8 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
     
         case LEFT:
-            //grille->marquer = v_marquer;
-            if(grille->left != NULL && grille->tile->left==VILLE)
+            grille->marquer = v_marquer;
+            if(grille->left != NULL && (grille->tile->left==VILLE || grille->tile->left==BLASON))
             {
                 point += isFinishedCity(grille->left, &unfinished);
             }
@@ -69,8 +69,8 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
         
         case BOT:
-            //grille->marquer = v_marquer;
-            if(grille->bot != NULL && grille->tile->bot==VILLE)
+            grille->marquer = v_marquer;
+            if(grille->bot != NULL && (grille->tile->bot==VILLE || grille->tile->bot==BLASON))
             {
                 point += isFinishedCity(grille->bot, &unfinished);
             }
@@ -78,7 +78,7 @@ char count_point_city( struct Grid *grille, enum places a )
             break;
         
         case MIDDLE:
-            if(grille->tile->middle==VILLE)
+            if(grille->tile->middle==VILLE || grille->tile->middle==BLASON)
             {
                 point = isFinishedCity(grille,&unfinished);
             }
@@ -126,7 +126,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                if(grille->top->tile->bot==VILLE)
+                if(grille->top->tile->bot==VILLE || grille->top->tile->bot==BLASON)
                 cmpt += isFinishedCity(grille->top,unfinished);
             }
         }
@@ -138,7 +138,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                if(grille->right->tile->left==VILLE)
+                if(grille->right->tile->left==VILLE || grille->right->tile->left==BLASON)
                 cmpt += isFinishedCity(grille->right,unfinished);
             }
         }
@@ -150,7 +150,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                if(grille->left->tile->right==VILLE)
+                if(grille->left->tile->right==VILLE || grille->left->tile->right==BLASON)
                 cmpt += isFinishedCity(grille->left,unfinished);
             }
         }
@@ -162,7 +162,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
             }
             else
             {
-                if(grille->bot->tile->top==VILLE)
+                if(grille->bot->tile->top==VILLE || grille->bot->tile->top==BLASON)
                 cmpt += isFinishedCity(grille->bot,unfinished);
             }
         }
@@ -171,57 +171,61 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
     return cmpt;
 }
 
-char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
+char countPointRoad(struct Grid *grille, enum places start)
 {
-    char  point = 0;
+    char  point = 1;
+    char unfinished = 0;
     switch(start)
     {
         case RIGHT:
-            if(grille->right == NULL  || is_a_potential_tile(grille->right->tile))
+            grille->marquer = v_marquer;
+            if(grille->right != NULL && grille->tile->right==ROUTE)
             {
-                *unfinished = 1;
-                break;
+                point += isFinishedRoad(grille->right, &unfinished);
             }
-
-            if(grille!=NULL && grille->tile !=NULL && grille->tile->right == ROUTE)
-                point += isFinishedRoad(grille->right,unfinished);
+            else unfinished = 1;
             break;
         case TOP:
-            if(grille->top == NULL  || is_a_potential_tile(grille->top->tile))
+            grille->marquer = v_marquer;
+            if(grille->top != NULL && grille->tile->top==ROUTE)
             {
-                *unfinished = 1;
-                break;
+                point += isFinishedRoad(grille->top, &unfinished);
             }
-            if(grille!=NULL && grille->tile !=NULL && grille->tile->top == ROUTE)
-                point += isFinishedRoad(grille->top,unfinished);
+            else unfinished = 1;
             break;
         case LEFT:
-            if(grille->left == NULL  || is_a_potential_tile(grille->left->tile))
+            grille->marquer = v_marquer;
+            if(grille->left != NULL && grille->tile->left==ROUTE)
             {
-                *unfinished = 1;
-                break;
+                point += isFinishedRoad(grille->left, &unfinished);
             }
-            if(grille!=NULL && grille->tile !=NULL && grille->tile->left == ROUTE)
-                point += isFinishedRoad(grille->left,unfinished);
+            else unfinished = 1;
             break;
         case BOT:
-            if(grille->bot == NULL  || is_a_potential_tile(grille->bot->tile))
+            grille->marquer = v_marquer;
+            if(grille->bot != NULL && grille->tile->bot==ROUTE)
             {
-                *unfinished = 1;
-                break;
+                point += isFinishedRoad(grille->bot, &unfinished);
             }
-            if(grille!=NULL && grille->tile !=NULL && grille->tile->bot == ROUTE)
-                point += isFinishedRoad(grille->bot,unfinished);
+            else unfinished = 1;
             break;
+        
+        case MIDDLE:
+            if(grille->tile->middle==ROUTE)
+            {
+                point = isFinishedRoad(grille,&unfinished);
+            }
     }
 
+    printf("pointroute1=%d unfinishedroute1=%d\n",point,unfinished);
+
     v_marquer++;
-    if (*unfinished == 1 && finJeu == 0)
+    if (unfinished == 1 && finJeu == 0)
     {
         return 0;
     }
     
-    if(grille->tile->middle==VILLAGE || grille->tile->middle == ABBAYES){
+    if(grille->tile->middle==VILLAGE || grille->tile->middle == ABBAYES && finJeu==1){
         switch (start)
         {
             case RIGHT:
@@ -250,6 +254,7 @@ char countPointRoad(struct Grid *grille,char *unfinished, enum places start)
         }
 
     }
+    printf("pointroute2=%d\n",point);
 
 
     return point;
@@ -261,36 +266,77 @@ Commentaire à faire
 !!! unfinished initialisé à 1
 */
 {
+    printf("exec1\n");
     if( is_a_potential_tile(grille->tile) == 1)
     {
+        *unfinished=1;
         return 0;
     }
-    if( grille->marquer == v_marquer)
-    {
-        *unfinished = 0;
-        return 0;
-    }
+    printf("exec2\n");
+    if( grille->marquer == v_marquer) return 0;
+
     grille->marquer = v_marquer;
     char cmp = 1;
-    if (grille->tile->middle == ROUTE){
-    if ( grille->tile->bot == ROUTE && grille->bot !=NULL )
+
+    if (grille->tile->middle == ROUTE)
     {
-        cmp += isFinishedRoad(grille->bot,unfinished);
+        if ( grille->tile->bot == ROUTE)
+        {
+            if(is_a_potential_tile(grille->bot->tile))
+            {
+                *unfinished=1;
+                return 0;
+            }
+            else
+            {
+                if(grille->bot->tile->top==ROUTE)
+                cmp += isFinishedRoad(grille->bot,unfinished);
+            }
+        }
+
+        if ( grille->tile->top == ROUTE)
+        {
+            if(is_a_potential_tile(grille->top->tile))
+            {
+                *unfinished=1;
+                return 0;
+            }
+            else
+            {
+                if(grille->top->tile->bot==ROUTE)
+                cmp += isFinishedRoad(grille->top,unfinished);
+            }
+        }
+
+        if ( grille->tile->right == ROUTE)
+        {
+            if(is_a_potential_tile(grille->right->tile))
+            {
+                *unfinished=1;
+                return 0;
+            }
+            else
+            {
+                if(grille->right->tile->left==ROUTE)
+                cmp += isFinishedRoad(grille->right,unfinished);
+            }
+        }
+
+        if ( grille->tile->left == ROUTE)
+        {
+            if(is_a_potential_tile(grille->left->tile))
+            {
+                *unfinished=1;
+                return 0;
+            }
+            else
+            {
+                if(grille->left->tile->right==ROUTE)
+                cmp += isFinishedRoad(grille->left,unfinished);
+            }
+        }
     }
-    if ( grille->tile->left == ROUTE && grille->left !=NULL )
-    {
-        cmp += isFinishedRoad(grille->left,unfinished);
-    }
-    if ( grille->tile->top == ROUTE && grille->top !=NULL )
-    {
-        cmp += isFinishedRoad(grille->top,unfinished);
-    }
-    if ( grille->tile->right == ROUTE && grille->right !=NULL )
-    {
-        cmp += isFinishedRoad(grille->right,unfinished);
-    }
-    }
-    if(grille->tile->middle == VILLAGE || grille->tile->middle == VILLE || grille->tile->middle == ABBAYES)
+    if(grille->tile->middle == VILLAGE || grille->tile->middle == VILLE || grille->tile->middle == BLASON || grille->tile->middle == ABBAYES)
     {
         *unfinished = 0;
         return 1;
@@ -305,23 +351,195 @@ Commentaire à faire
 void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
 {
     char point;
+    char unfinish_road=1;
     char list_meeple[nbPlayers];
+    struct Grid *abbaye=searchAbbaye(justPlaced);
+    if(abbaye!=NULL)
+    {
+        point=isFinishedAbbaye(abbaye);
+        if(point>0)
+        {
+            for (int i = 0; i < nbPlayers; i++)
+            {
+                list_meeple[i] = nbMeepleAbbaye(abbaye, i+1);
+            }
+            printf("\n");
+            give_point(list_meeple,listPlayer,point);
+        }
+    }
+
     switch (justPlaced->tile->middle)
     {
         case VILLE:
             point = count_point_city(justPlaced,MIDDLE);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
+            for (int i = 0; i < nbPlayers; i++)
+            {
+                list_meeple[i] = nbMeepleVille(justPlaced, i+1,MIDDLE);
+            }
+            printf("\n");
             give_point(list_meeple,listPlayer,point);
+            
             break;
+        
+        case BLASON:
+            point = count_point_city(justPlaced,MIDDLE);
+            for (int i = 0; i < nbPlayers; i++)
+            {
+                list_meeple[i] = nbMeepleVille(justPlaced,i+1,MIDDLE);
+            }
+            printf("\n");
+            give_point(list_meeple,listPlayer,point);
+
+            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
+            {
+                point = countPointRoad(justPlaced,RIGHT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
+            {
+                point = countPointRoad(justPlaced,TOP);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+
+            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
+            {
+                point = countPointRoad(justPlaced,LEFT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
+            {
+                point = countPointRoad(justPlaced,BOT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+
+            break;
+
         case ABBAYES:
             //point = count_point_city(justPlaced,4);
             point = isFinishedAbbaye(justPlaced);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleAbbaye(justPlaced, i);
+            for (int i = 0; i < nbPlayers; i++)
+            {
+                list_meeple[i] = nbMeepleAbbaye(justPlaced, i+1);
+            }
+            printf("\n");
             give_point(list_meeple,listPlayer,point);
+
+            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
+            {
+                point = countPointRoad(justPlaced,RIGHT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
+            {
+                point = countPointRoad(justPlaced,TOP);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+
+            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
+            {
+                point = countPointRoad(justPlaced,LEFT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
+            {
+                point = countPointRoad(justPlaced,BOT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+
             break;
         case ROUTE:
+            point = countPointRoad(justPlaced,MIDDLE);
+            for (int i=0; i < nbPlayers; i++)
+            {
+                list_meeple[i] = countMeepleRoad(justPlaced,MIDDLE,i+1);
+            }
+            give_point(list_meeple,listPlayer,point);
+            break;
+        
+        case VILLAGE:
+            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
+            {
+                printf("droite\n");
+                point = countPointRoad(justPlaced,RIGHT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
+            {
+                printf("haut\n");
+                point = countPointRoad(justPlaced,TOP);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+
+            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
+            {
+                printf("gauche\n");
+                point = countPointRoad(justPlaced,LEFT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
+            {
+                printf("bas\n");
+                point = countPointRoad(justPlaced,BOT);
+                for (int i=0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+            }
             break;
     }
+
+    secondary_verification(justPlaced,listPlayer,justPlaced->tile->middle);
 }
 
 void give_point(char *list_meeple_player, struct list_player *list, char point)
@@ -333,29 +551,40 @@ Prend en  paramètre :
 */
 {
     int max_L = max(list_meeple_player);
-    for( int i = 0; i < nbPlayers; i++)
-    {
-        if(list_meeple_player[i] == max_L) list->player[i]->points += point; 
+
+    if(max_L>0){
+        for( int i = 0; i < nbPlayers; i++)
+        {
+            if(list_meeple_player[i] == max_L) list->player[i]->points += point; 
+        }
     }
-    
+        
 }
 
 void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle)
 {
     char point;
     char list_meeple[nbPlayers];
-    char unfinished_road = 1;
     switch (justPlaced->tile->right)
     {
         case VILLE:
-            if(justPlaced->tile->right == middle)break;
+            if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,RIGHT);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
             give_point(list_meeple,list,point);
             break;
+        
+        case BLASON:
+            if(BLASON == middle || VILLE == middle)break;
+            point = count_point_city(justPlaced,RIGHT);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
+            give_point(list_meeple,list,point);
+            break;
+
+        /*
         case ROUTE:
             if(justPlaced->tile->right == middle || middle ==VILLAGE || middle == ABBAYES)break;
-            point = countPointRoad(justPlaced,&unfinished_road,RIGHT);
+            point = countPointRoad(justPlaced,RIGHT);
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
@@ -363,18 +592,28 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
                 give_point(list_meeple,list,point);
             }
             break;
+        */
     }
     switch (justPlaced->tile->top)
     {
         case VILLE:
-            if(justPlaced->tile->top == middle)break;
+            if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,TOP);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
             give_point(list_meeple,list,point);
             break;
+        
+        case BLASON:
+            if(BLASON == middle || VILLE == middle)break;
+            point = count_point_city(justPlaced,TOP);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
+            give_point(list_meeple,list,point);
+            break;
+
+        /*
         case ROUTE:
             if(justPlaced->tile->top == middle || middle == VILLAGE || middle == ABBAYES)break;
-            point = countPointRoad(justPlaced,&unfinished_road,TOP);
+            point = countPointRoad(justPlaced,TOP);
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
@@ -382,18 +621,27 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
                 give_point(list_meeple,list,point);
             }
             break;
+        */
     }
     switch (justPlaced->tile->left)
     {
         case VILLE:
-            if(justPlaced->tile->left == middle)break;
-            point = count_point_city(justPlaced,LEFT);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
+            if(BLASON == middle || VILLE == middle)break;
+            point = count_point_city(justPlaced,LEFT);printf("point =%d\n",point);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,LEFT);
             give_point(list_meeple,list,point);
             break;
+        
+        case BLASON:
+            if(BLASON == middle || VILLE == middle)break;
+            point = count_point_city(justPlaced,LEFT);printf("point =%d\n",point);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,LEFT);
+            give_point(list_meeple,list,point);
+            break;
+        /*
         case ROUTE:
             if(justPlaced->tile->left == middle || middle == VILLAGE || middle == ABBAYES)break;
-            point = countPointRoad(justPlaced,&unfinished_road,LEFT);            
+            point = countPointRoad(justPlaced,LEFT);            
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
@@ -401,18 +649,28 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
                 give_point(list_meeple,list,point);
             }
             break;
+        */
     }
     switch (justPlaced->tile->bot)
     {
         case VILLE:
-            if(justPlaced->tile->bot == middle)break;
+            if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,BOT);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,BOT);
             give_point(list_meeple,list,point);
             break;
+        
+        case BLASON:
+            if(BLASON == middle || VILLE == middle)break;
+            point = count_point_city(justPlaced,BOT);
+            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,BOT);
+            give_point(list_meeple,list,point);
+            break;
+
+        /*
         case ROUTE:
             if(justPlaced->tile->bot == middle || middle == VILLAGE || middle == ABBAYES)break;
-            point = countPointRoad(justPlaced,&unfinished_road,BOT);
+            point = countPointRoad(justPlaced,BOT);
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
@@ -420,6 +678,7 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
                 give_point(list_meeple,list,point);
             }
             break;
+        */
     }
 }
 

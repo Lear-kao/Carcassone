@@ -7,12 +7,19 @@
 #define MAX_TOKEN_SIZE 7
 #define NB_TOKEN_TYPE 6
 #define NBMEEPLE_DEFAULT 8  // theo 
+#define NB_BOT_DIFFICULTY 1
 
 
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
 
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
@@ -195,7 +202,7 @@ struct Player
         coulPLayer : ?????????????????????
     */
     char bot;
-    char coulPlayer;
+    int coulPlayer;
     char nbMeeple;
     short points; 
 };
@@ -229,6 +236,11 @@ char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
 // ------------------------------
 // ----Game manager fonctions----
 // ------------------------------
+
+void bienvenue();
+/*
+    fonction qui affiche l'ensemble des règle de carcasonne et les texte de bienvenue
+*/
 
 char token_to_enum_types(char *token, char *tokenArray[]); // theo si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
 /*
@@ -289,7 +301,7 @@ struct Tile *rot_tile(struct Tile *tile); //Fait
     Tourne la tuile de 90° dans le sens trigo.
 */
 
-void enum_to_char(enum types type); //Fait
+void enum_to_char(enum types type, int coul);
 /*
     Convertie un enum en char affichable (V pour ville et v pour village).
 */
@@ -392,7 +404,7 @@ short points_ville(struct Grid *grid); // Axel et blason
 short points_abbayes(struct Grid *grid); // Axel
 short points_pre(struct Grid *grid); // Axel
 
-struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist); // Théo A TESTER
+struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist); // Théo A TESTER
 /*
     Place la première tuile et actualise la grille en conséquence.
     grid : La grid originelle de coord (0,0)
@@ -402,7 +414,7 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     Return value : L'élément le plus en haut à gauche de la grid.
 */
 
-struct Grid *place_tile(struct Grid **topLeftgrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur); // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur); // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 
@@ -420,7 +432,10 @@ struct Grid *place_tile(struct Grid **topLeftgrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
+void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteur, int *largeur);
+
+
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -429,8 +444,20 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     un emplacmement pour poser sa tuile
     avec la fonction where_i_can_play
 */
+void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
+/*
+    playerNumber : Le numéro du joueur
 
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Théo A TESTER
+    Cette fonction pop la stack de tile
+    et propose ensuite au joueur de choisir
+    un emplacmement pour poser sa tuile
+    avec la fonction where_i_can_play
+
+    premiere fonction de tour automatique pour les bot
+    il n'a aucune intelligence et ne fais que prendre le premier endroit disponible ou poser la tuile piocher
+*/
+
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist); // Théo à faire
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -439,13 +466,18 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist); // Th�
     return : La liste malloc des endroit ou il est possible de jouer.
 */
 
+char is_possible_tile(struct Tile *tile, struct DLList **dllist);
+/*
+    verifie si avec une tuile donné elle est impossible a poser
+*/
+
 
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place);
 /*
     Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
 */
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur); // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur); // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -460,6 +492,8 @@ void free_Grid( struct Grid **grid); // fait (Axel)
 /* 
 prend en paramètre une struct grid initialisée et la free pour être réutilisée
 */
+
+void *show_point_and_nbmeeple(struct list_player list);
 
 /* 
 --------------------------------------
@@ -490,7 +524,7 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
 
 char isFinishedRoad(struct Grid *grille, char *unfinished); //tester (avec countPointRoad)
 /* vérifie la completion d'une ville et sa valeur en terme de points */
-char countPointRoad(struct Grid *grille,char *unfinished, enum places start); //tester
+char countPointRoad(struct Grid *grille,enum places start); //tester
 /* 
 A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
 Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
@@ -521,18 +555,18 @@ int max(char *list);//tester
 --------------------------------------
 */
 
-char nbMeepleVille( struct Grid *grille,  int coul_player); //tester
+char nbMeepleVille( struct Grid *grille,  int coul_player , enum places a); //tester
 /* compte le nombre de meeple dans une ville d'une couleur précise */
 
-char nbMeepleVilleEncap(struct Grid *grille, int coul_player); //tester
+char nbMeepleVilleEncap(struct Grid *grille, int coul_player, enum meeplePlace origin); //tester
 /* 
     on appel cette fonction pour appeler nbMeepleVille et pouvoir 
     incrementer v_marquer
 */
 
-char nbMeepleVille_nocolor( struct Grid *grille); //tester
+char nbMeepleVille_nocolor( struct Grid *grille,enum places a); //tester
 
-char nbMeepleVille_nocolorEncap(struct Grid *grille,int where); //tester
+char nbMeepleVille_nocolorEncap(struct Grid *grille,enum meeplePlace origin); //tester
 /* 
     Parametre:
         grille: la grille a tester
@@ -560,5 +594,18 @@ char searchMeeple(struct Tile tile ,int where);
 
 char countMeepleRoad(struct Grid *grille, enum places start, int color);//tester
 char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
+
+int* where_i_can_put(struct Grid *grid);
+char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
+char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
+void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
+void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber);
+void remove_meeple(struct Grid* justPlaced, struct list_player *p_list);
+
+void remove_meepleVille(struct Grid *grille,int coul_player , enum places a);
+void remove_meepleVilleEncap(struct Grid *grille,int coul_player , enum meeplePlace origin);
+
+
+
 
 #endif // CARCASSONNE_H

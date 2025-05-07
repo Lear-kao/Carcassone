@@ -82,14 +82,13 @@ void shuffle(struct Tile **tileArray) // Valentin
     la fonction shuffle melange la liste par repetition d'un grand nombre permutation aléatoire entre deux élément
 */
 {
-    srand(time(NULL)); // initialisation de la seed pour la generation de nombre aléatoire
     short i, rand1, rand2;
     struct Tile *temp;
 
     for (i = 0; i < (NBTILE-1) * (NBTILE-1); i++)
     {
-        rand1 =1+ rand() % (NBTILE-1);
-        rand2 =1+ rand() % (NBTILE-1);
+        rand1 =rand() % (NBTILE-1);
+        rand2 =rand() % (NBTILE-1);
         if (rand1 != rand2)
         {
             temp = tileArray[rand1];
@@ -137,7 +136,8 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // Théo
+
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // A FAIRE
 /*
     playerNumber : Le numéro du joueur
 
@@ -147,38 +147,126 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     avec la fonction where_i_can_play
 */
 {
-    printf("Tour du joueur %d\n", playerNumber);
-    struct Tile *turn_tile = malloc(sizeof(struct Tile *));
+    printf("\nTour du joueur %d\n", playerNumber);
+    struct Tile *turn_tile = malloc(sizeof(struct Tile));
     struct Grid **play_grid = NULL;
     unsigned int index = 0;
     char pose = 0; // bool
     unsigned int token = -1;
+    struct Grid **tmpGrid;
 
-    pioche = stack_pop(pioche, &turn_tile);
 
-    while (pose == 0)
+    *pioche = stack_pop(*pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
+
+
+    // play_grid = where_i_can_play(turn_tile, dllist);
+
+    if(is_possible_tile(turn_tile,dllist))//verifie si la tuile est possible a poser 
     {
-        play_grid = where_i_can_play(turn_tile, dllist);
-        show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
-        index = 0;
-        printf("Pour tourner la tuile rentrez 0\n");
-        printf("Pour poser la tuile rentrez l'une des valeurs suivante :\n");
-        //affiche un truc AXEL ICI
-        scanf("%u", &token);
-        if (token == 0)
+        while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
         {
-            rot_tile(turn_tile);
+            show_tile(turn_tile);
+            show_point_and_nbmeeple(*p_list);
+            play_grid = where_i_can_play(turn_tile, dllist);
+            show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
+            tmpGrid = play_grid;
+            index = 0;
+            printf("Pour tourner la tuile rentrez 0\n");
+            printf("Pour poser la tuile rentrez l'une des valeurs suivante :\n");
+            while(tmpGrid[index] !=NULL)
+            {
+                printf("%d - x = %d et y = %d\n", index + 1, tmpGrid[index]->coord->x, tmpGrid[index]->coord->y);
+                index++;
+            }
+
+            //affiche un truc AXEL ICI
+            scanf("%u", &token);
+            if (token == 0)
+            {
+                rot_tile(turn_tile);
+            }
+            else if(token <= index)
+            {
+                pose = 1;
+                *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
+                put_meeple(play_grid[token - 1],p_list,playerNumber-1); //problème liste des joueurs
+                pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
+            }
+            else
+            {
+                printf("vous ne pouvez pas faire ce choix\n");
+            }
         }
-        else
-        {
-            pose = 1;
-            *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
-            pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
-        }
+    }
+    else
+    {
+        printf("La tuile piocher ne peut pas être posé\n");
     }
 }
 
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo
+void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer)
+/*
+    playerNumber : Le numéro du joueur
+
+    Cette fonction pop la stack de tile
+    et propose ensuite au joueur de choisir
+    un emplacmement pour poser sa tuile
+    avec la fonction where_i_can_play
+*/
+{
+    printf("\nTour du joueur(BOT) %d\n", playerNumber);
+    struct Tile *turn_tile = malloc(sizeof(struct Tile));
+    struct Grid **play_grid = NULL;
+    unsigned int index = 0;
+    char pose = 0; // bool
+    unsigned int token = -1;
+    struct Grid **tmpGrid;
+
+
+    *pioche = stack_pop(*pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
+
+
+    // play_grid = where_i_can_play(turn_tile, dllist);
+
+    if(is_possible_tile(turn_tile,dllist))//verifie si la tuile est possible a poser 
+    {
+        while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
+        {
+            show_tile(turn_tile);
+            show_point_and_nbmeeple(*p_list);
+            play_grid = where_i_can_play(turn_tile, dllist);
+            show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
+            tmpGrid = play_grid;
+            index = 0;
+            while(tmpGrid[index] !=NULL)
+            {
+                printf("%d - x = %d et y = %d\n", index + 1, tmpGrid[index]->coord->x, tmpGrid[index]->coord->y);
+                index++;
+            }
+
+            if(index>=1)
+            {
+                token=1;
+                pose = 1;
+                *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
+
+                put_meeple_bot(play_grid[token - 1],p_list,playerNumber-1);
+
+                pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
+            }
+            else
+            {
+                rot_tile(turn_tile);
+            }
+        }
+    }
+    else
+    {
+        printf("La tuile piocher ne peut pas être posé\n");
+    }
+}
+
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Théo à faire
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -187,12 +275,16 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     return : La liste malloc des endroit ou il est possible de jouer (position tuile fixe)
 */
 {
-    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
-    struct DLList *tmpDllist = dllist;
+    struct Grid **gridArrray = calloc(NBTILE + 1, sizeof(struct Grid*)); // set à NULL avec calloc de taille NBTILE -> le nombre max de tuile dans le jeu
+    struct DLList *tmpDllist = *dllist;
     int index = 0;
-    while (tmpDllist->next != NULL)
+    while (tmpDllist!= NULL)
     {
-        if ((tile->right == tmpDllist->data->tile->right || tile->right == RIEN) && (tile->top == tmpDllist->data->tile->top || tile->right == RIEN) && (tile->left == tmpDllist->data->tile->left || tile->right == RIEN) && (tile->bot == tmpDllist->data->tile->bot || tile->right == RIEN))
+        if ((tile->right == tmpDllist->data->tile->right || tmpDllist->data->tile->right == RIEN || (tile->right==VILLE && tmpDllist->data->tile->right==BLASON) || (tile->right==BLASON && tmpDllist->data->tile->right==VILLE)) 
+        && (tile->top == tmpDllist->data->tile->top || tmpDllist->data->tile->top == RIEN || (tile->top==VILLE && tmpDllist->data->tile->top==BLASON) || (tile->top==BLASON && tmpDllist->data->tile->top==VILLE)) 
+        && (tile->left == tmpDllist->data->tile->left || tmpDllist->data->tile->left == RIEN || (tile->left==VILLE && tmpDllist->data->tile->left==BLASON) || (tile->left==BLASON && tmpDllist->data->tile->left==VILLE)) 
+        && (tile->bot == tmpDllist->data->tile->bot || tmpDllist->data->tile->bot == RIEN || (tile->bot==VILLE && tmpDllist->data->tile->bot==BLASON) || (tile->bot==BLASON && tmpDllist->data->tile->bot==VILLE))
+        && is_a_potential_tile(tmpDllist->data->tile))
         {
             gridArrray[index] = tmpDllist->data;
             index++;
@@ -202,7 +294,29 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     return gridArrray;
 }
 
-char is_a_potential_tile(struct Tile *tile) // Théo
+char is_possible_tile(struct Tile *tile, struct DLList **dllist){
+    struct Grid **gridArray[4]={NULL,NULL,NULL,NULL};
+
+    for(int i=0;i<4;i++){
+        gridArray[i]=where_i_can_play(tile,dllist);
+        tile=rot_tile(tile);
+    }
+
+    int index[4]={0,0,0,0};
+
+    for(int i=0;i<4;i++){
+        while(gridArray[i][index[i]]!=NULL){
+            index[i]=index[i]+1;
+        }
+    }
+    
+    free(gridArray[0]);free(gridArray[1]);free(gridArray[2]);free(gridArray[3]);
+    char condition=index[0] || index[1] || index[2] || index[3] ;
+    return condition;
+
+}
+
+char is_a_potential_tile(struct Tile *tile) // Théo FAIT
 /*
     Return 0 si ce n'est pas une tuile potentielle
     Return 1 si c'est une tuile potentielle
@@ -454,7 +568,7 @@ struct Grid *find(struct Grid *grid, struct Coord coord) // Théo FAIT
     return tmpGrid;
 }
 
-struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist) // Théo A TESTER
+struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist) // Théo A TESTER
 /*
     Place la première tuile et actualise la grille en conséquence.
     grid : La grid originelle de coord (0,0)
@@ -483,32 +597,21 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
     upscale(&grid, largeur, hauteur, tmpCoord); // (0,-1)
 
     // Actualisation des tuiles pottentielles adjacente
-    struct Tile *right_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *right_grid = init_grid(right_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, RIGHT); 
-
-    struct Tile *top_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *top_grid = init_grid(top_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, TOP);
-
-    struct Tile *left_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *left_grid = init_grid(left_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, LEFT);
-
-    struct Tile *bot_tile = init_tile(RIEN, RIEN, RIEN, RIEN, RIEN);
-    struct Grid *bot_grid = init_grid(bot_tile, NULL, NULL, NULL, NULL, NULL);
     update_potential_tile(grid->right->bot, BOT);
 
     // actualisation de dllist
 
-    DLList_push_end(dllist, right_grid);
-    DLList_push_end(dllist, top_grid);
-    DLList_push_end(dllist, left_grid);
-    DLList_push_end(dllist, bot_grid);
+    *dllist = DLList_push_end(*dllist, grid->right); // (0,1)
+    *dllist = DLList_push_end(*dllist, grid->right->bot->right); // (1,0)
+    *dllist = DLList_push_end(*dllist, grid->bot); // (-1, 0)
+    *dllist = DLList_push_end(*dllist, grid->bot->right->bot); // (0, -1)
     return grid;
 }
 
-void init_plateau(struct Grid **topLeftGrid, struct DLList *dllist, int *hauteur, int *largeur)
+void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteur, int *largeur)
 {
     struct Tile *startTile = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE); // tuile de départ hard code
     struct Coord *coord = malloc(sizeof(struct Coord));
@@ -516,14 +619,10 @@ void init_plateau(struct Grid **topLeftGrid, struct DLList *dllist, int *hauteur
     coord->y = 0;
 
     struct Grid *firstGrid = init_grid(startTile, coord, NULL, NULL, NULL, NULL);
-    dllist = malloc(sizeof(struct DLList));
-    dllist->data = NULL;
-    dllist->next = NULL;
-    dllist->prev = NULL;
     *topLeftGrid = first_grid(firstGrid, hauteur, largeur, dllist);
 }
 
-struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList *dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur) // Théo TESTER AVEC LE GAMEMANAGER
 /*
     tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
 
@@ -541,58 +640,129 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
     variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
 */
 {
-    upscale(topLeftGrid, largeur, hauteur, *coord);
+    
     struct Grid *gridFind = find(*topLeftGrid, *coord); // trouve ou poser la tuile aussi possible pour plus d'optimisation de trouver la tuile dans dllist
+
+    if(gridFind->left==NULL){
+        coord->x=coord->x-1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->x=coord->x+1;
+    }
+
+    if(gridFind->right==NULL){
+        coord->x=coord->x+1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->x=coord->x-1;
+    }
+
+    if(gridFind->top==NULL){
+        coord->y=coord->y+1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->y=coord->y-1;
+    }
+
+    if(gridFind->bot==NULL){
+        coord->y=coord->y-1;
+        upscale(topLeftGrid, largeur, hauteur, *coord);
+        coord->y=coord->y+1;
+
+    }
+
     gridFind->tile = tile; // pose la tuile
     update_potential_tile(gridFind, RIGHT);
     update_potential_tile(gridFind, TOP);
     update_potential_tile(gridFind, LEFT);
     update_potential_tile(gridFind, BOT);
-    return NULL;
+
+    if(is_a_potential_tile(gridFind->right->tile) && gridFind->tile->right==gridFind->right->tile->left){
+        *dllist=DLList_push_end(*dllist,gridFind->right);
+    }
+
+    if(is_a_potential_tile(gridFind->left->tile) && gridFind->tile->left==gridFind->left->tile->right){
+        *dllist=DLList_push_end(*dllist,gridFind->left);
+    }
+
+    if(is_a_potential_tile(gridFind->top->tile) && gridFind->tile->top==gridFind->top->tile->bot){
+        *dllist=DLList_push_end(*dllist,gridFind->top);
+    }
+
+    if(is_a_potential_tile(gridFind->bot->tile) && gridFind->tile->bot==gridFind->bot->tile->top){
+        *dllist=DLList_push_end(*dllist,gridFind->bot);
+    }
+
+    return *topLeftGrid;
 }
 
-void enum_to_char(enum types type)
+void enum_to_char(enum types type, int coul)
 {
     switch(type){
         case RIEN:
             printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
-            printf(" Z ");
+            if (coul == 0)
+            {
+                printf(" Z ");
+            }
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
             
         case ROUTE:
             printf("\x1b[48;2;%d;%d;%dm",168, 92, 33);
-            printf(" R ");
+            if (coul == 0)
+            {
+                printf(" R ");
+            }
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
         case VILLE:
             printf("\x1b[48;2;%d;%d;%dm",110,110,110);
+            if (coul == 0)
+            {
             printf(" V ");
+            }
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
         case ABBAYES:
             printf("\x1b[48;2;%d;%d;%dm",241,196,15);
+            if (coul == 0)
+            {
             printf(" A ");
+            }
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
         case PRE:
             printf("\x1b[48;2;%d;%d;%dm",35,155,86);
+            if (coul == 0)
+            {
             printf(" P ");
+            }
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
         case VILLAGE:
             printf("\x1b[48;2;%d;%d;%dm",102,188,186);
+            if (coul == 0)
+            {
             printf(" v ");
+            }
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
         case BLASON:
             printf("\x1b[48;2;%d;%d;%dm",101,112,255);
+            if (coul == 0)
+            {
             printf(" B ");
+            }
+            else printf(" %d ",coul);
             printf("\x1b[0m");
             break;
 
@@ -606,11 +776,14 @@ void show_wplace(int j, int h)
 {
     if(j == 0 || j == 2)
     {
-        printf("---");
+        printf("---------  ");
         return;
     }
-    printf("-%d-",h);
-    
+
+    if(h+1 >=10)
+        printf("----%d---  ",h+1);
+    else
+        printf("----%d----  ",h+1);     
 }
 
 void choose_w_show(unsigned char y, struct Grid *tab)
@@ -621,46 +794,73 @@ void choose_w_show(unsigned char y, struct Grid *tab)
             //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
             if( tab->tile->top == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
             {
-                enum_to_char(VILLE);
+                enum_to_char(VILLE,0);
             }
-            else enum_to_char(PRE);
-
-            enum_to_char(tab->tile->top);
+            else enum_to_char(PRE,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == TOP){
+                enum_to_char(tab->tile->top,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->top,0);
 
             //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
             if( tab->tile->top == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
             {
-                enum_to_char(VILLE);
+                enum_to_char(VILLE,0);
             }
-            else enum_to_char(PRE);
+            else enum_to_char(PRE,0);
 
             break;
         case 1:
-            enum_to_char(tab->tile->left);
-            enum_to_char(tab->tile->middle);
-            enum_to_char(tab->tile->right);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == LEFT){
+                enum_to_char(tab->tile->left,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->left,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == MIDDLE){
+                enum_to_char(tab->tile->middle,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->middle,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == RIGHT){
+                enum_to_char(tab->tile->right,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->right,0);
             break;
         case 2:
             //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
             if( tab->tile->bot == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
             {                    
-                enum_to_char(VILLE);
+                enum_to_char(VILLE,0);
             }
-            else enum_to_char(PRE);
-
-            enum_to_char(tab->tile->bot);
+            else enum_to_char(PRE,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == BOT){
+                enum_to_char(tab->tile->bot,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->bot,0);
 
             //teste pour savoir si  il  faut  comble le trou avec  une ville ou un pré
             if( tab->tile->bot == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
             {
-                enum_to_char(VILLE);
+                enum_to_char(VILLE,0);
             }
-            else enum_to_char(PRE);
+            else enum_to_char(PRE,0);
     }
     printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
 
-
+void show_tile( struct Tile *tile )
+{
+    enum_to_char(PRE,0);
+    enum_to_char(tile->top,0);
+    enum_to_char(PRE,0);
+    printf("\n");
+    enum_to_char(tile->left,0);
+    enum_to_char(tile->middle,0);
+    enum_to_char(tile->right,0);
+    printf("\n");
+    enum_to_char(PRE,0);
+    enum_to_char(tile->bot,0);
+    enum_to_char(PRE,0);
+    printf("\n");
+}
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
 // w_place résultat de where_i_can_place
 // x *largeur
@@ -677,6 +877,13 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
         {
             t_y = 0;
             temp_y = temp_x;
+            if(j==1){
+                printf("Y=%3d ",temp_y->coord->y);
+            }
+            else
+            {
+                printf("      ");
+            }
             for (; t_y < x; t_y++)
             {
                 mrkr = 0;
@@ -688,7 +895,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
                 
                 while (w_place[h] != NULL && w_place[h]->coord != NULL)
                 {
-                    if (w_place[h]->coord->x == t_x && w_place[h]->coord->y == t_y)
+                    if (w_place[h]->coord->x == temp_y->coord->x && w_place[h]->coord->y == temp_y->coord->y)
                     {
                         show_wplace(j, h);
                         mrkr = 1;
@@ -701,9 +908,9 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
                 {
                     if (mrkr == 0)
                     {
-                        enum_to_char(PRE);
-                        enum_to_char(PRE);
-                        enum_to_char(PRE);
+                        enum_to_char(PRE,0);
+                        enum_to_char(PRE,0);
+                        enum_to_char(PRE,0);
                     }
                 }
                 else if (mrkr == 0)
@@ -720,12 +927,16 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
             temp_x = temp_x->bot;
     }
 
+    temp_x=tab;
+    printf("      ");
+    for(t_x=0;t_x<x;t_x++){
+        printf("  X=%3d    ",temp_x->coord->x);
+        temp_x=temp_x->right;
+    }
+    printf("\n");
+
 }
-
-
-
-
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList *dllist, int *hauteur, int *largeur) // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -741,7 +952,7 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
     printf("Combien de bot: \n");
     scanf("%d", &nbBot);
 
-    if (list_player == NULL)
+    if (*list_player == NULL)
     {
         *list_player = init_player_list(nbBot);
     }
@@ -776,10 +987,17 @@ void *end_game_points_counter( struct list_player list ) // à tester (Axel)
 {
     for( int  i = 0; i < nbPlayers ; i++)
     {
-        printf("Le joueur n°%d possède %d points",i, list.player[i]->points );
+        printf("Le joueur n°%d possède %d points\n",i+1, list.player[i]->points );
     }
 }
 
+void *show_point_and_nbmeeple(struct list_player list)
+{
+    for( int  i = 0; i < nbPlayers ; i++)
+    {
+        printf("Le joueur n°%d possède %d points et %d meeple\n",i+1, list.player[i]->points,list.player[i]->nbMeeple);
+    }
+}
 
 
 void free_Grid( struct Grid **grid) // a tester
@@ -802,4 +1020,18 @@ prend en paramètre une struct grid initialisée et la free pour être réutilis
         *grid=tmp2;
     }
     return;
+}
+
+void bienvenue()
+/*
+    fonction qui affiche l'ensemble des règle de carcasonne et les texte de bienvenue
+*/
+{
+    printf("@@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @      @     @      @     @@@@@@@@\n");
+    printf("@            @      @     @      @     @            @      @     @            @            @      @     @@     @     @@     @     @       \n");
+    printf("@            @      @     @      @     @            @      @     @            @            @      @     @ @    @     @ @    @     @       \n");
+    printf("@            @@@@@@@@     @@@@@@@@     @            @@@@@@@@     @@@@@@@@     @@@@@@@@     @      @     @  @   @     @  @   @     @@@@@@@@\n");
+    printf("@            @      @     @    @       @            @      @            @            @     @      @     @   @  @     @   @  @     @       \n");
+    printf("@            @      @     @     @      @            @      @            @            @     @      @     @    @ @     @    @ @     @       \n");
+    printf("@@@@@@@@     @      @     @      @     @@@@@@@@     @      @     @@@@@@@@     @@@@@@@@     @@@@@@@@     @     @@     @     @@     @@@@@@@@\n");   
 }

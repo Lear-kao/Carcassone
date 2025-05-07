@@ -1,0 +1,7 @@
+/*
+-input: (description des variable avec précision)
+
+-output: (description de la sortie avec précision)
+
+description pas à pas de l'algorithme dans la fonction avec explication des variables
+*/
