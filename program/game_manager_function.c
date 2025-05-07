@@ -5,7 +5,7 @@
 // ----Game manager fonctions----
 // ------------------------------
 
-char token_to_enum_types(char *token, char *tokenArray[]) // si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
+char token_to_enum_types(char *token, char *tokenArray[]) // pour moder le jeu modifier cette fonction
 /*
     La fonction effectue une bijection entre l'enum types et tokenArray
 
@@ -46,7 +46,7 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
-        return NULL; // error case
+        return NULL;
     }
     char buff[BUFF_DEFAULT_SIZE];
     struct Tile **tileArray = malloc(sizeof(struct Tile *) * (NBTILE + 1));
@@ -75,7 +75,7 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxToken
 }
 
 
-void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size est une macro A FAIRE
+void shuffle(struct Tile **tileArray) // Valentin
 /*
     tileArray : Une liste de pointeurs sur Tile.
     size : La taille de la liste (normalement 72)
@@ -99,7 +99,7 @@ void shuffle(struct Tile **tileArray) // Valentin c'est peut-être mieux si size
     }
 }
 
-void array_to_stack(struct Tile **tileArray, struct Stack **stack) // Valentin A FAIRE
+void array_to_stack(struct Tile **tileArray, struct Stack **stack) // Valentin
 /*
     Prend en entrée une array et return une pile avec les éléments de l'array dedans.
     On considère que l'utilisateur donne le parametre stack non allouer
@@ -137,7 +137,7 @@ struct Tile *rot_tile(struct Tile *tile)
     return tile;
 }
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pioche, struct Grid **leftTopGrid, struct DLList *dllist, int *hauteur, int *largeur, struct list_player *listPlayer) // Théo
 /*
     playerNumber : Le numéro du joueur
 
@@ -154,12 +154,9 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     char pose = 0; // bool
     unsigned int token = -1;
 
-    pioche = stack_pop(pioche, &turn_tile); // désolé pour ce pop de l'enfer Axel xD
+    pioche = stack_pop(pioche, &turn_tile);
 
-    // play_grid = where_i_can_play(turn_tile, dllist);
-
-
-    while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
+    while (pose == 0)
     {
         play_grid = where_i_can_play(turn_tile, dllist);
         show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
@@ -181,7 +178,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack *pi
     }
 }
 
-struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo à faire
+struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Théo
 /*
     tile : La tile précedement pioché par le joueur
 
@@ -205,7 +202,7 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList *dllist) // Thé
     return gridArrray;
 }
 
-char is_a_potential_tile(struct Tile *tile) // Théo FAIT
+char is_a_potential_tile(struct Tile *tile) // Théo
 /*
     Return 0 si ce n'est pas une tuile potentielle
     Return 1 si c'est une tuile potentielle
@@ -243,19 +240,18 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
 {
     int xMin = (*leftTopGrid)->coord->x;
     int yMax = (*leftTopGrid)->coord->y;
-    int xMax = xMin + *largeur - 1; // -1 car (0,0) existe (toujours).
-    int yMin = yMax - *hauteur + 1; // ou géométriquement yMin = -(hauteur - 1 - yMax) 
+    int xMax = xMin + *largeur - 1;
+    int yMin = yMax - *hauteur + 1; 
 
     struct Grid *tmpGrid = *leftTopGrid;
 
     struct Tile *newTile;
     struct Grid *preGrid = NULL;
     struct Grid *newGrid;
-    // Vérification que la coord est en dehors de la zone
 
-    if (coord.x > xMax) // right
+    if (coord.x > xMax)
     {
-        for (int i = 0; i < *largeur - 1; i++) // plante si largeur mal innitialisé
+        for (int i = 0; i < *largeur - 1; i++)
         {
             tmpGrid = tmpGrid->right;
         }
