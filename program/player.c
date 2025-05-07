@@ -128,6 +128,13 @@ void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber)
                 grid->tile->meeplePlace=MP_MIDDLE;
                 grid->tile->meeple=p_list->player[pnumber];
                 p_list->player[pnumber]->nbMeeple-=1;
+            }//priorité abbaye
+
+            else if(tab_place[4]==1 && (grid->tile->middle==VILLE || grid->tile->middle==BLASON))
+            {
+                grid->tile->meeplePlace=MP_MIDDLE;
+                grid->tile->meeple=p_list->player[pnumber];
+                p_list->player[pnumber]->nbMeeple-=1;
             }
 
             else{
