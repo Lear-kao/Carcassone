@@ -4,11 +4,15 @@
 
 char isFinishedAbbaye( struct Grid *grille)
 /* 
-Compter les points abbaye.
-La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
-Elle vérifie chaque tuiles autour et  pour  chaques tuiles compte les points, si finJeu est != 0 (la partie est finie)
-la fonction envoie les points même si elle n'est pas complètement entourée, sinon elle envoie 0 si,l'abbaye n'est
-pas complètement entourée.
+Arguments:
+    Un pointeur vers  la tuile de la Grille de Jeu ou se trouve l'Abbaye.
+Retour:
+    Le nombre de point pour la structure Abbaye.
+Description:
+    La  fonction va simplement parcourir les 8  tuiles autours de la tuile Abbaye et renvoyer:
+        - Les 8 points  de la structure si celle-ci est complète.
+        - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
+        - Un nombre de point correspondant au nombre de tuile autour si c'est la fin de la partie.
 */
 {
     if(grille!=NULL && 
@@ -34,11 +38,23 @@ pas complètement entourée.
 }
 
 char count_point_city( struct Grid *grille, enum places a )
+/* 
+Arguments:
+    Un pointeur vers  la tuile de la Grille de Jeu ou se trouve la Ville.
+    L'endroit sur la tuile ou se trouve la Ville cherchée. 
+Retour:
+    Le nombre de point pour la structure Ville.
+Description:
+    La  fonction va inspecter la zone de la tuile ou est sensé se trouver la Ville puis apppeller 
+    isFinishedCity qui va utiliser du parcours de graph pour vérifier et compter les points de la Ville,
+    enfin cette fonction va retourner :
+        - Les points  de la structure si celle-ci est complète.
+        - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
+        - Un nombre de point correspondant au nombre de tuiles de la Ville si c'est la fin de la partie.
+*/
 {
     char point = 2;
     char unfinished=0;
-    
-    
     switch (a)
     {
         case RIGHT:
@@ -99,12 +115,20 @@ char count_point_city( struct Grid *grille, enum places a )
 
 char isFinishedCity( struct Grid *grille, char *unfinished)
 /* 
-Compter les points villes
-Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
-tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
-On entre en  paramètre une grille, un char idiquant si on compte les points de fin de jeu ou non, 
-    un charactère servant de marquer pour savoir si la ville est complète ou non et un charadctère 
-    pour connaitre la valeur du marquer (-1 ou 1)
+Arguments:
+    Un pointeur vers  la tuile de la Grille de Jeu ou se trouve la Ville a un instant t du parcour.
+    Un pointeur vers un booléens initialisé à 0 correspondant à si oui ou non la structure Ville est finie.
+Retour:
+    Le nombre de point que vaut la structure.
+Description:
+    La fonction utilise un algorithme de parcour de graph avec marqueur pour parcourir la grille , 
+    par défaut la route est considérée comme complète et dans le cas contraire unfinished passe à 1.
+    La fonction renvoie:
+        - Les points  de la structure si celle-ci est complète.
+        - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
+        - Un nombre de point correspondant au nombre de tuiles de la Ville si c'est la fin de la partie.
+Note:
+    !!! unfinished initialisé à 1
 */
 {
     if( is_a_potential_tile(grille->tile) == 1)
@@ -172,6 +196,20 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
 }
 
 char countPointRoad(struct Grid *grille, enum places start)
+/* 
+Arguments:
+    Un pointeur vers  la tuile de la Grille de Jeu ou se trouve la Route.
+    L'endroit sur la tuile ou se trouve la Route cherchée. 
+Retour:
+    Le nombre de point pour la structure Route.
+Description:
+    La  fonction va inspecter la zone de la tuile ou est sensé se trouver la Route puis apppeller 
+    isFinishedRoad qui va utiliser du parcours de graph pour vérifier et compter les points de la Route,
+    enfin cette fonction va retourner :
+        - Les points  de la structure si celle-ci est complète.
+        - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
+        - Un nombre de point correspondant au nombre de tuiles de la Route si c'est la fin de la partie.
+*/
 {
     char  point = 1;
     char unfinished = 0;
@@ -229,11 +267,22 @@ char countPointRoad(struct Grid *grille, enum places start)
 
 char isFinishedRoad(struct Grid *grille, char *unfinished)
 /* 
-Commentaire à faire
-!!! unfinished initialisé à 1
+Arguments:
+    Un pointeur vers  la tuile de la Grille de Jeu ou se trouve la Route a un instant t du parcour.
+    Un pointeur vers un booléens initialisé à 1 correspondant à si oui ou non la structure Route est finie.
+Retour:
+    Le nombre de point que vaut la structure.
+Description:
+    La fonction utilise un algorithme de parcour de graph avec marqueur pour parcourir la grille , 
+    par défaut la route est considérée comme incomplète et dans le cas contraire unfinished passe  à 0.
+    La fonction renvoie:
+        - Les points  de la structure si celle-ci est complète.
+        - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
+        - Un nombre de point correspondant au nombre de tuiles de la Route si c'est la fin de la partie.
+Note:
+    !!! unfinished initialisé à 1
 */
 {
-    printf("exec1\n");
     if( is_a_potential_tile(grille->tile) == 1)
     {
         *unfinished=1;
@@ -316,6 +365,16 @@ Commentaire à faire
 }
 
 void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
+/* 
+Argument:
+    Un pointeur vers la dernière tuile  posée.
+    La liste des joueurs.
+Retour:
+    Void.
+Description:
+    La  fonction prend en paramètre la dernière tuile posée et compte les points que permet d'acquérir cette tuiles sur d'après la structure présente au milieu.
+    (nottament si une abbaye est présente dans les alentours).
+*/
 {
     char point;
     char unfinish_road=1;
@@ -511,10 +570,14 @@ void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
 
 void give_point(char *list_meeple_player, struct list_player *list, char point)
 /* 
-Prend en  paramètre :
--la liste du nombre de meeple par joueur trouvée dans le parcour de la ville/route/abbaye
--la liste des joeurs
--le nombre de point
+Arguments:
+    La liste  des joueurs à qui il faut donner des points (liste de 0 et  de 1).
+    La liste des joueurs.
+    Le nombre de point à donner.
+Retour:
+    Void.
+Description:
+    Donne à  chaque joueur qui est sensé en recevoir les points de la structure précédement vérifiée.
 */
 {
     int max_L = max(list_meeple_player);
@@ -529,6 +592,17 @@ Prend en  paramètre :
 }
 
 void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle)
+/* 
+Argument:
+    Un pointeur vers la dernière tuile  posée.
+    La liste des joueurs.
+    Le type du milieu de la tuile.
+Retour:
+    Void.
+Description:
+    La  fonction prend en paramètre la dernière tuile posée et compte les points que permet d'acquérir cette tuiles sur d'après les structures présentes 
+    a droite,en haut, à gauche, en bas.
+*/
 {
     char point;
     char list_meeple[nbPlayers];
@@ -547,19 +621,16 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
             for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
             give_point(list_meeple,list,point);
             break;
-
-        /*
         case ROUTE:
             if(justPlaced->tile->right == middle || middle ==VILLAGE || middle == ABBAYES)break;
             point = countPointRoad(justPlaced,RIGHT);
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                //for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
             }
             break;
-        */
     }
     switch (justPlaced->tile->top)
     {
@@ -576,19 +647,16 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
             for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
             give_point(list_meeple,list,point);
             break;
-
-        /*
         case ROUTE:
             if(justPlaced->tile->top == middle || middle == VILLAGE || middle == ABBAYES)break;
             point = countPointRoad(justPlaced,TOP);
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                //for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
             }
             break;
-        */
     }
     switch (justPlaced->tile->left)
     {
@@ -605,18 +673,16 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
             for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,LEFT);
             give_point(list_meeple,list,point);
             break;
-        /*
         case ROUTE:
             if(justPlaced->tile->left == middle || middle == VILLAGE || middle == ABBAYES)break;
             point = countPointRoad(justPlaced,LEFT);            
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                //for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
             }
             break;
-        */
     }
     switch (justPlaced->tile->bot)
     {
@@ -634,22 +700,30 @@ void secondary_verification(struct Grid *justPlaced, struct list_player *list, e
             give_point(list_meeple,list,point);
             break;
 
-        /*
         case ROUTE:
             if(justPlaced->tile->bot == middle || middle == VILLAGE || middle == ABBAYES)break;
             point = countPointRoad(justPlaced,BOT);
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                //for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
             }
             break;
-        */
     }
 }
 
 void finDuJeu(struct Grid grille, struct list_player *list)
+/*
+Argument:
+    Un pointeur vers la dernière tuile  posée.
+    La liste des joueurs.
+Retour:
+    Void.
+Description:
+    La  fonction prend en paramètre la dernière tuile posée et compte les points que permet d'acquérir cette tuiles sur d'après la structure présente au milieu.
+    (nottament si une abbaye est présente dans les alentours).
+*/
 {
     finJeu = 1;
     /* créer une fonction pour parcourir toute la grille et récupérer tout les points restants */
