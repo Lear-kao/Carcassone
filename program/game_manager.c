@@ -18,7 +18,6 @@ int main()
     struct Stack *stack = NULL;
     int hauteur = 1;
     int largeur = 1;
-    int bot_difficulty=-1;
     //srand(time(NULL)); // initialisation de la seed pour l'aléatoire du jeu
     srand(0);
 
@@ -27,7 +26,7 @@ int main()
     while (gameRuns)
     {
         // ----Phase 1 : Paramètrage de la partie----
-        stack = start_game(&p_list, &leftTopGrid, &dllist, &hauteur, &largeur,&bot_difficulty);
+        stack = start_game(&p_list, &leftTopGrid, &dllist, &hauteur, &largeur);
 
         // ---------------------------
         // ----Phase 2 : La partie----
@@ -42,12 +41,8 @@ int main()
                     player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
                 else
                 {
-                    switch(bot_difficulty)
-                    {
-                        case 1:
-                            bot_turnLV1(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
-                            break;
-                    }
+                    bot_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                    sleep(1);
                 }
                     
                 i++;

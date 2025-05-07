@@ -204,7 +204,7 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
     }
 }
 
-void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer)
+void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer)
 /*
     playerNumber : Le numéro du joueur
 
@@ -233,6 +233,7 @@ void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **p
         while (pose == 0) // Continue le temps que la tuile n'est pas posé (si on tourne la tuile ça boucle)
         {
             show_tile(turn_tile);
+            show_point_and_nbmeeple(*p_list);
             play_grid = where_i_can_play(turn_tile, dllist);
             show_grid(*leftTopGrid, *largeur, *hauteur, play_grid);
             tmpGrid = play_grid;
@@ -248,6 +249,9 @@ void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **p
                 token=1;
                 pose = 1;
                 *leftTopGrid = place_tile(leftTopGrid, play_grid[token - 1]->coord, turn_tile, dllist, hauteur, largeur); // token -1 car 0 correspond à tourner la tuile
+
+                put_meeple_bot(play_grid[token - 1],p_list,playerNumber-1);
+
                 pointPlacedTile(play_grid[token - 1], listPlayer); //besoin de la fonction de théo
             }
             else
@@ -933,7 +937,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
     printf("\n");
 
 }
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur,int *bot_difficulty) // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur) // en cour ( Axel )
 /*
     Effet :
     - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
@@ -948,18 +952,6 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
 
     printf("Combien de bot: \n");
     scanf("%d", &nbBot);
-
-    if(nbBot>0)
-    {
-        do{
-            printf("Quel difficulté pour les bot ?\n");
-            printf("1 = Tres Facile\n");
-            scanf("%d",bot_difficulty);
-            if(*bot_difficulty<1 || *bot_difficulty>NB_BOT_DIFFICULTY){
-                printf("donnée incorrect\n");
-            }
-        }while(*bot_difficulty<1 || *bot_difficulty>NB_BOT_DIFFICULTY);
-    }
 
     if (*list_player == NULL)
     {

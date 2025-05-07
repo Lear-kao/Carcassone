@@ -176,6 +176,11 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace 
     return cmpt;
 }
 
+void remove_meepleVille(struct Grid *grille,int coul_player , enum places a){
+
+}
+void remove_meepleVilleEncap(struct Grid *grille,int coul_player , enum meeplePlace origin);
+
 char nbMeepleVille_nocolor(struct Grid *grille,enum places a){
     char res=0;
 
@@ -547,7 +552,6 @@ int* where_i_can_put(struct Grid *grid)
 
     int *tab=(int*)malloc(5*sizeof(int));
     for( int i = 0; i < 5; i++) tab[i]=RIEN;
-
     printf("wtf");
     if((grid->tile->right == VILLE || grid->tile->right == BLASON) && !nbMeepleVille_nocolor(grid,RIGHT)) tab[0] = 1;
     else if(grid->tile->right == ROUTE && !countMeepleRoad_nocolor(grid,RIGHT)) tab[0] = 1;
@@ -572,6 +576,14 @@ int* where_i_can_put(struct Grid *grid)
         if(grid->tile->top==ROUTE) tab[1]=RIEN;
         if(grid->tile->left==ROUTE) tab[2]=RIEN;
         if(grid->tile->bot==ROUTE) tab[3]=RIEN;
+    }
+
+    if(grid->tile->middle==VILLE || grid->tile->middle==BLASON && nbMeepleVille_nocolor(grid,MIDDLE))
+    {
+        if(grid->tile->right==VILLE || grid->tile->right==BLASON) tab[0]=RIEN;
+        if(grid->tile->top==VILLE || grid->tile->top==BLASON) tab[1]=RIEN;
+        if(grid->tile->left==VILLE || grid->tile->left==BLASON) tab[2]=RIEN;
+        if(grid->tile->bot==VILLE || grid->tile->bot==BLASON) tab[3]=RIEN;
     }
     return tab;
 }
