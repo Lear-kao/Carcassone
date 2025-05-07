@@ -253,7 +253,7 @@ char token_to_enum_types(char *token, char *tokenArray[]); // theo si qq veut fa
     Le type de la case associé au token.
 */
 
-struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize); // fait Theo
+struct Tile **create_tile_array(char *csvTile, char *tokenArray[]); // Théo
 /*
     Crée la liste des tuiles à partir d'un fichier csv.
 
