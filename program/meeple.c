@@ -2,11 +2,35 @@
 
 
 char searchMeeple(struct Tile tile,int where)
+/*
+    Arguments:
+        struct Tile tile: une tuile
+        int where: l'endroit ou on veut regarder
+
+    Retour:
+        char : 0 ou 1
+    
+    Description:
+        regarde si il y a un meeple a l'endroit souhaité
+*/
 {
     return tile.meeplePlace==where;
 }
 
 struct Grid* searchAbbaye(struct Grid* grille)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+
+    Retour:
+        struct Grid * : une grid ou il y a une abbaye (ou NULL)
+
+    Description:
+        cherche dans les 8 tuile autour de grid si il y a une abbaye si oui la retourne , sinon retourne NULL
+
+    Note:
+        si struct Grid *grille est deja abbayes la fonction la retourne evidemment directement
+*/
 {
     if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->tile)) return grille;
     if(grille->top->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->top;
@@ -21,6 +45,17 @@ struct Grid* searchAbbaye(struct Grid* grille)
 }
 
 char where_is_meeple(  int type, struct Tile tile)
+/*
+    Arguments:
+        int type : le type de structure qu'on cherche (ABBAYE/VILLE/VILLAGE/ROUTE)
+        struct Tile tile : une tuile
+    
+    Retour: 
+        char 0 ou 1
+
+    Description:
+        vérifie si le meeple posée est bien sur le type  de structure (ABBAYE/VILLE/VILLAGE/ROUTE) recherché
+*/
 {
     switch (tile.meeplePlace)
     {
@@ -58,22 +93,41 @@ char where_is_meeple(  int type, struct Tile tile)
 }
 
 char what_color_is_meeple(int color, struct Tile tile)
+/*
+    Arguments:
+        int color : la couleur du joueur
+        struct Tile *tile : une tuile
+
+    Retour:
+        char 0 ou 1
+
+    Description:
+        vérifie si le meeple posée sur la  tuile est bien de la bonne couleur
+*/
 {
     return tile.meeple->coulPlayer == color;
 
 }
 
-char nbMeepleVille(struct Grid *grille, int coul_player,enum places a){
+char nbMeepleVille(struct Grid *grille, int coul_player,enum places a)
+/*
+    struct Grid *grille : Un pointeur sur un element de la grid
+    int coul_player : la couleur du joueur
+    enum places a : une direction
+
+    Retour:
+        char res : le nombre de meeple dans la ville
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'nbMeepleVilleEncap()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
+{
     char res=0;
     if(is_meeple_on_tile(grille->tile) && 
        grille->tile->meeple->coulPlayer == coul_player && 
        grille->tile->meeplePlace==a && 
        (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile)))) res+=1;
-    
-    // printf("cond1=%d cond2=%d\n",is_meeple_on_tile(grille->tile),where_is_meeple(VILLE,*(grille->tile)));
-    // printf("res=%d\n",res);
-
-    // printf("DFS=%d\n",grille->right->tile->meeplePlace);
 
     switch(a)
     {
@@ -124,8 +178,27 @@ char nbMeepleVille(struct Grid *grille, int coul_player,enum places a){
 }
 
 char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace origin)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        int coul_player : la couleur du joueur
+        enum meeplePlace origin : un endroit sur la tuile
+
+    Retour:
+        char cmpt : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une ville
+        Elle vérifie chaque tuiles ville conntecté à celle envoyé
+        et compte le nombre de meeple d'une couleur sur celui ci
+
+    Note:
+        meeplePlace origin est pour un cas particulier ou il y a 2 ville non connecteur sur une tuile 
+        ex: [PPP]  ici si on vient de la gauche on ne veut pas verifier si il y a un meeple
+            [VPV]  sur la ville a droite
+            [PPP]
+*/
 {
-    //pour l'instant la fonction ne fait que compter le nombre de meeple sans discinction
     char cmpt = 0;
     //printf("exec1\n");
     if (grille->marquer == v_marquer) return 0;
@@ -181,7 +254,20 @@ void remove_meepleVille(struct Grid *grille,int coul_player , enum places a){
 }
 void remove_meepleVilleEncap(struct Grid *grille,int coul_player , enum meeplePlace origin);
 
-char nbMeepleVille_nocolor(struct Grid *grille,enum places a){
+char nbMeepleVille_nocolor(struct Grid *grille,enum places a)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        enum places a : une direction
+
+    Retour:
+        char res : le nombre de meeple dans la ville
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'nbMeepleVille_nocolorEncap()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
+{
     char res=0;
 
     if(is_meeple_on_tile(grille->tile) &&
@@ -240,6 +326,25 @@ char nbMeepleVille_nocolor(struct Grid *grille,enum places a){
 
 
 char nbMeepleVille_nocolorEncap( struct Grid *grille,enum meeplePlace origin)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        enum meeplePlace origin : un endroit sur la tuile
+
+    Retour:
+        char cmpt : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une ville
+        Elle vérifie chaque tuiles ville conntecté à celle envoyé
+        et compte le nombre de meeple sur celui ci
+
+    Note:
+        meeplePlace origin est pour un cas particulier ou il y a 2 ville non connecteur sur une tuile 
+        ex: [PPP]  ici si on vient de la gauche on ne veut pas verifier si il y a un meeple
+            [VPV]  sur la ville a droite
+            [PPP]
+*/
 {
     //pour l'instant la fonction ne fait que compter le nombre de meeple sans discinction
     char cmpt = 0;
@@ -291,8 +396,17 @@ char nbMeepleVille_nocolorEncap( struct Grid *grille,enum meeplePlace origin)
 
 char nbMeepleAbbaye( struct Grid *grille, int color)
 /* 
-Paramètre; la grille ou se situe l'abbaye, la couleur recherchée
-Retour : la présence ou non d'un meeple dela couleur fournie
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grille
+        int color : la couleur du joueur
+
+    Retour:
+        char 0 ou 1
+
+    Description:
+        si c'est une abbaye ou si il y a une abbaye autour de *grille
+        retourne le nombre de meeple d'une couleur d'une abbaye
+        (par definition une abbaye ne peut qu'avoir un meeple)
 */
 {
     struct Grid *temp = searchAbbaye(grille);
@@ -307,8 +421,16 @@ Retour : la présence ou non d'un meeple dela couleur fournie
 
 char nbMeepleAbbaye_nocolor(struct Grid *grille)
 /* 
-Paramètre; la grille ou se situe l'abbaye, la couleur recherchée
-Retour : la présence ou non d'un meeple dela couleur fournie
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grille
+
+    Retour:
+        char 0 ou 1
+
+    Description:
+        si c'est une abbaye ou si il y a une abbaye autour de *grille
+        retourne le nombre de meeple d'une abbaye
+        (par definition une abbaye ne peut qu'avoir un meeple)
 */
 {
     struct Grid *temp = searchAbbaye(grille);
@@ -322,7 +444,14 @@ Retour : la présence ou non d'un meeple dela couleur fournie
 
 int max(char *list)
 /* 
-Prend en paramètre une liste d'entiers et renvoie le plus grand
+    Arguments:
+        char *list : une liste de nombre
+
+    Retour:
+        int max : le nombre maximum de la liste
+
+    Description:
+        cherche le maximum de la liste
 */
 {
     int max = list[0];
@@ -335,6 +464,19 @@ Prend en paramètre une liste d'entiers et renvoie le plus grand
 
 
 char countMeepleRoad(struct Grid *grille, enum places start, int color)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la Grid
+        enum places start : une direction
+        int color : la couleur du joueur
+    
+    Retour:
+        char nbmeeple : le nombre de meeple d'une couleur
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'meepleRoad()'
+        Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) start = [0:4]
+*/
 {
     char  nbmeeple = 0;
     
@@ -395,6 +537,19 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
 
 
 char meepleRoad(struct Grid *grille, int color)// Commentaire à faire !!! unfinished initialisé à 1
+/* 
+    Arguments:
+        struct Grid *grille : Un pointeur sur l'element de la grid
+        int color : la couleur du joueur
+
+    Retour:
+        char cmp : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une couleur d'une route
+        Elle vérifie chaque tuiles route conntecté à celle envoyé,
+        et compte le nombre de meeeple sur celui ci
+*/
 {
     char cmp=0;
     if( grille->marquer == v_marquer) return 0;
@@ -433,6 +588,18 @@ char meepleRoad(struct Grid *grille, int color)// Commentaire à faire !!! unfin
 }
 
 char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la Grid
+        enum places start : une direction
+    
+    Retour:
+        char nbmeeple : le nombre de meeple d'une couleur
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'meepleRoad_nocolor()'
+        Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) start = [0:4]
+*/
 {
     char  nbmeeple = 0;
     
@@ -490,10 +657,19 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
     return nbmeeple;
 }
 
+char meepleRoad_nocolor(struct Grid *grille,enum meeplePlace origin)
 /* 
-Fonction pour  savoir il y a  des meeples sur la route que fait les tuiles quel que soit la couleur
+    Arguments:
+        struct Grid *grille : Un pointeur sur l'element de la grid
+
+    Retour:
+        char cmp : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une route
+        Elle vérifie chaque tuiles route conntecté à celle envoyé,
+        et compte le nombre de meeeple sur celui ci
 */
-char meepleRoad_nocolor(struct Grid *grille,enum meeplePlace origin)// Commentaire à faire !!! unfinished initialisé à 1
 {
     char cmp=0;
     if( grille->marquer == v_marquer) return 0;
@@ -544,9 +720,18 @@ char meepleRoad_nocolor(struct Grid *grille,enum meeplePlace origin)// Commentai
 }
 
 int* where_i_can_put(struct Grid *grid)
-{
-    //int tab[5] = {RIEN,RIEN,RIEN,RIEN,RIEN};
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grid
 
+    Retour:
+        int *tab : un tableau de 5 entier allouer
+
+    Description:
+        appelle les differente fonction de comptage de meeple (sans couleur) 
+        et verifier si on peut poser un meeple sur la tuile associé a *grid
+*/
+{
     int *tab=(int*)malloc(5*sizeof(int));
     for(int i=0;i<5;i++) tab[i]=RIEN;
 
