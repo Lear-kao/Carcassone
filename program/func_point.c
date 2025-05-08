@@ -4,11 +4,21 @@
 
 char isFinishedAbbaye( struct Grid *grille)
 /* 
-Compter les points abbaye.
-La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
-Elle vérifie chaque tuiles autour et  pour  chaques tuiles compte les points, si finJeu est != 0 (la partie est finie)
-la fonction envoie les points même si elle n'est pas complètement entourée, sinon elle envoie 0 si,l'abbaye n'est
-pas complètement entourée.
+    Arguments:
+        struct Grid *grille: Un pointeur sur l'element de la grid
+    
+    Retour:
+        char point : le nombre de point associé represente par le nombre de tuile pose autour de l'abbaye
+    
+    Description:
+        Compter les points abbaye.
+        La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
+        Elle vérifie chaque tuiles autour et  pour  chaques tuiles compte les points, si finJeu est != 0 (la partie est finie)
+        la fonction envoie les points même si elle n'est pas complètement entourée, sinon elle envoie 0 si,l'abbaye n'est
+        pas complètement entourée.
+
+    Note:
+        -il faut verifier si l'element de la grille (la tuile) a bien une abbaye dessus
 */
 {
     if(grille!=NULL && 
@@ -34,6 +44,21 @@ pas complètement entourée.
 }
 
 char count_point_city( struct Grid *grille, enum places a )
+/*
+    Arguments:
+        struct Grid *grille: Un pointeur sur un element de la grid
+        enum places a: une direction
+    
+    Retour:
+        char point : le nombre de point
+    
+    Description:
+        elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) a = [0:4]
+    
+    Note:
+        cette fonction est a appeler en premier
+*/
 {
     char point = 2;
     char unfinished=0;
@@ -99,12 +124,17 @@ char count_point_city( struct Grid *grille, enum places a )
 
 char isFinishedCity( struct Grid *grille, char *unfinished)
 /* 
-Compter les points villes
-Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
-tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
-On entre en  paramètre une grille, un char idiquant si on compte les points de fin de jeu ou non, 
-    un charactère servant de marquer pour savoir si la ville est complète ou non et un charadctère 
-    pour connaitre la valeur du marquer (-1 ou 1)
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        char *unfinished : un pointeur sur un char (represantant si une ville est fermer ou non)
+    
+    Retour:
+        char point : le nombre de point
+    
+    Description:
+        Compter les points villes
+        Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
+        tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
 */
 {
     if( is_a_potential_tile(grille->tile) == 1)
@@ -172,6 +202,18 @@ On entre en  paramètre une grille, un char idiquant si on compte les points de 
 }
 
 char countPointRoad(struct Grid *grille, enum places start)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la Grid
+        enum places start : une direction
+    
+    Retour:
+        char point : le nombre de point
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
+        Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 {
     char  point = 1;
     char unfinished = 0;
@@ -262,8 +304,17 @@ char countPointRoad(struct Grid *grille, enum places start)
 
 char isFinishedRoad(struct Grid *grille, char *unfinished)
 /* 
-Commentaire à faire
-!!! unfinished initialisé à 1
+    Arguments:
+        struct Grid *grille : Un pointeur sur l'element de la grid
+        char *unfinished : un pointeur sur un char (representant si une route est fermer ou non)
+
+    Retour:
+        char point : le nombre de point
+
+    Description:
+        Compter les points d'une route
+        Elle vérifie chaque tuiles route conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
+        tuiles route) la fonction renvoie les points si finJeu == 0 et la  route est complète ou si finJeu == 1.
 */
 {
     printf("exec1\n");
@@ -349,6 +400,15 @@ Commentaire à faire
 }
 
 void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
+/*
+    Arguments:
+        struct Grid *justPlaced : Un pointeur sur l'element de la grid qui vient juste d'être placer
+        struct list_player *list : Un pointeur sur une struct list_player
+    
+    Description:
+        Compter les points si une structure est finit , si c'est le cas il faut distribuer 
+        les points au joueur concerner
+*/
 {
     char point;
     char unfinish_road=1;
@@ -544,10 +604,15 @@ void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
 
 void give_point(char *list_meeple_player, struct list_player *list, char point)
 /* 
-Prend en  paramètre :
--la liste du nombre de meeple par joueur trouvée dans le parcour de la ville/route/abbaye
--la liste des joeurs
--le nombre de point
+    Arguments:
+        char *list_meeple_player : la liste du nombre de meeple par joueur trouvée dans le parcour de la ville/route/abbaye
+        struct list_player *list : un pointeur sur la liste des joeurs
+        char point : le nombre de point
+
+    Description:
+        Distribue les point au joueur concerne en fonction de la list de meeple trouver
+        (les point sont distribuer au(x) joueur(s) ayant le maximum de meeple dans la zone
+         si il y a egalite entre 2 ou plusieurs joueurs les points sont distribuer a chaqun)
 */
 {
     int max_L = max(list_meeple_player);
@@ -562,6 +627,16 @@ Prend en  paramètre :
 }
 
 void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle)
+/*
+    Arguments:
+        struct Grid *justPlaced : Un pointeur sur l'element de la grid qui vient juste d'être placer
+        struct list_player *list : Un pointeur sur une struct list_player
+        enum types middles : le type du millieu de la tuile dans justPlaced
+
+    Description:
+        effectue des verification secondaire dans la distribution des points
+
+*/
 {
     char point;
     char list_meeple[nbPlayers];
