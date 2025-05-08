@@ -6,11 +6,16 @@
 
 struct Stack *stack_push(struct Stack *stack, struct Tile *tile)
 /*
-    stack : La pile
-    tile : Un pointer sur un espace mémoire ou se trouve une tile à push sur la stack
+    Arguments:
+        struct Stack *stack: Un pointeur sur le dernier element de la pile
+        struct Tile *tile: Un pointer sur un espace mémoire ou se trouve une tile à push sur la stack
+    
+    Retour:
+        struct Stack *new_stack: la pile actualisé
 
-    return : La stack actualisé
-
+    Description:
+        alloue le nouvelle element new_stack lie sont prochain element au pointeur stack 
+        et retourne new_stack
 */
 {
     struct Stack *new_stack = malloc(sizeof(struct Stack));
@@ -21,10 +26,17 @@ struct Stack *stack_push(struct Stack *stack, struct Tile *tile)
 
 struct Stack *stack_pop(struct Stack *stack, struct Tile **tileSlot)
 /*
-    stack : La pile
-    tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
-
-    return : La stack actualisé
+    Arguments:
+        struct Stack *stack: Un pointeur sur le dernier element de la pile
+        struct Tile **tileSlot: Un pointeur sur un espace mémoire ou mettre la tile pop
+    
+    Retour:
+        struct Stack *tmp_stack: la pile actualisé
+    
+    Description:
+        met l'element de la pile sur l'espace memoire tileSlot puis stock le pointeur sur 
+        l'element suivant de la pile dans la variable tmpStack puis libere l'espace memoire
+        de l'element de la pile et retourne tmpStack
 */
 {
     *tileSlot = stack->data;
@@ -35,9 +47,14 @@ struct Stack *stack_pop(struct Stack *stack, struct Tile **tileSlot)
 
 char is_stack_not_empty(struct Stack *stack)
 /*
-    stack : La pile
+    Arguments:
+        struct Stack *stack: Un pointeur sur la pile
 
-    return : 0 si la stack est vide, 1 sinon
+    Retour:
+        char : 0 si stack est a NULL 1 sinon
+
+    Description:
+        teste si la pile est vide
 */
 {
     if (stack == NULL)
@@ -59,10 +76,15 @@ char is_stack_not_empty(struct Stack *stack)
 
 struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid)
 /*
-    DLList : La liste chainé
-    grid : Un pointer sur un espace mémoire ou se trouve grid
+    Argument:
+        DLList: un pointeur sur une liste doublement chaine
+        grid: Un pointer sur un espace mémoire ou se trouve grid
+    
+    Retour:
+        struct DLList *DLList : La liste doublement chainé actualisé
 
-    return : La liste actualisé 
+    Description:
+        ajoute en fin de liste doublement chaine l'element grid
 */
 {
     struct DLList *newDLList = malloc(sizeof(struct DLList));
@@ -86,10 +108,18 @@ struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid)
 
 void DLList_pop(struct DLList **DLList, struct Grid **gridSlot)
 /*
-    DLList : L'élément de la liste chainé à supprimer. Une fois l'élément supprimé le pointeur prend la valeur de l'élément précédent si il existe sinon l'élément suivant sinon NULL
-    gridSlot : Un pointer sur un espace mémoire ou mettre le grid pop
+    Argument:
+        struct DLList **DLList: un pointeur sur un pointeur sur l'element a supprimer
+        struct Grid **gridSlot un pointeur sur un espace mémoire ou mettre la grid
 
-    return : La liste actualisé 
+    Retour:
+        void
+    
+    Description:
+        supprime l'element DLList de la liste doublement chaîné et met l'element dans gridSlot
+    
+    Note:
+        La fonction s'occupe elle même de relier les bout de la liste doublement chaîne la ou l'element a ete supprimer
 */
 {
     struct DLList *tmpDLList;
@@ -147,13 +177,15 @@ void DLList_pop(struct DLList **DLList, struct Grid **gridSlot)
 
 struct Coord *init_coord(int x,int y)
 /*
-    x: coordonnée x
-    y: coordonnee y
+    Arguments:
+        int x: entier represantant la coordonnee x
+        int y: entier represantant la coordonnee y
 
-    Cette fonction alloue une struct coord et l'initialise
-    avec les coordonnée x et y
+    Retour:
+        struct Coord* C: la struct Coord allouer en initialisé au coordonnée x et y
 
-    return: un pointeur vers un struct Coord
+    Description:
+        Alloue une struct coord et l'initialise avec les coordonnee x et y
 */
 {
     struct Coord *C=malloc(sizeof(struct Coord));
@@ -163,6 +195,25 @@ struct Coord *init_coord(int x,int y)
 }
 
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top)
+/*
+    Arguements:
+        Struct Tile *tile: Un pointeur sur une struct Tile
+        Struct Coord *coord: Un pointeur sur une struct Coord
+        Struct Grid *right: Un pointeur sur une struct Grid qui et censé se trouver a "droite" de la nouvelle grid
+        Struct Grid *left: Un pointeur sur une struct Grid qui et censé se trouver a "gauche" de la nouvelle grid
+        Struct Grid *bot: Un pointeur sur une struct Grid qui et censé se trouver en "bas" de la nouvelle grid
+        Struct Grid *top: Un pointeur sur une struct Grid qui et censé se trouver en "haut" de la nouvelle grid
+    
+    Retour:
+        struct Grid *new_grid: Un pointeur sur le nouvelle element de la grid
+    
+    Description:
+        alloue new_grid puis initialise ces valeur ainsi que ses voisin (les 4 paramametre struct Grid *) et retourne new_grid
+
+    Note:
+        il faut faire attention a ce que les voisin repointe bien vers new_grid nouvellement creer
+
+*/
 {
     // il aurait fallut faire le malloc de Coord ici mais c'est trop tard cette fonction ne peut être modifier sans casser tout le projet
     struct Grid *new_grid= malloc(sizeof(struct Grid));
