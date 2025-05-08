@@ -51,6 +51,7 @@ int main()
         // -------------------------------
         // ----Phase 3 : Fin de partie----
         // -------------------------------
+        finDuJeu(&leftTopGrid,p_list);
         end_game_points_counter(*p_list);
         // free_Grid(&leftTopGrid);
         gameRuns = 0;

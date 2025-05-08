@@ -609,4 +609,6 @@ void removeMeepleVille( struct Grid *grille, enum meeplePlace origin);
 void removeMeepleAbbaye( struct Grid *grille);
 void remove_meeple(struct Grid *grille);
 
+void finDuJeu(struct Grid *grille, struct list_player *list);
+
 #endif // CARCASSONNE_H

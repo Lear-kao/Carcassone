@@ -631,7 +631,7 @@ Description:
     }
 }
 
-void finDuJeu(struct Grid grille, struct list_player *list)
+void finDuJeu(struct Grid *grille, struct list_player *list) 
 /*
 Argument:
     Un pointeur vers la dernière tuile  posée.
@@ -644,5 +644,16 @@ Description:
 */
 {
     finJeu = 1;
-    pointPlacedTile(temp,list);
+    struct Grid *temp_x = grille, temp_y;
+    while(temp_x->bot != NULL)
+    {
+        temp_y = temp_x;
+        while(temp_y->right != NULL)
+        {
+            if(!is_a_potential_tile(temp_y->tile))
+                pointPlacedTile(temp_x,list);
+        }
+        temp_x = temp_x->bot;
+    }
+    return;
 }
