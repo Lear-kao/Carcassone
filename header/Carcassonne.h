@@ -270,16 +270,43 @@ struct list_player
 
 struct Player *init_player(int couleur,char bot); // FAIT theo
 /*
-    Innitialise l'objet player
+    Arguments:
+        int couleur : la couleur du joueur
+        char bot : (0 = vrai joueur , 1 = un bot)
+
+    Retour:
+        struct Player *player: Un pointeur sur une struct Player nouvellement allouer
+
+    Description:
+        allouer et creer un nouveau jouer 
+        et l'initialise avec nos arguments et nos valeur par defaut (NBMEEPLE_DEFAULT=8)
 */
 
 char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
 /*
-    Player : L'objet Player
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur
+    
+    Retour:
+        char : le nombre de meeple sur *Player
 
-    return :
-    - 0 si le joueur n'a aucun Meeple
-    - 1 si il reste au moins un Meeple au Joueur
+    Description:
+        retourne le nombre de meeple sur un joueur
+*/
+
+struct list_player *init_player_list(char nbbot); // Fait (Axel) 
+/*
+    Arguments:
+        char nbbot : le nombre de bot
+
+    Retour:
+        struct list_player *list_players : une struct list_player nouvellement allouer
+
+    Description:
+        Crée une liste de pointeurs qui pointe sur un Player,
+        un pointer sur NULL est ajouté à la fin pour faciliter
+        les iterations sur la liste (condition d'arrêt)
+        Nbplayer est une variable globale 
 */
 
 // ------------------------------
@@ -315,14 +342,6 @@ struct Tile **create_tile_array(char *csvTile, char *tokenArray[]); // Théo
     Attention ne pas allouez la mémoire pour struct tile **tileArray
 */
 
-
-struct list_player *init_player_list(char nbbot); // Fait (Axel) 
-/*
-    Crée une liste de pointeurs qui pointe sur un Player,
-    un pointer sur NULL est ajouté à la fin pour faciliter
-    les iterations sur la liste (condition d'arrêt)
-*/
-
 void shuffle(struct Tile **tileArray); // Valentin c'est peut-être mieux si size est une macro
 /*S
     tileArray : Une liste de pointeurs sur Tile.
@@ -337,12 +356,20 @@ void array_to_stack(struct Tile **tileArray, struct Stack **stack); // Fait
 
 void reset_points(struct Player *player); //Fait
 /*
-    Réinitialise les points du joueur
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur:
+    
+    Description:
+        reinitialiser le nombre de points du joueur a 0
 */
 
 void reset_meeples(struct Player *player);//Fait
 /*
-    Réinitialise le compteur de Meeple du joueur
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur:
+    
+    Description:
+        reinitialiser le nombre de meeple du joueur a la valeur par defaut (NBMEEPLE_DEFAULT=8)
 */
 
 struct Tile *rot_tile(struct Tile *tile); //Fait
@@ -916,8 +943,44 @@ char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
 */
 
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grid
+        struct list_player *p_list : Un pointeur sur une struct list_player:
+        char pnumber : le numero du joueur (ou l'indice)
+
+    Description:
+        Demande au jouer si on veut poser un meeple 
+        le cas echant nous indique ou on peut le poser et nous demande ou on veut le poser sur la tuile
+        si il y a aucun endroit ou le poser on ne pourras pas en poser
+        puis une fois le choix valide le meeple est poser ou non
+*/
+
 void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber);
-void remove_meeple(struct Grid* justPlaced, struct list_player *p_list);
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grid
+        struct list_player *p_list : Un pointeur sur une struct list_player:
+        char pnumber : le numero du joueur (ou l'indice)
+
+    Description:
+        version pour le robot de put_meeple
+
+        si grid est une abbaye on pose le meeple sur l'abbaye
+        sinon si grid a une ville/blason au centre , on pose le meeple au centre
+        sinon on pose le meeple a endroit aleatoire disponible 
+        (si il n'y en a pas aucun meeple sera poser)
+*/
+
+void remove_meeple(struct Grid *grid, struct list_player *p_list);
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grille
+        struct list_player *p_list : Un pointeur sur une struct list_player
+
+    Description:
+        retire le meeple de la tuile associe a *grid
+*/
 
 void remove_meepleVille(struct Grid *grille,int coul_player , enum places a);
 void remove_meepleVilleEncap(struct Grid *grille,int coul_player , enum meeplePlace origin);
