@@ -15,12 +15,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#ifdef _WIN32
-    #include <windows.h>
-#else
-    #include <unistd.h>
-#endif
-
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
@@ -286,7 +280,7 @@ struct list_player
     */
     struct Player **player;
     char nbbot;
-}; // penser a la fin a l'optimiser et l'enlever 
+};
 
 // ----PLayers fonctions----
 
@@ -304,31 +298,16 @@ struct Player *init_player(int couleur,char bot); // FAIT theo
         et l'initialise avec nos arguments et nos valeur par defaut (NBMEEPLE_DEFAULT=8)
 */
 
+struct list_player *init_player_list(char nbbot); // Axel
+
+
 char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
 /*
-    Arguments:
-        struct Player *player : Un pointeur sur un joueur
-    
-    Retour:
-        char : le nombre de meeple sur *Player
+    Player : L'objet Player
 
-    Description:
-        retourne le nombre de meeple sur un joueur
-*/
-
-struct list_player *init_player_list(char nbbot); // Fait (Axel) 
-/*
-    Arguments:
-        char nbbot : le nombre de bot
-
-    Retour:
-        struct list_player *list_players : une struct list_player nouvellement allouer
-
-    Description:
-        Crée une liste de pointeurs qui pointe sur un Player,
-        un pointer sur NULL est ajouté à la fin pour faciliter
-        les iterations sur la liste (condition d'arrêt)
-        Nbplayer est une variable globale 
+    return :
+    - 0 si le joueur n'a aucun Meeple
+    - 1 si )il reste au moins un Meeple au Joueur
 */
 
 // ------------------------------
@@ -574,14 +553,13 @@ short points_route(struct Grid *grid); // Axel
 
     Les conditions pour que les points soit rajouté aux joueurs sont remplie
     return le nombre de point gagné par ce joueurs. 
-
-    ATTENTION : Que faire si plusieurs joueurs gagne des points ? Comment les différencier ? return une liste de couple joueurs points peut-être ?
 */
+
 short points_ville(struct Grid *grid); // Axel et blason
 short points_abbayes(struct Grid *grid); // Axel
 short points_pre(struct Grid *grid); // Axel
 
-struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist); // Théo A TESTER
+struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist);
 /*
     Arguments :
         grid : La grid originelle de coord (0,0)
@@ -598,7 +576,7 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
         <(optionnel) message pour les développeurs sur les subtilités de la fonction>  
 */
 
-struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur); // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur); 
 /*
     Arguments :
         tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
@@ -633,7 +611,7 @@ void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteu
         topLeftGrid doit être NULL.
 */
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
 /*
     Arguments :
         playerNumber : L'identifiant du joueur dont c'est le tour.
@@ -744,21 +722,15 @@ void *show_point_and_nbmeeple(struct list_player list);
 
 char isFinishedAbbaye(struct Grid *grille);// tester valider ? (verifier quand même une fois les test svp)
 /* 
-    Arguments:
-        struct Grid *grille: Un pointeur sur l'element de la grid
-    
-    Retour:
-        char point : le nombre de point associé represente par le nombre de tuile pose autour de l'abbaye
-    
-    Description:
-        Compter les points abbaye.
-        La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
-        Elle vérifie chaque tuiles autour et  pour  chaques tuiles compte les points, si finJeu est != 0 (la partie est finie)
-        la fonction envoie les points même si elle n'est pas complètement entourée, sinon elle envoie 0 si,l'abbaye n'est
-        pas complètement entourée.
-
-    Note:
-        -il faut verifier si l'element de la grille (la tuile) a bien une abbaye dessus
+Arguments:
+    Un pointeur vers  la tuile de la Grille de Jeu ou se trouve l'Abbaye.
+Retour:
+    Le nombre de point pour la structure Abbaye.
+Description:
+    La  fonction va simplement parcourir les 8  tuiles autours de la tuile Abbaye et renvoyer:
+        - Les 8 points  de la structure si celle-ci est complète.
+        - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
+        - Un nombre de point correspondant au nombre de tuile autour si c'est lafin de la partie.
 */
 
 char isFinishedCity( struct Grid *grille, char *unfinished ); //tester (avec count_point_city)
@@ -1106,49 +1078,18 @@ char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
 */
 
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
-/*
-    Arguments:
-        struct Grid *grid : Un pointeur sur un element de la grid
-        struct list_player *p_list : Un pointeur sur une struct list_player:
-        char pnumber : le numero du joueur (ou l'indice)
-
-    Description:
-        Demande au jouer si on veut poser un meeple 
-        le cas echant nous indique ou on peut le poser et nous demande ou on veut le poser sur la tuile
-        si il y a aucun endroit ou le poser on ne pourras pas en poser
-        puis une fois le choix valide le meeple est poser ou non
-*/
-
 void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber);
-/*
-    Arguments:
-        struct Grid *grid : Un pointeur sur un element de la grid
-        struct list_player *p_list : Un pointeur sur une struct list_player:
-        char pnumber : le numero du joueur (ou l'indice)
 
-    Description:
-        version pour le robot de put_meeple
-
-        si grid est une abbaye on pose le meeple sur l'abbaye
-        sinon si grid a une ville/blason au centre , on pose le meeple au centre
-        sinon on pose le meeple a endroit aleatoire disponible 
-        (si il n'y en a pas aucun meeple sera poser)
+/* 
+Fonction pour retirer les  meeples
 */
+void removeMeepleRoadStart(struct Grid *grille);
+void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin);
+void removeMeepleVilleStart(struct Grid *grille,enum places a);
+void removeMeepleVille( struct Grid *grille, enum meeplePlace origin);
+void removeMeepleAbbaye( struct Grid *grille);
+void remove_meeple(struct Grid *grille);
 
-void remove_meeple(struct Grid *grid, struct list_player *p_list);
-/*
-    Arguments:
-        struct Grid *grid : Un pointeur sur un element de la grille
-        struct list_player *p_list : Un pointeur sur une struct list_player
-
-    Description:
-        retire le meeple de la tuile associe a *grid
-*/
-
-void remove_meepleVille(struct Grid *grille,int coul_player , enum places a);
-void remove_meepleVilleEncap(struct Grid *grille,int coul_player , enum meeplePlace origin);
-
-
-
+void finDuJeu(struct Grid *grille, struct list_player *list);
 
 #endif // CARCASSONNE_H

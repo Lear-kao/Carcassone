@@ -42,7 +42,6 @@ int main()
                 else
                 {
                     bot_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
-                    sleep(1);
                 }
                     
                 i++;
@@ -52,6 +51,7 @@ int main()
         // -------------------------------
         // ----Phase 3 : Fin de partie----
         // -------------------------------
+        finDuJeu(leftTopGrid,p_list);
         end_game_points_counter(*p_list);
         // free_Grid(&leftTopGrid);
         gameRuns = 0;

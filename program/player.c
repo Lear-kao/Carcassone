@@ -234,23 +234,3 @@ void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber)
     }
 }
 
-
-
-
-void remove_meeple(struct Grid *grid, struct list_player *p_list)
-/*
-    Arguments:
-        struct Grid *grid : Un pointeur sur un element de la grille
-        struct list_player *p_list : Un pointeur sur une struct list_player
-
-    Description:
-        retire le meeple de la tuile associe a *grid
-*/
-{
-    if(is_meeple_on_tile(grid->tile))
-    {
-        p_list->player[grid->tile->meeple->coulPlayer-1]->nbMeeple+=1;
-        grid->tile->meeple=NULL;
-        grid->tile->meeplePlace=NO_MEEPLE;
-    }
-}
