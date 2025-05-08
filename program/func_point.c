@@ -391,176 +391,51 @@ Description:
             }
             printf("\n");
             give_point(list_meeple,listPlayer,point);
+            removeMeepleAbbaye(abbaye);
         }
     }
 
     switch (justPlaced->tile->middle)
     {
         case VILLE:
-            point = count_point_city(justPlaced,MIDDLE);
-            for (int i = 0; i < nbPlayers; i++)
-            {
-                list_meeple[i] = nbMeepleVille(justPlaced, i+1,MIDDLE);
-            }
-            printf("\n");
-            give_point(list_meeple,listPlayer,point);
-            
-            break;
-        
         case BLASON:
             point = count_point_city(justPlaced,MIDDLE);
-            for (int i = 0; i < nbPlayers; i++)
+            if(point != 0)
             {
-                list_meeple[i] = nbMeepleVille(justPlaced,i+1,MIDDLE);
-            }
-            printf("\n");
-            give_point(list_meeple,listPlayer,point);
-
-            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
-            {
-                point = countPointRoad(justPlaced,RIGHT);
-                for (int i=0; i < nbPlayers; i++)
+                for (int i = 0; i < nbPlayers; i++)
                 {
-                    list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                    list_meeple[i] = nbMeepleVille(justPlaced, i+1,MIDDLE);
                 }
+                printf("\n");
                 give_point(list_meeple,listPlayer,point);
+                removeMeepleVilleStart(justPlaced);
             }
-            
-            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
-            {
-                point = countPointRoad(justPlaced,TOP);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-
-            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
-            {
-                point = countPointRoad(justPlaced,LEFT);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-            
-            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
-            {
-                point = countPointRoad(justPlaced,BOT);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-
             break;
 
         case ABBAYES:
-            //point = count_point_city(justPlaced,4);
             point = isFinishedAbbaye(justPlaced);
-            for (int i = 0; i < nbPlayers; i++)
+            if(point != 0)
             {
-                list_meeple[i] = nbMeepleAbbaye(justPlaced, i+1);
-            }
-            printf("\n");
-            give_point(list_meeple,listPlayer,point);
-
-            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
-            {
-                point = countPointRoad(justPlaced,RIGHT);
-                for (int i=0; i < nbPlayers; i++)
+                for (int i = 0; i < nbPlayers; i++)
                 {
-                    list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                    list_meeple[i] = nbMeepleAbbaye(justPlaced, i+1);
                 }
+                printf("\n");
                 give_point(list_meeple,listPlayer,point);
+                removeMeepleAbbaye(justPlaced);
             }
-            
-            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
-            {
-                point = countPointRoad(justPlaced,TOP);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-
-            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
-            {
-                point = countPointRoad(justPlaced,LEFT);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-            
-            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
-            {
-                point = countPointRoad(justPlaced,BOT);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-
             break;
+
         case ROUTE:
             point = countPointRoad(justPlaced,MIDDLE);
-            for (int i=0; i < nbPlayers; i++)
+            if(point != 0)
             {
-                list_meeple[i] = countMeepleRoad(justPlaced,MIDDLE,i+1);
-            }
-            give_point(list_meeple,listPlayer,point);
-            break;
-        
-        case VILLAGE:
-            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
-            {
-                printf("droite\n");
-                point = countPointRoad(justPlaced,RIGHT);
                 for (int i=0; i < nbPlayers; i++)
                 {
-                    list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                    list_meeple[i] = countMeepleRoad(justPlaced,MIDDLE,i+1);
                 }
                 give_point(list_meeple,listPlayer,point);
-            }
-            
-            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
-            {
-                printf("haut\n");
-                point = countPointRoad(justPlaced,TOP);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-
-            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
-            {
-                printf("gauche\n");
-                point = countPointRoad(justPlaced,LEFT);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-            }
-            
-            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
-            {
-                printf("bas\n");
-                point = countPointRoad(justPlaced,BOT);
-                for (int i=0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
+                removeMeepleRoadStart(justPlaced);
             }
             break;
     }
@@ -605,21 +480,30 @@ Description:
 */
 {
     char point;
-    char list_meeple[nbPlayers];
     switch (justPlaced->tile->right)
     {
         case VILLE:
             if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,RIGHT);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
-            give_point(list_meeple,list,point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
+                give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced);
+            }
             break;
         
         case BLASON:
             if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,RIGHT);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
-            give_point(list_meeple,list,point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
+                give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced);
+            }
             break;
         case ROUTE:
             if(justPlaced->tile->right == middle || middle ==VILLAGE || middle == ABBAYES)break;
@@ -629,7 +513,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
-                
+                removeMeepleRoadStart(justPlaced);
             }
             break;
     }
@@ -638,15 +522,24 @@ Description:
         case VILLE:
             if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,TOP);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
-            give_point(list_meeple,list,point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
+                give_point(list_meeple,list,point);
+            }
             break;
         
         case BLASON:
             if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,TOP);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
-            give_point(list_meeple,list,point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
+                give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced,TOP)
+            }
             break;
         case ROUTE:
             if(justPlaced->tile->top == middle || middle == VILLAGE || middle == ABBAYES)break;
@@ -656,6 +549,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
+                removeMeepleRoadStart(justPlaced);
             }
             break;
     }
@@ -663,16 +557,27 @@ Description:
     {
         case VILLE:
             if(BLASON == middle || VILLE == middle)break;
-            point = count_point_city(justPlaced,LEFT);printf("point =%d\n",point);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,LEFT);
-            give_point(list_meeple,list,point);
+            point = count_point_city(justPlaced,LEFT);
+            printf("point =%d\n",point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,LEFT);
+                give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced,LEFT);
+            }
             break;
         
         case BLASON:
             if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,LEFT);printf("point =%d\n",point);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,LEFT);
-            give_point(list_meeple,list,point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,LEFT);
+                give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced,LEFT);
+            }
             break;
         case ROUTE:
             if(justPlaced->tile->left == middle || middle == VILLAGE || middle == ABBAYES)break;
@@ -682,6 +587,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
+                removeMeepleRoadStart(justPlaced);
             }
             break;
     }
@@ -690,15 +596,25 @@ Description:
         case VILLE:
             if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,BOT);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,BOT);
-            give_point(list_meeple,list,point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,BOT);
+                give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced,BOT);
+            }
             break;
         
         case BLASON:
             if(BLASON == middle || VILLE == middle)break;
             point = count_point_city(justPlaced,BOT);
-            for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,BOT);
-            give_point(list_meeple,list,point);
+            if(point != 0)
+            {
+                char list_meeple[nbPlayers];
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,BOT);
+                give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced,BOT);
+            }
             break;
 
         case ROUTE:
@@ -709,6 +625,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
+                removeMeepleRoadStart(justPlaced);
             }
             break;
     }
@@ -727,5 +644,5 @@ Description:
 */
 {
     finJeu = 1;
-    /* créer une fonction pour parcourir toute la grille et récupérer tout les points restants */
+    pointPlacedTile(temp,list);
 }

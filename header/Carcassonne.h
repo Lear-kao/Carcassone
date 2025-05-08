@@ -602,14 +602,11 @@ void put_meeple_botLV1(struct Grid *grid,struct list_player *p_list, char pnumbe
 /* 
 Fonction pour retirer les  meeples
 */
-void remove_meeple(struct Grid* justPlaced, struct list_player *p_list);
-
 void removeMeepleRoadStart(struct Grid *grille);
 void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin);
 char removeMeepleVilleStart(struct Grid *grille,enum places a);
 void removeMeepleVille( struct Grid *grille, enum meeplePlace origin);
-
-
-
+void removeMeepleAbbaye( struct Grid *grille);
+void remove_meeple(struct Grid *grille);
 
 #endif // CARCASSONNE_H

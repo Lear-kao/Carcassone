@@ -749,7 +749,7 @@ void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin)
 }
 
 
-void nbMeepleAbbaye( struct Grid *grille)
+void removeMeepleAbbaye( struct Grid *grille)
 /* 
 Argument:
     -la grille ou se situe l'abbaye et  le meeple à retirer.
