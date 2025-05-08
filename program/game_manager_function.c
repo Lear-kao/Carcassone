@@ -771,6 +771,14 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
 }
 // Axel ici : Je te laisse commenter le reste ça sera plus simple.
 void enum_to_char(enum types type, int coul)
+/*
+    Arguments:
+        enum types type : le type de structure qu'on considere (ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON)
+        int coul : couleur du joueur
+
+    Description:
+        affiche en fonction du type de structure une partie de la tuile 
+*/
 {
     switch(type){
         case RIEN:
@@ -850,6 +858,17 @@ void enum_to_char(enum types type, int coul)
 }
 
 void show_wplace(int j, int h)
+/*
+    Arguments:
+        int j : 0 , 1 ou 2 , indique si on considere la partie haut , millieu ou basse
+        int h : un nombre
+
+    Description:
+        sert a affiche un endroit on peut poser la tuile
+                ---------
+           Ex:  ----h----
+                ---------
+*/
 {
     if(j == 0 || j == 2)
     {
@@ -864,6 +883,14 @@ void show_wplace(int j, int h)
 }
 
 void choose_w_show(unsigned char y, struct Grid *tab)
+/*
+    Arguments:
+        unsigned char y : 0 , 1 ou 2 , indique si on considere la partie haut , millieu ou basse de la tuile
+        struct Grid *tab: un pointeur sur un element de la grid
+
+    Description:
+        affiche une partie de la tuile
+*/
 {
     switch (y)
     {
@@ -947,10 +974,16 @@ void show_tile(struct Tile *tile)
 }
 
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
-// w_place résultat de where_i_can_place
-// x *largeur
-// y *hauteur
-// tab grille en haut à droite
+/*
+    Arguments:
+        struct Grid *tab : un pointeur sur le coin en haut a gauche de la grille
+        unsigned char x : longueur
+        unsigned char y : hauteur
+        struct Grid **w_place: une liste de pointeur ou on peut poser Une tuile tuile
+
+    Description:
+        Affiche l'entiereté de la grille , avec en plus des indication sur les endroit on peut peut poser la tuile
+*/
 {
     char mrkr = 0;
     struct Grid *temp_x = tab, *temp_y;
