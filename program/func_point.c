@@ -432,7 +432,7 @@ Description:
                 }
                 printf("\n");
                 give_point(list_meeple,listPlayer,point);
-                removeMeepleVilleStart(justPlaced);
+                removeMeepleVilleStart(justPlaced,MIDDLE);
             }
             break;
 
@@ -523,7 +523,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
                 give_point(list_meeple,list,point);
-                removeMeepleVilleStart(justPlaced);
+                removeMeepleVilleStart(justPlaced,RIGHT);
             }
             break;
         
@@ -535,7 +535,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,RIGHT);
                 give_point(list_meeple,list,point);
-                removeMeepleVilleStart(justPlaced);
+                removeMeepleVilleStart(justPlaced,RIGHT);
             }
             break;
         case ROUTE:
@@ -544,7 +544,7 @@ Description:
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = meepleRoad(justPlaced, i);
                 give_point(list_meeple,list,point);
                 removeMeepleRoadStart(justPlaced);
             }
@@ -560,6 +560,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
                 give_point(list_meeple,list,point);
+                removeMeepleVilleStart(justPlaced,TOP);
             }
             break;
         
@@ -571,7 +572,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleVille(justPlaced, i+1,TOP);
                 give_point(list_meeple,list,point);
-                removeMeepleVilleStart(justPlaced,TOP)
+                removeMeepleVilleStart(justPlaced,TOP);
             }
             break;
         case ROUTE:
@@ -580,7 +581,7 @@ Description:
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = meepleRoad(justPlaced, i);
                 give_point(list_meeple,list,point);
                 removeMeepleRoadStart(justPlaced);
             }
@@ -618,7 +619,7 @@ Description:
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = meepleRoad(justPlaced, i);
                 give_point(list_meeple,list,point);
                 removeMeepleRoadStart(justPlaced);
             }
@@ -656,7 +657,7 @@ Description:
             if(point != 0)
             {
                 char list_meeple[nbPlayers];
-                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
+                for (int i = 0; i < nbPlayers; i++) list_meeple[i] = meepleRoad(justPlaced, i);
                 give_point(list_meeple,list,point);
                 removeMeepleRoadStart(justPlaced);
             }
@@ -677,7 +678,7 @@ Description:
 */
 {
     finJeu = 1;
-    struct Grid *temp_x = grille, temp_y;
+    struct Grid *temp_x = grille, *temp_y;
     while(temp_x->bot != NULL)
     {
         temp_y = temp_x;

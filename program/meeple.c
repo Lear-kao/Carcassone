@@ -179,7 +179,6 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace 
             [PPP]
 */
 {
-{
     char cmpt = 0;
     if (grille->marquer == v_marquer) return 0;
     grille->marquer = v_marquer;
@@ -233,9 +232,8 @@ char nbMeepleVille_nocolor(struct Grid *grille,enum places a)
 {
     char res=0;
     grille->marquer = v_marquer;
-    if(is_meeple_on_tile(grille->tile) &&
-       grille->tile->meeplePlace==a &&
-       (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile)))) res+=1;
+    if(is_meeple_on_tile(grille->tile) && grille->tile->meeplePlace==a && (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile)))) 
+       res+=1;
 
     switch(a)
     {
@@ -597,7 +595,6 @@ char meepleRoad_nocolor(struct Grid *grille,enum meeplePlace origin)
         Elle vérifie chaque tuiles route conntecté à celle envoyé,
         et compte le nombre de meeeple sur celui ci
 */
-char meepleRoad_nocolor(struct Grid *grille,enum meeplePlace origin)
 {
     char cmp=0;
     if( grille->marquer == v_marquer) return 0;
@@ -703,7 +700,7 @@ int* where_i_can_put(struct Grid *grid)
 Fonction pour enlever les meeples des structures
 ------------------------------------------------
 */
-char removeMeepleVilleStart(struct Grid *grille,enum places a)
+void removeMeepleVilleStart(struct Grid *grille,enum places a)
 /* 
 Argument:
     -Le bout  de la  grille ou commencer la recherche de meeple.
@@ -760,7 +757,7 @@ Argument:
     }
 
     v_marquer++;
-    return res;
+    return;
 }
 
 void removeMeepleVille( struct Grid *grille, enum meeplePlace origin)
@@ -808,7 +805,7 @@ void removeMeepleVille( struct Grid *grille, enum meeplePlace origin)
             removeMeepleVille(grille->bot,MP_TOP);
         }
     }
-    return void;
+    return;
 }
 
 void removeMeepleRoadStart(struct Grid *grille)
@@ -888,7 +885,7 @@ Description:
 */
 {
     struct Grid *temp = searchAbbaye(grille);
-    if(temp == NULL) return 0;
+    if(temp == NULL) return;
     if(is_meeple_on_tile(temp->tile))
     {
         if (where_is_meeple(ABBAYES,*(temp->tile))) remove_meeple(grille);
@@ -908,6 +905,6 @@ Description:
 {
     grille->tile->meeple->nbMeeple += 1;
     grille->tile->meeple = NULL;
-    grille->tile->meeplePlace = 0;
+    grille->tile->meeplePlace = NO_MEEPLE;
     return;
 }

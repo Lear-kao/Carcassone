@@ -298,6 +298,9 @@ struct Player *init_player(int couleur,char bot); // FAIT theo
         et l'initialise avec nos arguments et nos valeur par defaut (NBMEEPLE_DEFAULT=8)
 */
 
+struct list_player *init_player_list(char nbbot); // Axel
+
+
 char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
 /*
     Player : L'objet Player
@@ -550,14 +553,13 @@ short points_route(struct Grid *grid); // Axel
 
     Les conditions pour que les points soit rajouté aux joueurs sont remplie
     return le nombre de point gagné par ce joueurs. 
-
-    ATTENTION : Que faire si plusieurs joueurs gagne des points ? Comment les différencier ? return une liste de couple joueurs points peut-être ?
 */
+
 short points_ville(struct Grid *grid); // Axel et blason
 short points_abbayes(struct Grid *grid); // Axel
 short points_pre(struct Grid *grid); // Axel
 
-struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist); // Théo A TESTER
+struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist);
 /*
     Arguments :
         grid : La grid originelle de coord (0,0)
@@ -574,7 +576,7 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
         <(optionnel) message pour les développeurs sur les subtilités de la fonction>  
 */
 
-struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur); // Théo TESTER AVEC LE GAMEMANAGER
+struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur); 
 /*
     Arguments :
         tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
@@ -609,7 +611,7 @@ void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteu
         topLeftGrid doit être NULL.
 */
 
-void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
+void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
 /*
     Arguments :
         playerNumber : L'identifiant du joueur dont c'est le tour.
@@ -628,14 +630,6 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
 */
 
 void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
-    playerNumber : Le numéro du joueur
-
-    Cette fonction pop la stack de tile
-    et propose ensuite au joueur de choisir
-    un emplacmement pour poser sa tuile
-    avec la fonction where_i_can_play
-*/
-void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
 /*
     Arguments :
         playerNumber : L'indentifiant du bot dont c'est le tour.
@@ -687,7 +681,7 @@ void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid *
         Affiche l'entiereté de la grille , avec en plus des indication sur les endroit on peut peut poser la tuile
 */
 
-struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur,int *bot_difficulty); // en cour ( Axel )
+struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur); // en cour ( Axel )
 /*
     Arguments :
         list_player : La liste des joueurs.
@@ -1084,14 +1078,14 @@ char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
 */
 
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
-void put_meeple_botLV1(struct Grid *grid,struct list_player *p_list, char pnumber);
+void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber);
 
 /* 
 Fonction pour retirer les  meeples
 */
 void removeMeepleRoadStart(struct Grid *grille);
 void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin);
-char removeMeepleVilleStart(struct Grid *grille,enum places a);
+void removeMeepleVilleStart(struct Grid *grille,enum places a);
 void removeMeepleVille( struct Grid *grille, enum meeplePlace origin);
 void removeMeepleAbbaye( struct Grid *grille);
 void remove_meeple(struct Grid *grille);
