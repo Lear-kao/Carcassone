@@ -598,7 +598,16 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
 char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
 void put_meeple_botLV1(struct Grid *grid,struct list_player *p_list, char pnumber);
+
+/* 
+Fonction pour retirer les  meeples
+*/
 void remove_meeple(struct Grid* justPlaced, struct list_player *p_list);
+
+void removeMeepleRoadStart(struct Grid *grille);
+void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin);
+char removeMeepleVilleStart(struct Grid *grille,enum places a);
+void removeMeepleVille( struct Grid *grille, enum meeplePlace origin);
 
 
 

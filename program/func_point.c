@@ -629,6 +629,7 @@ Description:
                 char list_meeple[nbPlayers];
                 for (int i = 0; i < nbPlayers; i++) list_meeple[i] = nbMeepleRoute(justPlaced, i);
                 give_point(list_meeple,list,point);
+                
             }
             break;
     }

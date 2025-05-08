@@ -41,8 +41,7 @@ int main()
                     player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
                 else
                 {
-                    bot_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
-                    sleep(1);
+                    bot_turnLV1(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
                 }
                     
                 i++;
