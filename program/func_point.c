@@ -4,6 +4,21 @@
 
 char isFinishedAbbaye( struct Grid *grille)
 /* 
+    Arguments:
+        struct Grid *grille: Un pointeur sur l'element de la grid
+    
+    Retour:
+        char point : le nombre de point associé represente par le nombre de tuile pose autour de l'abbaye
+    
+    Description:
+        Compter les points abbaye.
+        La fonction vérifie si l'abaye est complète avec une simple  vérification des tuiles autours.
+        Elle vérifie chaque tuiles autour et  pour  chaques tuiles compte les points, si finJeu est != 0 (la partie est finie)
+        la fonction envoie les points même si elle n'est pas complètement entourée, sinon elle envoie 0 si,l'abbaye n'est
+        pas complètement entourée.
+
+    Note:
+        -il faut verifier si l'element de la grille (la tuile) a bien une abbaye dessus
 Arguments:
     Un pointeur vers  la tuile de la Grille de Jeu ou se trouve l'Abbaye.
 Retour:
@@ -365,6 +380,15 @@ Note:
 }
 
 void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer)
+/*
+    Arguments:
+        struct Grid *justPlaced : Un pointeur sur l'element de la grid qui vient juste d'être placer
+        struct list_player *list : Un pointeur sur une struct list_player
+    
+    Description:
+        Compter les points si une structure est finit , si c'est le cas il faut distribuer 
+        les points au joueur concerner
+*/
 /* 
 Argument:
     Un pointeur vers la dernière tuile  posée.
@@ -445,6 +469,15 @@ Description:
 
 void give_point(char *list_meeple_player, struct list_player *list, char point)
 /* 
+    Arguments:
+        char *list_meeple_player : la liste du nombre de meeple par joueur trouvée dans le parcour de la ville/route/abbaye
+        struct list_player *list : un pointeur sur la liste des joeurs
+        char point : le nombre de point
+
+    Description:
+        Distribue les point au joueur concerne en fonction de la list de meeple trouver
+        (les point sont distribuer au(x) joueur(s) ayant le maximum de meeple dans la zone
+         si il y a egalite entre 2 ou plusieurs joueurs les points sont distribuer a chaqun)
 Arguments:
     La liste  des joueurs à qui il faut donner des points (liste de 0 et  de 1).
     La liste des joueurs.

@@ -47,21 +47,46 @@ struct DLList
 
 struct DLList *DLList_push_end(struct DLList *DLList, struct Grid *grid); //tester valider
 /*
-    DLList : La liste chainé
-    grid : Un pointer sur un espace mémoire ou se trouve grid
+    Argument:
+        DLList: un pointeur sur une liste doublement chaine
+        grid: Un pointer sur un espace mémoire ou se trouve grid
+    
+    Retour:
+        struct DLList *DLList : La liste doublement chainé actualisé
 
-    return : La liste actualisé 
+    Description:
+        ajoute en fin de liste doublement chaine l'element grid
 */
 
 
 void DLList_pop(struct DLList **DLList, struct Grid **gridSlot); // tester valider
 /*
-    DLList : L'élément de la liste chainé à supprimer. Une fois l'élément supprimé le pointeur prend la valeur de l'élément précédent si il existe sinon l'élément suivant sinon NULL
-    gridSlot : Un pointer sur un espace mémoire ou mettre le grid pop
+    Argument:
+        struct DLList **DLList: un pointeur sur un pointeur sur l'element a supprimer
+        struct Grid **gridSlot un pointeur sur un espace mémoire ou mettre la grid
 
-    return : La liste actualisé 
+    Retour:
+        void
+    
+    Description:
+        supprime l'element DLList de la liste doublement chaîné et met l'element dans gridSlot
+    
+    Note:
+        La fonction s'occupe elle même de relier les bout de la liste doublement chaîne la ou l'element a ete supprimer
 */
 
+struct Coord *init_coord(int x, int y);//tester valider
+/*
+    Arguments:
+        int x: entier represantant la coordonnee x
+        int y: entier represantant la coordonnee y
+
+    Retour:
+        struct Coord* C: la struct Coord allouer en initialisé au coordonnée x et y
+
+    Description:
+        Alloue une struct coord et l'initialise avec les coordonnee x et y
+*/
 
 // ----------
 // --Stack--
@@ -75,27 +100,44 @@ struct Stack
 
 struct Stack *stack_push(struct Stack *stack, struct Tile *tile); // FAIT theo
 /*
-    stack : La pile
-    tile : Un pointer sur un espace mémoire ou se trouve une tile à push sur la stack
+    Arguments:
+        struct Stack *stack: Un pointeur sur le premier element de la pile
+        struct Tile *tile: Un pointer sur un espace mémoire ou se trouve une tile à push sur la stack
+    
+    Retour:
+        struct Stack *new_stack: la pile actualisé
 
-    return : La stack actualisé 
+    Description:
+        alloue le nouvelle element new_stack lie sont prochain element au pointeur stack 
+        et retourne new_stack
 */
 // Ne pas oublier de gérer la cas création de stack
 
 struct Stack *stack_pop(struct Stack *stack, struct Tile **tileSlot); // FAIT theo
 /*
-    stack : La pile
-    tileSlot : Un pointer sur un espace mémoire ou mettre la tile pop
-
-    return : La stack actualisé
-
+    Arguments:
+        struct Stack *stack: Un pointeur sur le dernier element de la pile
+        struct Tile **tileSlot: Un pointeur sur un espace mémoire ou mettre la tile pop
+    
+    Retour:
+        struct Stack *tmp_stack: la pile actualisé
+    
+    Description:
+        met l'element de la pile sur l'espace memoire tileSlot puis stock le pointeur sur 
+        l'element suivant de la pile dans la variable tmpStack puis libere l'espace memoire
+        de l'element de la pile et retourne tmpStack
 */
 
 char is_stack_not_empty(struct Stack *stack); // FAIT
 /*
-    stack : La pile
+    Arguments:
+        struct Stack *stack: Un pointeur sur la pile
 
-    return : 0 si la stack est vide, 1 sinon
+    Retour:
+        char : 0 si stack est a NULL 1 sinon
+
+    Description:
+        teste si la pile est vide
 */
 
 
@@ -125,18 +167,25 @@ struct Grid
 
 
 struct Grid *init_grid(struct Tile *tile, struct Coord *coord, struct Grid *right, struct Grid *left, struct Grid *bot, struct Grid *top);//tester mais peut être a approfondir
-
-struct Coord *init_coord(int x, int y);//tester valider
 /*
-    x: coordonnée x
-    y: coordonnee y
+    Arguements:
+        Struct Tile *tile: Un pointeur sur une struct Tile
+        Struct Coord *coord: Un pointeur sur une struct Coord
+        Struct Grid *right: Un pointeur sur une struct Grid qui et censé se trouver a "droite" de la nouvelle grid
+        Struct Grid *left: Un pointeur sur une struct Grid qui et censé se trouver a "gauche" de la nouvelle grid
+        Struct Grid *bot: Un pointeur sur une struct Grid qui et censé se trouver en "bas" de la nouvelle grid
+        Struct Grid *top: Un pointeur sur une struct Grid qui et censé se trouver en "haut" de la nouvelle grid
+    
+    Retour:
+        struct Grid *new_grid: Un pointeur sur le nouvelle element de la grid
+    
+    Description:
+        alloue new_grid puis initialise ces valeur ainsi que ses voisin (les 4 paramametre struct Grid *) et retourne new_grid
 
-    Cette fonction alloue une struct coord et l'initialise
-    avec les coordonnée x et y
+    Note:
+        il faut faire attention a ce que les voisin repointe bien vers new_grid nouvellement creer
 
-    return: un pointeur vers un struct Coord
 */
-
 
 
 // ------------
@@ -163,25 +212,47 @@ struct Tile
 // ----Tiles fonctions----
 
 struct Tile *init_tile(enum types right, enum types top, enum types left, enum types bot, enum types middle); // fait Théo
-    /*
-    tile : Un pointer sur Tile
-    right, left ... middle : les différent type des bordes de la tuile
-    */
+/*
+    Arguments
+        enum types right : le type de la tuile sur le morceau a droite de la tuile
+        enum types top : le type de la tuile sur le morceau en haut de la tuile
+        enum types left : le type de la tuile sur le morceau a gauce de la tuile
+        enum types bot : le type de la tuile sur le morceau en bas de la tuile
+        enum types middle : le type de la tuile sur le morceau au milleu de la tuile
+
+    Retour:
+        struct Tile *tile : Un pointeur sur une tuile nouvellement allouer
+
+    Description:
+        Alloue puis initialise la tuile avec nos arguments
+        (evidemment par defaut il n'y a pas de meeple au debut)
+        puis retourne le pointeur sur la tuile nouvellement allouer
+*/
 
 char is_meeple_on_tile(struct Tile *tile); // FAIT theo
 /*
-    tile : Une tile
+    Arguments:
+        struct Tile *tile : Un pointeur sur une tuile
+    
+    Retour:
+        char 0 ou 1
 
-    return :
-    - 0 si aucun Meeple n'est sur la tile
-    - 1 si un Meeple est sur la tile
+    Description:
+        - 0 si aucun Meeple n'est sur la tile
+        - 1 si un Meeple est sur la tile
 */
 
 struct Tile *turn_tile(struct Tile *tile); // tester valider
 /*
-    tile : Une tuile
+    Arguments:
+        struct Tile *tile : Un pointeur sur une tuile
 
-    return : Une tuile malloc tourné de 90° dans le sens trigo.
+    Retour:
+        struct Tile *tile : Un pointeur sur une tuile
+
+    Description:
+        effectue une rotation de 90° dans le sens trigonometrique de la tuile 
+        (la fonction genere une nouvelle tuile avec la rotation appliqué et la retourne)
 */
 
 // ---------------
@@ -209,13 +280,22 @@ struct list_player
     */
     struct Player **player;
     char nbbot;
-}; // penser a la fin a l'optimiser et l'enlever 
+};
 
 // ----PLayers fonctions----
 
 struct Player *init_player(int couleur,char bot); // FAIT theo
 /*
-    Innitialise l'objet player
+    Arguments:
+        int couleur : la couleur du joueur
+        char bot : (0 = vrai joueur , 1 = un bot)
+
+    Retour:
+        struct Player *player: Un pointeur sur une struct Player nouvellement allouer
+
+    Description:
+        allouer et creer un nouveau jouer 
+        et l'initialise avec nos arguments et nos valeur par defaut (NBMEEPLE_DEFAULT=8)
 */
 
 char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
@@ -233,102 +313,172 @@ char is_meeple_on_player(struct Player *player); // FAIT Theo/Axel
 
 void bienvenue();
 /*
-    fonction qui affiche l'ensemble des règle de carcasonne et les texte de bienvenue
+    Description:
+        affichage de depart
 */
 
 char token_to_enum_types(char *token, char *tokenArray[]); // theo si qq veut faire un mod Carcasonne avec de nouvelles tuiles il doit modifier cette fonction
 /*
-    La fonction effectue une bijection entre l'enum types et tokenArray
-    
-    token : la chaine de charactère à annalyser
-    tokenArray : La liste des différents tokens possible
+    Arguments :
+        token : La chaine de charactère à annalyser.
+        tokenArray : La liste des token correspondant 1 à 1 aux éléments de la macro types
 
-    return: 
-    Le type de la case associé au token.
+    Retour :
+        char find : La valeur représentant le type du morceau de la tuile.
+
+    Description :
+        La fonction effectue une bijection entre l'enum types et tokenArray
+
 */
 
-struct Tile **create_tile_array(char *csvTile, char *tokenArray[], char maxTokenSize); // fait Theo
+struct Tile **create_tile_array(char *csvTile, char *tokenArray[]); // Théo
 /*
-    Crée la liste des tuiles à partir d'un fichier csv.
+    Arguments :
+        csvTile : Le nom du fichier .csv à ouvrir (utiliser la macro CSV_TILE).
+        tokenArray : La liste des token correspondant 1 à 1 aux éléments de la macro types
 
-    csvTile : Le nom du fichier .csv à ouvrir (utiliser la macro CSV_TILE).
-    tokenArray : La liste des token correspondant 1 à 1 aux éléments de la macro types 
+    Retour :
+        struct Tile **tileArray : Une tileArray contenant les objets Tile innitialisé
 
-    return : 
-    Une tileArray contenant les objets Tile innitialisé
-
-    Attention ne pas allouez la mémoire pour struct tile **tileArray
-*/
-
-
-struct list_player *init_player_list(char nbbot); // Fait (Axel) 
-/*
-    Crée une liste de pointeurs qui pointe sur un Player,
-    un pointer sur NULL est ajouté à la fin pour faciliter
-    les iterations sur la liste (condition d'arrêt)
+    Description :
+        Crée la liste des tuiles à partir d'un fichier csv.
 */
 
 void shuffle(struct Tile **tileArray); // Valentin c'est peut-être mieux si size est une macro
-/*S
-    tileArray : Une liste de pointeurs sur Tile.
+/*
+    Arguments :
+        tileArray : Une liste de pointeurs sur Tile.
 
-    Mélange les tuiles
+    Retour :
+        void
+
+    Description :
+        Mélange une liste de struct Tile**.
 */
 
 void array_to_stack(struct Tile **tileArray, struct Stack **stack); // Fait
 /*
-    Prend en entrée une array et return une pile avec les éléments de l'array dedans. ya pas de return !!!
+    Arguments :
+        tileArray : Une liste de pointeur sur des struct Tile
+        stack : Une liste de pointeur sur des struct stack
+
+    Retour :
+        void
+
+    Description :
+        La fonction transforme une liste de Tile en pile de Tile.
+
+    Note :
+        On considère que l'utilisateur donne le parametre stack non allouer.    
 */
 
 void reset_points(struct Player *player); //Fait
 /*
-    Réinitialise les points du joueur
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur:
+    
+    Description:
+        reinitialiser le nombre de points du joueur a 0
 */
 
 void reset_meeples(struct Player *player);//Fait
 /*
-    Réinitialise le compteur de Meeple du joueur
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur:
+    
+    Description:
+        reinitialiser le nombre de meeple du joueur a la valeur par defaut (NBMEEPLE_DEFAULT=8)
 */
 
 struct Tile *rot_tile(struct Tile *tile); //Fait
 /*
-    Tourne la tuile de 90° dans le sens trigo.
+    Arguments :
+        tile : Une struct Tile bien alloué
+
+    Retour :
+        tile : La struct Tile a était modifié dans la fonction mais elle quand même retourné à la fin.
+
+    Description :
+        Tourne la tuile de 90° dans le sens trigo si elle existe.    
 */
 
 void enum_to_char(enum types type, int coul);
 /*
-    Convertie un enum en char affichable (V pour ville et v pour village).
+    Arguments:
+        enum types type : le type de structure qu'on considere (ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON)
+        int coul : couleur du joueur
+
+    Description:
+        affiche en fonction du type de structure une partie de la tuile 
+*/
+
+void show_wplace(int j, int h);
+/*
+    Arguments:
+        int j : 0 , 1 ou 2 , indique si on considere la partie haut , millieu ou basse
+        int h : un nombre
+
+    Description:
+        sert a affiche un endroit on peut poser la tuile
+                ---------
+           Ex:  ----h----
+                ---------
+*/
+
+void choose_w_show(unsigned char y, struct Grid *tab);
+/*
+    Arguments:
+        unsigned char y : 0 , 1 ou 2 , indique si on considere la partie haut , millieu ou basse de la tuile
+        struct Grid *tab: un pointeur sur un element de la grid
+
+    Description:
+        affiche une partie de la tuile
 */
 
 void show_tile(struct Tile *tile); // A TESTER theo
 /*
-    Affiche une tile.
+    Arguments:
+        struct Tile *tile
+    
+    Description:
+        Affiche une tuile individuelle
 */
 
 char is_a_potential_tile(struct Tile *tile); // Théo FAIT
 /*
-    Return 0 si ce n'est pas une tuile potentielle
-    Return 1 si c'est une tuile potentielle
+    Arguments :
+        tile : Une tuile à vérifier.
 
-    Information : Une tuile potentielle est une tuile parciellement remplie de enum qui sert pour la fonction where_i_can_place.
+    Retour :
+        0 si ce n'est pas une tuile potentielle
+        1 si c'est une tuile potentielle
+
+    Description :
+        Permet de déterminer si il s'agit d'une tuile pottentielle.
+
+    Note :
+        Une tuile potentielle est une tuile parciellement remplie de enum qui sert pour la fonction where_i_can_place.
 */
 
 void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord coord); // Théo A TESTER
 /*
-    origineGrid : La case en haut à gauche de la Grid.
-    largeur : La largeur max de la grille.
-    hauteur : La hauteur max de la grille.
-    coord : La coordonnée qui dépasse de la grille
 
-    Attention il faut appeler cette fonction avant qu'il exisite une tuile dont les coords dépassent
-    xMax, yMax, xMin ou yMin.
+    Arguments :
+        leftTopGrid : La case en haut à gauche de la Grid, elle mise à jour automatiquement par la fonction.
+        largeur : La largeur max de la grille.
+        hauteur : La hauteur max de la grille.
+        coord : La pair de coordonnée qui dépasse de la grille (x + - 1 ou y + - 1 par rapport à la limite (le ou est exclusif dans cette phrase)).
 
-    Attention il est impossible d'agrandire à partir d'un angle, exemple, hauteur == 1, largeur == 1 
-    origineGrid->coord == (0,0) alors si coord == (1,1) la fonction ne fonctionne pas mais si 
-    coord == (1,0) alors elle fonctionne.
+    Retour :
+        void
 
-    L'objectif de cette fonction est de s'assurer la présence de Grid innitialiser à NULL de sorte à 
-    ce que le plateau de jeu soit un rectangle afin de simplifier le parcours à la fonction d'affichage.
+    Description :
+        Agrandie la grille en innitialisant et reliant des nouveaux objets Grid de manère à rendre la grille renctangulaire.
+
+    Note :
+        Attention il est impossible d'agrandire à partir d'un angle, exemple, hauteur == 1, largeur == 1 
+        *(leftTopGrid)->coord == (0,0) alors si coord == (1,1) la fonction ne fonctionne pas mais si 
+        coord == (1,0) alors elle fonctionne.
 */
 
 void update_grid_size(struct Grid *origineGrid, int *largeur, int *hauteur, struct Coord coord); // Théo A TESTER
@@ -351,23 +501,32 @@ void update_grid_size(struct Grid *origineGrid, int *largeur, int *hauteur, stru
 
 void update_potential_tile(struct Grid *trueGrid, enum places place); // Théo A TESTER
 /*
-    trueGrid : La vraie tuile qui vient d'être posé.
-    potentialGrid : Une grid autours d'une tuile qui vient d'être posé. Grid doit être innitialisé au minimum à NULL et doit pointer sur une Tile innitialisé au minimum à NULL.
-    place : La position de la tuile potentielle par rapport à la tuile qui a était posé.
+    Arguments :
+        trueGrid : La tuile qui vient d'être posé.    
+        place : La position de la tuile potentielle par rapport à la tuile qui a était posé.
+    Retour :
+        <nom et type du retour> : <description de ce que retourne la fonction>
 
-    Cette fonction a pour but d'actualiser une des tuiles pottentielles qui se trouve autours d'une tuile qui vient d'être posé.
+    Description :
+        Met à jour les tuiles pottentiels adjacente à la tuile qui vient d'être posé.
+
+    Note :
+        Grid doit être innitialisé au minimum à NULL et doit pointer sur une Tile innitialisé au minimum à NULL.
 */
 
 struct Grid *find(struct Grid *grid, struct Coord coord); // Théo FAIT
 /*
-    grid : La grid en haut à gauche.
-    coord : Les coordonnées de la case recherchée.
+    Arguments :
+        leftTopGrid : La grid en haut à gauche.
+        coord : Les coordonnées de la case recherchée.
 
-    return : Un pointeur sur la grille de coordonnées coord
+    Retour :
+        Grid * : Un pointeur sur la grille de coordonnées coord.
+    Description :
+        La fonction chercher la tuile à l'emplacement coord et renvoie le pointeur correspondant à cet emplacement.
 
-    Erreur : Si la fonction return un pointeur sur NULL cela
-    signifie que la case rechercher n'est pas innitialisé 
-    (pas de le scope largeur hauteur de case innitialisé).
+    Note :
+        Si la fonction return un pointeur sur NULL cela signifie que la case rechercher n'est pas innitialisé (pas dans le scope largeur hauteur de case innitialisé).
 */
 
 struct Grid *first_tile(struct Grid *grid, int *hauteur, int *largeur, struct DLList *dllist); // Théo A TESTER
@@ -400,37 +559,75 @@ short points_pre(struct Grid *grid); // Axel
 
 struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DLList **dllist); // Théo A TESTER
 /*
-    Place la première tuile et actualise la grille en conséquence.
-    grid : La grid originelle de coord (0,0)
-    largeur : La largeur max.
-    hauteur : La hauteur max.
+    Arguments :
+        grid : La grid originelle de coord (0,0)
+        hauteur : La hauteur max.
+        largeur : La largeur max.
 
-    Return value : L'élément le plus en haut à gauche de la grid.
+    Retour :
+        struct Grid *grid : L'élément le plus en haut à gauche de la grid.
+
+    Description :
+        Place la première tuile et actualise la grille en conséquence.
+
+    Note :
+        <(optionnel) message pour les développeurs sur les subtilités de la fonction>  
 */
 
 struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct Tile *tile, struct DLList **dllist, int *hauteur, int *largeur); // Théo TESTER AVEC LE GAMEMANAGER
 /*
-    tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
+    Arguments :
+        tile : Un pointeur sur la tile précedement pioché par le joueur à placer.
+        topLeftgrid : Un pointeur sur la grid la plus en haut à gauche qui s'actualise.
+        coord : Les coordonnées de l'endroit ou placer la tuile sur *topLeftGrid.
+        DLList : Un pointeur sur le première élément de la liste doublement chainé contenant les tuiles potentielles
+        Hauteur : La hauteur max de la grille, soit la hauteur de la plus grande colone.
+        Largeur : La largeur maximale de la grille, soit la longeur de la plus grande ligne.
 
-    grid : Un pointeur sur la grid originelle TOUJOURS EN HAUT A GAUCHE (NULL si elle n'existe pas encore).
+    Retour :
+        struct Grid *topLeftGrid : La tuile en hautla plus en haut à gauche sur la grille.
 
-    coord : Les coordonnées de l'endroit ou placer la tuile sur *grid.
-
-    DLList : Un pointeur sur le première élément de la liste doublement chainé contenant les tuiles potentielles
-
-    Largeur : La largeur maximale de la grille, soit la longeur de la plus grande ligne.
-
-    Hauteur : La hauteur max de la grille, soit la hauteur de la plus grande colone.
-
-    Place la tuile à l'emplacement indiqué, actualise la grille de taille
-    variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions
+    Description :
+        Place la tuile à l'emplacement indiqué, actualise la grille de taille variable et met à jour la liste doublement chaîné les tuile potentiels pour les autres fonctions 
 */
 
 void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteur, int *largeur);
+/*
+    Arguments :
+        topLeftGrid : La tuile la plus en haut à gauche.
+        dllist : La liste doublement chaîné des tuiles potentiels
+        hauteur : La hauteur de la grille
+        largeur : La largeur de la grille
 
+    Retour :
+        <nom et type du retour> : <description de ce que retourne la fonction>
+
+    Description :
+        <Pose la première tuile et innitialise ainsi le plateau.
+
+    Note :
+        topLeftGrid doit être NULL.
+*/
 
 void player_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer); // A FAIRE
 /*
+    Arguments :
+        playerNumber : L'identifiant du joueur dont c'est le tour.
+        p_list : Axel ici
+        leftTopGrid : La tuile la plus en haut à gauche.
+        dllist : La liste doublement chaîné des tuiles pottentiels (pour where_i_can_play).
+        hauteur : La heuteur de la grille.
+        largeur : La largeur de la grille.
+        listPlayer : La liste des joueurs dans la partie.
+
+    Retour :
+        void
+
+    Description :
+        Cette fonction gère la tout le tour d'un joueur.
+*/
+
+void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
     playerNumber : Le numéro du joueur
 
     Cette fonction pop la stack de tile
@@ -440,24 +637,36 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
 */
 void bot_turnLV1(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer);
 /*
-    playerNumber : Le numéro du joueur
+    Arguments :
+        playerNumber : L'indentifiant du bot dont c'est le tour.
+        p_list : Axel ici
+        pioche : La pioche (stack).
+        leftTopGrid : Un pointeur sur la tuile la plus en haut à gauche de la grille.
+        dllist : La liste doublement chaîné des tuiles pottentiels (pour where_i_can_play).
+        hauteur : La hauteur de la grille.
+        largeur : La largeur de la grille.
+        listPlayer : La liste des joueurs.
 
-    Cette fonction pop la stack de tile
-    et propose ensuite au joueur de choisir
-    un emplacmement pour poser sa tuile
-    avec la fonction where_i_can_play
+    Retour :
+        void
 
-    premiere fonction de tour automatique pour les bot
-    il n'a aucune intelligence et ne fais que prendre le premier endroit disponible ou poser la tuile piocher
+    Description :
+        Cette fonction fait jouer un bot.
+    Note :
+        Copie de player_turn modifier pour que le bot joue tout seul.
 */
 
 struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist); // Théo à faire
 /*
-    tile : La tile précedement pioché par le joueur
+    Arguments :
+        tile : La tile précedement pioché par le joueur.
+        dllist : Une liste doublement chainé contenant les tuiles potentiels pour cette fonction.
 
-    dllist : Une liste doublement chainé contenant les tuiles potentiels pour cette fonction.
+    Retour :
+        La liste malloc des endroit ou il est possible de jouer (position tuile fixe).
 
-    return : La liste malloc des endroit ou il est possible de jouer.
+    Description :
+        Cette fonction returne la liste de tout les pointeurs sur Grid qui valide les conditions nécessaire à la posée d'une tuile.
 */
 
 char is_possible_tile(struct Tile *tile, struct DLList **dllist);
@@ -468,23 +677,43 @@ char is_possible_tile(struct Tile *tile, struct DLList **dllist);
 
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place);
 /*
-    Affiche la grille du jeu en ascii art en minimisant l'espace occupé 
+    Arguments:
+        struct Grid *tab : un pointeur sur le coin en haut a gauche de la grille
+        unsigned char x : longueur
+        unsigned char y : hauteur
+        struct Grid **w_place: une liste de pointeur ou on peut poser Une tuile tuile
+
+    Description:
+        Affiche l'entiereté de la grille , avec en plus des indication sur les endroit on peut peut poser la tuile
 */
 
 struct Stack *start_game(struct list_player **list_player, struct Grid **grid, struct DLList **dllist, int *hauteur, int *largeur,int *bot_difficulty); // en cour ( Axel )
 /*
-    Effet :
-    - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
-    - Réinitialise les points
-    - Réinitialise les Meeples 
-    - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
-    - Réinitialise le turn tracker (le joueur 1 commence)
-    !!! a voir si il faut pas passer la  liste de  struct  tile  en paramètre
+    Arguments :
+        list_player : La liste des joueurs.
+        grid : Un pointeur sur un pointeur grid.
+        llist : Un pointeur sur une liste doublement chaîné.
+        hauteur : La largeur de la grille.
+        largeur : La largeur de la grille.
+
+    Retour :
+        Stack *stack : Retourne la pioche.
+
+    Description :
+        - Réinitialise le plateau (une seule tuile au centre) (free toute les les tiles sinon par de bouton rejoué et il faut fermer et ouvrir le jeu)
+        - Réinitialise les points
+        - Réinitialise les Meeples
+        - écrase ou crée la liste des tuiles, les mélanges puis crée une pile
+        - Réinitialise le turn tracker (le joueur 1 commence)
 */
 
 void free_Grid( struct Grid **grid); // fait (Axel)
 /* 
-prend en paramètre une struct grid initialisée et la free pour être réutilisée
+    Arguments:
+        struct Grid **grid : Un pointeur d'un pointeur sur l'element en haut a gauche de la grille
+
+    Description:
+        libere l'espace memoire occupé par la grille
 */
 
 void *show_point_and_nbmeeple(struct list_player list);
@@ -512,38 +741,114 @@ Description:
 
 char isFinishedCity( struct Grid *grille, char *unfinished ); //tester (avec count_point_city)
 /* 
-Compter les points villes
-Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
-tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
-On entre en  paramètre une grille, un char idiquant si on compte les points de fin de jeu ou non, 
-    un charactère servant de marquer pour savoir si la ville est complète ou non et un charadctère 
-    pour connaitre la valeur du marquer (-1 ou 1)
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        char *unfinished : un pointeur sur un char (represantant si une ville est fermer ou non)
+    
+    Retour:
+        char point : le nombre de point
+    
+    Description:
+        Compter les points villes
+        Elle vérifie chaque tuiles ville conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
+        tuiles villes) la fonction renvoie les points si finJeu == 0 et la  ville est complète ou si finJeu == 1.
 */
 
 char isFinishedRoad(struct Grid *grille, char *unfinished); //tester (avec countPointRoad)
-/* vérifie la completion d'une ville et sa valeur en terme de points */
-char countPointRoad(struct Grid *grille,enum places start); //tester
 /* 
-A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
-Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+    Arguments:
+        struct Grid *grille : Un pointeur sur l'element de la grid
+        char *unfinished : un pointeur sur un char (representant si une route est fermer ou non)
+
+    Retour:
+        char point : le nombre de point
+
+    Description:
+        Compter les points d'une route
+        Elle vérifie chaque tuiles route conntecté à celle envoyé, si chacune de celles-ci sont complètes (on ne peut plus ajouter de 
+        tuiles route) la fonction renvoie les points si finJeu == 0 et la  route est complète ou si finJeu == 1.
+*/
+
+char countPointRoad(struct Grid *grille,enum places start); //tester
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la Grid
+        enum places start : une direction
+    
+    Retour:
+        char point : le nombre de point
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedRoad()'
+        Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) where = [0:4]
 */
 
 char count_point_city(struct Grid *grille, enum places a); //tester
-/* 
-A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
-Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+/*
+    Arguments:
+        struct Grid *grille: Un pointeur sur un element de la grid
+        enum places a: une direction
+    
+    Retour:
+        char point : le nombre de point
+    
+    Description:
+        elle se charge d'un cas particulier d'appel de grille avant d'appeler 'isFinishedCity()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) a = [0:4]
+    
+    Note:
+        cette fonction est a appeler en premier
 */
 
 void pointPlacedTile(struct Grid *justPlaced, struct list_player *listPlayer);
-/* premier tour pour compter si une structure est finie et si c'est le cas distribuer les points aux joueurs concernés */
+/*
+    Arguments:
+        struct Grid *justPlaced : Un pointeur sur l'element de la grid qui vient juste d'être placer
+        struct list_player *list : Un pointeur sur une struct list_player
+    
+    Description:
+        Compter les points si une structure est finit , si c'est le cas il faut distribuer 
+        les points au joueur concerner
+*/
+
 void give_point(char *list_meeple_player, struct list_player *list, char point);//tester
-/* distribue les points aux différents joueurs */
+/* 
+    Arguments:
+        char *list_meeple_player : la liste du nombre de meeple par joueur trouvée dans le parcour de la ville/route/abbaye
+        struct list_player *list : un pointeur sur la liste des joeurs
+        char point : le nombre de point
+
+    Description:
+        Distribue les point au joueur concerne en fonction de la list de meeple trouver
+        (les point sont distribuer au(x) joueur(s) ayant le maximum de meeple dans la zone
+         si il y a egalite entre 2 ou plusieurs joueurs les points sont distribuer a chaqun)
+*/
+
 void secondary_verification(struct Grid *justPlaced, struct list_player *list, enum types middle);
-/* compte les points après la pose d'un tuile pour les  structures en dehors de celle du millieu */
+/*
+    Arguments:
+        struct Grid *justPlaced : Un pointeur sur l'element de la grid qui vient juste d'être placer
+        struct list_player *list : Un pointeur sur une struct list_player
+        enum types middles : le type du millieu de la tuile dans justPlaced
+
+    Description:
+        effectue des verification secondaire dans la distribution des points
+
+*/
 void *end_game_points_counter( struct list_player list ); // à tester (axel)
 /* affiche les points en fin de partie */
+
 int max(char *list);//tester
-/* calcule le maximum d'un tableau de charactère */
+/* 
+    Arguments:
+        char *list : une liste de nombre
+
+    Retour:
+        int max : le nombre maximum de la liste
+
+    Description:
+        cherche le maximum de la liste
+*/
 
 /* 
 --------------------------------------
@@ -554,48 +859,230 @@ int max(char *list);//tester
 */
 
 char nbMeepleVille( struct Grid *grille,  int coul_player , enum places a); //tester
-/* compte le nombre de meeple dans une ville d'une couleur précise */
+/*
+    struct Grid *grille : Un pointeur sur un element de la grid
+    int coul_player : la couleur du joueur
+    enum places a : une direction
+
+    Retour:
+        char res : le nombre de meeple dans la ville
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'nbMeepleVilleEncap()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 
 char nbMeepleVilleEncap(struct Grid *grille, int coul_player, enum meeplePlace origin); //tester
-/* 
-    on appel cette fonction pour appeler nbMeepleVille et pouvoir 
-    incrementer v_marquer
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        int coul_player : la couleur du joueur
+        enum meeplePlace origin : un endroit sur la tuile
+
+    Retour:
+        char cmpt : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une ville
+        Elle vérifie chaque tuiles ville conntecté à celle envoyé
+        et compte le nombre de meeple d'une couleur sur celui ci
+
+    Note:
+        meeplePlace origin est pour un cas particulier ou il y a 2 ville non connecteur sur une tuile 
+        ex: [PPP]  ici si on vient de la gauche on ne veut pas verifier si il y a un meeple
+            [VPV]  sur la ville a droite
+            [PPP]
 */
 
 char nbMeepleVille_nocolor( struct Grid *grille,enum places a); //tester
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        enum places a : une direction
+
+    Retour:
+        char res : le nombre de meeple dans la ville
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'nbMeepleVille_nocolorEncap()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 
 char nbMeepleVille_nocolorEncap(struct Grid *grille,enum meeplePlace origin); //tester
-/* 
-    Parametre:
-        grille: la grille a tester
-        where: ou chercher le meeple (parametre de recursion)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        enum meeplePlace origin : un endroit sur la tuile
 
-    on appel cette fonction pour appeler nbMeepleVille_nocolor et pouvoir 
-    incrementer v_marquer
+    Retour:
+        char cmpt : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une ville
+        Elle vérifie chaque tuiles ville conntecté à celle envoyé
+        et compte le nombre de meeple sur celui ci
+
+    Note:
+        meeplePlace origin est pour un cas particulier ou il y a 2 ville non connecteur sur une tuile 
+        ex: [PPP]  ici si on vient de la gauche on ne veut pas verifier si il y a un meeple
+            [VPV]  sur la ville a droite
+            [PPP]
 */
 
 char nbMeepleAbbaye( struct Grid *grille, int i); //tester
-/* vérifie si un meeple d'une couleur précise est présent dans l'abbaye */
+/* 
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grille
+        int color : la couleur du joueur
+
+    Retour:
+        char 0 ou 1
+
+    Description:
+        si c'est une abbaye ou si il y a une abbaye autour de *grille
+        retourne le nombre de meeple d'une couleur d'une abbaye
+        (par definition une abbaye ne peut qu'avoir un meeple)
+*/
+
 char nbMeepleAbbaye_nocolor(struct Grid *grille);//tester
-/* pareil mais sans la couleur du meeple */
+/* 
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grille
+
+    Retour:
+        char 0 ou 1
+
+    Description:
+        si c'est une abbaye ou si il y a une abbaye autour de *grille
+        retourne le nombre de meeple d'une abbaye
+        (par definition une abbaye ne peut qu'avoir un meeple)
+*/
 
 char where_is_meeple(  int type, struct Tile tile);//tester 
-/* vérifie si le meeple posée estbien sur le type  de structure (ABBAYE/VILLE/VILLAGE/ROUTE) recherché */
+/*
+    Arguments:
+        int type : le type de structure qu'on cherche (ABBAYE/VILLE/VILLAGE/ROUTE)
+        struct Tile tile : une tuile
+    
+    Retour: 
+        char 0 ou 1
+
+    Description:
+        vérifie si le meeple posée est bien sur le type  de structure (ABBAYE/VILLE/VILLAGE/ROUTE) recherché
+*/
 
 char what_color_is_meeple(int color, struct Tile tile);//tester
-/* vérifie si le meeple posée sur la  tuile est bien de la bonne couleur */
+/*
+    Arguments:
+        int color : la couleur du joueur
+        struct Tile *tile : une tuile
+
+    Retour:
+        char 0 ou 1
+
+    Description:
+        vérifie si le meeple posée sur la  tuile est bien de la bonne couleur
+*/
+
 struct Grid* searchAbbaye(struct Grid* grille); //tester (normalement)
-/* cherche et renvoie la grille d'une tuile abbaye si celle-ce est présente autour de la case en entrée et renvoie NULL sinon */
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+
+    Retour:
+        struct Grid * : une grid ou il y a une abbaye (ou NULL)
+
+    Description:
+        cherche dans les 8 tuile autour de grid si il y a une abbaye si oui la retourne , sinon retourne NULL
+
+    Note:
+        si struct Grid *grille est deja abbayes la fonction la retourne evidemment directement
+*/
 
 char searchMeeple(struct Tile tile ,int where);
-/*verifie si il y a un meeple a l'endroit souhaiter*/
+/*
+    Arguments:
+        struct Tile tile: une tuile
+        int where: l'endroit ou on veut regarder
+
+    Retour:
+        char : 0 ou 1
+    
+    Description:
+        regarde si il y a un meeple a l'endroit souhaité
+*/
 
 char countMeepleRoad(struct Grid *grille, enum places start, int color);//tester
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la Grid
+        enum places start : une direction
+        int color : la couleur du joueur
+    
+    Retour:
+        char nbmeeple : le nombre de meeple d'une couleur
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'meepleRoad()'
+        Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) start = [0:4]
+*/
+
 char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
+/* 
+    Arguments:
+        struct Grid *grille : Un pointeur sur l'element de la grid
+        int color : la couleur du joueur
+
+    Retour:
+        char cmp : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une couleur d'une route
+        Elle vérifie chaque tuiles route conntecté à celle envoyé,
+        et compte le nombre de meeeple sur celui ci
+*/
 
 int* where_i_can_put(struct Grid *grid);
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grid
+
+    Retour:
+        int *tab : un tableau de 5 entier allouer
+
+    Description:
+        appelle les differente fonction de comptage de meeple (sans couleur) 
+        et verifier si on peut poser un meeple sur la tuile associé a *grid
+*/
+
 char countMeepleRoad_nocolor(struct Grid *grille, enum places start);
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la Grid
+        enum places start : une direction
+    
+    Retour:
+        char nbmeeple : le nombre de meeple d'une couleur
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'meepleRoad_nocolor()'
+        Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) start = [0:4]
+*/
+
 char meepleRoad_nocolor(struct Grid *grille ,enum meeplePlace origin);
+/* 
+    Arguments:
+        struct Grid *grille : Un pointeur sur l'element de la grid
+
+    Retour:
+        char cmp : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une route
+        Elle vérifie chaque tuiles route conntecté à celle envoyé,
+        et compte le nombre de meeeple sur celui ci
+*/
+
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber);
 void put_meeple_botLV1(struct Grid *grid,struct list_player *p_list, char pnumber);
 

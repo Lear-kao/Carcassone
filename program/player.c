@@ -5,6 +5,18 @@
 // ---------------
 
 struct Player *init_player(int couleur,char bot)
+/*
+    Arguments:
+        int couleur : la couleur du joueur
+        char bot : (0 = vrai joueur , 1 = un bot)
+
+    Retour:
+        struct Player *player: Un pointeur sur une struct Player nouvellement allouer
+
+    Description:
+        allouer et creer un nouveau jouer 
+        et l'initialise avec nos arguments et nos valeur par defaut (NBMEEPLE_DEFAULT=8)
+*/
 {
     /*
         Innitialise l'objet player
@@ -20,11 +32,14 @@ struct Player *init_player(int couleur,char bot)
 
 char is_meeple_on_player(struct Player *player)
 /*
-    Player : L'objet Player
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur
+    
+    Retour:
+        char : le nombre de meeple sur *Player
 
-    return :
-    - 0 si le joueur n'a aucun Meeple
-    - 1 si il reste au moins un Meeple au Joueur
+    Description:
+        retourne le nombre de meeple sur un joueur
 */
 {
     printf("vraiment\n");
@@ -33,10 +48,17 @@ char is_meeple_on_player(struct Player *player)
 
 struct list_player *init_player_list(char nbbot) // Axel
 /*
-    Crée une liste de pointeurs qui pointe sur un Player,
-    un pointer sur NULL est ajouté à la fin pour faciliter
-    les iterations sur la liste (condition d'arrêt)
-    Nbplayer est une variable globale 
+    Arguments:
+        char nbbot : le nombre de bot
+
+    Retour:
+        struct list_player *list_players : une struct list_player nouvellement allouer
+
+    Description:
+        Crée une liste de pointeurs qui pointe sur un Player,
+        un pointer sur NULL est ajouté à la fin pour faciliter
+        les iterations sur la liste (condition d'arrêt)
+        Nbplayer est une variable globale 
 */
 {
     struct list_player *list_players = (struct list_player*)malloc(sizeof(struct list_player));
@@ -57,7 +79,11 @@ struct list_player *init_player_list(char nbbot) // Axel
 
 void reset_points(struct Player *player) // Fait
 /*
-    Réinitialise les points du joueur
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur:
+    
+    Description:
+        reinitialiser le nombre de points du joueur a 0
 */
 {
     player->points = 0;
@@ -65,7 +91,11 @@ void reset_points(struct Player *player) // Fait
 
 void reset_meeples(struct Player *player) // Fait
 /*
-    Réinitialise le compteur de Meeple du joueur
+    Arguments:
+        struct Player *player : Un pointeur sur un joueur:
+    
+    Description:
+        reinitialiser le nombre de meeple du joueur a la valeur par defaut (NBMEEPLE_DEFAULT=8)
 */
 {
     player->nbMeeple = NBMEEPLE_DEFAULT;
@@ -75,10 +105,19 @@ void reset_meeples(struct Player *player) // Fait
 //fonction pas finie je dois faire bcp de fct  à côté
 
 void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grid
+        struct list_player *p_list : Un pointeur sur une struct list_player:
+        char pnumber : le numero du joueur (ou l'indice)
+
+    Description:
+        Demande au jouer si on veut poser un meeple 
+        le cas echant nous indique ou on peut le poser et nous demande ou on veut le poser sur la tuile
+        si il y a aucun endroit ou le poser on ne pourras pas en poser
+        puis une fois le choix valide le meeple est poser ou non
+*/
 {
-    // problème aveclaliste  des  joueurs
-    //printf("un crash est  généré par  la liste des  joueurs!!!\n");
-    //printf("%d\n",p_list->player[pnumber]->nbMeeple);
     if (!is_meeple_on_player(p_list->player[pnumber]))
     {
         return;
@@ -113,6 +152,20 @@ void put_meeple(struct Grid* grid, struct list_player *p_list, char pnumber)
 }
 
 void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber)
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grid
+        struct list_player *p_list : Un pointeur sur une struct list_player:
+        char pnumber : le numero du joueur (ou l'indice)
+
+    Description:
+        version pour le robot de put_meeple
+
+        si grid est une abbaye on pose le meeple sur l'abbaye
+        sinon si grid a une ville/blason au centre , on pose le meeple au centre
+        sinon on pose le meeple a endroit aleatoire disponible 
+        (si il n'y en a pas aucun meeple sera poser)
+*/
 {
     if(is_meeple_on_player(p_list->player[pnumber]))
     {
@@ -184,12 +237,20 @@ void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber)
 
 
 
-void remove_meeple(struct Grid *justPlaced, struct list_player *p_list)
+void remove_meeple(struct Grid *grid, struct list_player *p_list)
+/*
+    Arguments:
+        struct Grid *grid : Un pointeur sur un element de la grille
+        struct list_player *p_list : Un pointeur sur une struct list_player
+
+    Description:
+        retire le meeple de la tuile associe a *grid
+*/
 {
-    if(is_meeple_on_tile(justPlaced->tile))
+    if(is_meeple_on_tile(grid->tile))
     {
-        p_list->player[justPlaced->tile->meeple->coulPlayer-1]->nbMeeple+=1;
-        justPlaced->tile->meeple=NULL;
-        justPlaced->tile->meeplePlace=NO_MEEPLE;
+        p_list->player[grid->tile->meeple->coulPlayer-1]->nbMeeple+=1;
+        grid->tile->meeple=NULL;
+        grid->tile->meeplePlace=NO_MEEPLE;
     }
 }
