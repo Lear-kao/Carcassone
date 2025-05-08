@@ -233,7 +233,6 @@ void player_turn(char playerNumber, struct list_player *p_list, struct Stack **p
 
 void bot_turn(char playerNumber, struct list_player *p_list, struct Stack **pioche, struct Grid **leftTopGrid, struct DLList **dllist, int *hauteur, int *largeur, struct list_player *listPlayer)
 /*
-
     Arguments :
         playerNumber : L'indentifiant du bot dont c'est le tour.
         p_list : Axel ici
@@ -357,11 +356,7 @@ char is_possible_tile(struct Tile *tile, struct DLList **dllist){
 
 char is_a_potential_tile(struct Tile *tile) // Théo FAIT
 /*
-    
-
-    Information : 
-
-        Arguments :
+    Arguments :
         tile : Une tuile à vérifier.
 
     Retour :
@@ -387,7 +382,6 @@ char is_a_potential_tile(struct Tile *tile) // Théo FAIT
 
 void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord coord) // Théo A corriger
 /*
-
     Arguments :
         leftTopGrid : La case en haut à gauche de la Grid, elle mise à jour automatiquement par la fonction.
         largeur : La largeur max de la grille.
@@ -524,7 +518,6 @@ void upscale(struct Grid **leftTopGrid, int *largeur, int *hauteur, struct Coord
 
 void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A TESTER
 /*
-    
     Arguments :
         trueGrid : La tuile qui vient d'être posé.    
         place : La position de la tuile potentielle par rapport à la tuile qui a était posé.
@@ -599,7 +592,6 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
 
 struct Grid *find(struct Grid *leftTopGrid, struct Coord coord) // Théo FAIT
 /*
-
     Arguments :
         leftTopGrid : La grid en haut à gauche.
         coord : Les coordonnées de la case recherchée.
@@ -682,7 +674,6 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
 }
 
 void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteur, int *largeur)
-{
 /*
     Arguments :
         topLeftGrid : La tuile la plus en haut à gauche.
@@ -699,6 +690,7 @@ void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteu
     Note :
         topLeftGrid doit être NULL.
 */
+{
     struct Tile *startTile = init_tile(VILLE, ROUTE, PRE, ROUTE, ROUTE); // tuile de départ hard code
     struct Coord *coord = malloc(sizeof(struct Coord));
     coord->x = 0;
@@ -931,7 +923,14 @@ void choose_w_show(unsigned char y, struct Grid *tab)
     printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
 
-void show_tile( struct Tile *tile )
+void show_tile(struct Tile *tile)
+/*
+    Arguments:
+        struct Tile *tile
+    
+    Description:
+        Affiche une tuile individuelle
+*/
 {
     enum_to_char(PRE,0);
     enum_to_char(tile->top,0);
@@ -946,6 +945,7 @@ void show_tile( struct Tile *tile )
     enum_to_char(PRE,0);
     printf("\n");
 }
+
 void show_grid(struct Grid *tab, unsigned char x, unsigned char y, struct Grid **w_place)
 // w_place résultat de where_i_can_place
 // x *largeur
@@ -1096,8 +1096,11 @@ void *show_point_and_nbmeeple(struct list_player list)
 
 void free_Grid( struct Grid **grid) // a tester
 /* 
-prend en paramètre une struct grid initialisée et la free pour être réutilisée
-!!! S'assurer que le pointeur vers grid sois bien en haut à gauche du graph
+    Arguments:
+        struct Grid **grid : Un pointeur d'un pointeur sur l'element en haut a gauche de la grille
+
+    Description:
+        libere l'espace memoire occupé par la grille
 */
 {
     struct Grid *tmp1;
@@ -1118,7 +1121,8 @@ prend en paramètre une struct grid initialisée et la free pour être réutilis
 
 void bienvenue()
 /*
-    fonction qui affiche l'ensemble des règle de carcasonne et les texte de bienvenue
+    Description:
+        affichage de depart
 */
 {
     printf("@@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @@@@@@@@     @      @     @      @     @@@@@@@@\n");
