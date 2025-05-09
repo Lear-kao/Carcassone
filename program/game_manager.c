@@ -18,8 +18,8 @@ int main()
     struct Stack *stack = NULL;
     int hauteur = 1;
     int largeur = 1;
-    //srand(time(NULL)); // initialisation de la seed pour l'aléatoire du jeu
-    srand(0);
+    srand(time(NULL)); // initialisation de la seed pour l'aléatoire du jeu
+    //srand(0);
 
     bienvenue();
 

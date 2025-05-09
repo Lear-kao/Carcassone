@@ -903,6 +903,7 @@ Description:
     La fonction remet le meeple dans  la réserve du  joueur puis le retire du la tuile.
 */
 {
+    if (grille->tile->meeple == NULL) return;
     grille->tile->meeple->nbMeeple += 1;
     grille->tile->meeple = NULL;
     grille->tile->meeplePlace = NO_MEEPLE;
