@@ -463,7 +463,6 @@ Description:
             }
             break;
     }
-
     secondary_verification(justPlaced,listPlayer,justPlaced->tile->middle);
 }
 
@@ -686,6 +685,7 @@ Description:
         {
             if(!is_a_potential_tile(temp_y->tile))
                 pointPlacedTile(temp_x,list);
+            temp_y = temp_y->right;
         }
         temp_x = temp_x->bot;
     }

@@ -31,7 +31,6 @@ int main()
         // ---------------------------
         // ----Phase 2 : La partie----
         // ---------------------------
-        
         while (is_stack_not_empty(stack))
         {
             char i=0;
@@ -46,7 +45,7 @@ int main()
                     
                 i++;
             }
-            
+
         }
         // -------------------------------
         // ----Phase 3 : Fin de partie----
