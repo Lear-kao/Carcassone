@@ -32,15 +32,15 @@ struct Grid* searchAbbaye(struct Grid* grille)
         si struct Grid *grille est deja abbayes la fonction la retourne evidemment directement
 */
 {
-    if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->tile)) return grille;
-    if(grille->top->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile)) return grille->top;
-    if(grille->bot->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->tile)) return grille->bot;
-    if(grille->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->left->tile)) return grille->left;
-    if(grille->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->right->tile)) return grille->right;
-    if(grille->top->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->left->tile)) return grille->top->left;
-    if(grille->top->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->right->tile)) return grille->top->right;
-    if(grille->bot->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->left->tile)) return grille->bot->left;
-    if(grille->bot->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->right->tile)) return grille->bot->right;
+    if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->tile) && is_meeple_on_tile(grille->tile)) return grille;
+    if(grille->top->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile) && is_meeple_on_tile(grille->top->tile)) return grille->top;
+    if(grille->bot->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->tile) && is_meeple_on_tile(grille->bot->tile)) return grille->bot;
+    if(grille->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->left->tile) && is_meeple_on_tile(grille->left->tile)) return grille->left;
+    if(grille->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->right->tile) && is_meeple_on_tile(grille->right->tile)) return grille->right;
+    if(grille->top->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->left->tile) && is_meeple_on_tile(grille->top->left->tile)) return grille->top->left;
+    if(grille->top->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->right->tile) && is_meeple_on_tile(grille->top->right->tile)) return grille->top->right;
+    if(grille->bot->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->left->tile) && is_meeple_on_tile(grille->bot->left->tile)) return grille->bot->left;
+    if(grille->bot->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->right->tile) && is_meeple_on_tile(grille->bot->right->tile)) return grille->bot->right;
     return NULL;
 }
 
@@ -101,8 +101,6 @@ char what_color_is_meeple(int color, struct Tile tile)
 char nbMeepleVille(struct Grid *grille, int coul_player,enum places a)
 {
     char res=0;
-    grille->marquer = v_marquer;
-
 
     if(is_meeple_on_tile(grille->tile) && 
        grille->tile->meeple->coulPlayer == coul_player && 
@@ -153,7 +151,6 @@ char nbMeepleVille(struct Grid *grille, int coul_player,enum places a)
 
     }
     v_marquer++;
-    printf("meeple=%d\n",res);
     return res;
 }
 
@@ -181,7 +178,7 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace 
 {
     char cmpt = 0;
     if (grille->marquer == v_marquer) return 0;
-    grille->marquer = v_marquer;
+    
 
 
     if(grille->tile->meeplePlace!=NO_MEEPLE)
@@ -205,6 +202,8 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace 
                 }
         }
     }    
+    grille->marquer = v_marquer;
+
     if( grille->tile->middle == VILLE || grille->tile->middle==BLASON)
     {
         if(grille->tile->top == VILLE || grille->tile->top==BLASON)
@@ -231,8 +230,9 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace 
 char nbMeepleVille_nocolor(struct Grid *grille,enum places a)
 {
     char res=0;
-    grille->marquer = v_marquer;
-    if(is_meeple_on_tile(grille->tile) && grille->tile->meeplePlace==a && (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile)))) 
+    if(is_meeple_on_tile(grille->tile) && 
+       grille->tile->meeplePlace==a && 
+       (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile)))) 
        res+=1;
 
     switch(a)
@@ -279,7 +279,6 @@ char nbMeepleVille_nocolor(struct Grid *grille,enum places a)
     }
 
     v_marquer++;
-    printf("meeplenocolor=%d\n",res);
     return res;
 }
 
@@ -287,7 +286,7 @@ char nbMeepleVille_nocolorEncap( struct Grid *grille,enum meeplePlace origin)
 {
     char cmpt = 0;
     if (grille->marquer == v_marquer) return 0;
-    grille->marquer = v_marquer;
+    
 
 
     if(grille->tile->meeplePlace!=NO_MEEPLE) //temp devient grille
@@ -309,6 +308,8 @@ char nbMeepleVille_nocolorEncap( struct Grid *grille,enum meeplePlace origin)
                 }
         }
     }   
+
+    grille->marquer = v_marquer;
     if( grille->tile->middle == VILLE || grille->tile->middle == BLASON)
     {
         if(grille->tile->top == VILLE || grille->tile->top==BLASON)
@@ -416,22 +417,21 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
 */
 {
     char  nbmeeple = 0;
-    grille->marquer = v_marquer;
+
     if(is_meeple_on_tile(grille->tile))
     {
         if (what_color_is_meeple(color,*(grille->tile)) &&
-            grille->tile->meeplePlace==start &&
+            //grille->tile->meeplePlace==start &&
             where_is_meeple(ROUTE,*(grille->tile))) nbmeeple += 1;
     }
 
-    //grille->marquer = v_marquer;
     switch(start)
     {
         case RIGHT:
             grille->marquer=v_marquer;
             if(grille->right!=NULL && grille->tile->right==ROUTE)
             {
-                nbmeeple+=meepleRoad(grille->right,color);
+                nbmeeple+=meepleRoad(grille->right,color,MP_LEFT);
             }
             break;
 
@@ -439,7 +439,7 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
             grille->marquer=v_marquer;
             if(grille->top!=NULL && grille->tile->top==ROUTE)
             {
-                nbmeeple+=meepleRoad(grille->top,color);
+                nbmeeple+=meepleRoad(grille->top,color,MP_BOT);
             }
             break;
         
@@ -447,7 +447,7 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
             grille->marquer=v_marquer;
             if(grille->left!=NULL && grille->tile->left==ROUTE)
             {
-                nbmeeple+=meepleRoad(grille->left,color);
+                nbmeeple+=meepleRoad(grille->left,color,MP_RIGHT);
             }
             break;
 
@@ -455,58 +455,68 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
             grille->marquer=v_marquer;
             if(grille->bot!=NULL && grille->tile->bot==ROUTE)
             {
-                nbmeeple+=meepleRoad(grille->bot,color);
+                nbmeeple+=meepleRoad(grille->bot,color,MP_TOP);
             }
             break;
         
         case MIDDLE:
             if(grille->tile->middle==ROUTE)
             {
-                nbmeeple=meepleRoad(grille,color);
+                nbmeeple=meepleRoad(grille,color,MP_MIDDLE);
             }
     }
 
-    printf("nbmeepleroute=%d\n",nbmeeple);
-
     v_marquer++;
+
     return nbmeeple;
 }
 
-char meepleRoad(struct Grid *grille, int color)
+char meepleRoad(struct Grid *grille, int color,enum meeplePlace origin)
 /* 
 Compte le nombre de meeple sur une structure route en fonction de la couleur passé en paramètre.
 */
 {
     char cmp=0;
     if( grille->marquer == v_marquer) return 0;
-    grille->marquer = v_marquer;
+    
 
 
     if(is_meeple_on_tile(grille->tile))
     {
         if(what_color_is_meeple(color,*(grille->tile)) &&
-           where_is_meeple(ROUTE,*(grille->tile))){
-            cmp+=1;
+           where_is_meeple(ROUTE,*(grille->tile)))
+        {
+            if(grille->tile->middle!=VILLAGE)
+            {
+                cmp+=1;
+            } 
+            else if(grille->tile->meeplePlace==origin)
+            {
+                cmp+=1;
+            }
+
         }
     }
+
+    grille->marquer = v_marquer;
 
     if (grille->tile->middle == ROUTE)
     {
         if ( grille->tile->bot == ROUTE)
         {
-            cmp += meepleRoad(grille->bot,color);
+            cmp += meepleRoad(grille->bot,color,MP_TOP);
         }
         if ( grille->tile->left == ROUTE)
         {
-            cmp += meepleRoad(grille->left,color);
+            cmp += meepleRoad(grille->left,color,MP_RIGHT);
         }
         if ( grille->tile->top == ROUTE)
         {
-            cmp += meepleRoad(grille->top,color);
+            cmp += meepleRoad(grille->top,color,MP_BOT);
         }
         if ( grille->tile->right == ROUTE)
         {
-            cmp += meepleRoad(grille->right,color);
+            cmp += meepleRoad(grille->right,color,MP_LEFT);
         }
     }
     return cmp;
@@ -527,16 +537,16 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
 */
 {
     char  nbmeeple = 0;
-    grille->marquer = v_marquer;
-
 
     if(is_meeple_on_tile(grille->tile))
     {
         if (where_is_meeple(ROUTE,*(grille->tile)) &&
-            grille->tile->meeplePlace == start ) nbmeeple += 1;
+            grille->tile->meeplePlace == start ) 
+            {
+                nbmeeple += 1;
+            }
     }
 
-    grille->marquer = v_marquer;
     switch(start)
     {
         case RIGHT:
@@ -577,7 +587,6 @@ char countMeepleRoad_nocolor(struct Grid *grille, enum places start)
                 nbmeeple=meepleRoad_nocolor(grille,MP_MIDDLE);
             }
     }
-    printf("nbmeepleroutenocolor=%d\n",nbmeeple);
     v_marquer++;
     return nbmeeple;
 }
@@ -598,7 +607,7 @@ char meepleRoad_nocolor(struct Grid *grille,enum meeplePlace origin)
 {
     char cmp=0;
     if( grille->marquer == v_marquer) return 0;
-    grille->marquer = v_marquer;
+
     if(is_meeple_on_tile(grille->tile))
     {
         if(grille->tile->middle==ROUTE)
@@ -659,23 +668,23 @@ int* where_i_can_put(struct Grid *grid)
 {
     int *tab=(int*)malloc(5*sizeof(int));
     for( int i = 0; i < 5; i++) tab[i]=RIEN;
-    printf("wtf");
+
     if((grid->tile->right == VILLE || grid->tile->right == BLASON) && !nbMeepleVille_nocolor(grid,RIGHT)) tab[0] = 1;
     else if(grid->tile->right == ROUTE && !countMeepleRoad_nocolor(grid,RIGHT)) tab[0] = 1;
-    printf("right passé\n");
+    
     if((grid->tile->top == VILLE || grid->tile->top == BLASON) && !nbMeepleVille_nocolor(grid,TOP)) tab[1] = 1;
     else if(grid->tile->top == ROUTE && !countMeepleRoad_nocolor(grid,TOP)) tab[1] = 1;
-    printf("top passé\n");
+
     if((grid->tile->left == VILLE || grid->tile->left == BLASON) && !nbMeepleVille_nocolor(grid,LEFT)) tab[2] = 1;
     else if(grid->tile->left == ROUTE && !countMeepleRoad_nocolor(grid,LEFT)) tab[2] = 1;
-    printf("left passé\n");
+
     if((grid->tile->bot == VILLE || grid->tile->bot == BLASON) && !nbMeepleVille_nocolor(grid,BOT)) tab[3] = 1;
     else if(grid->tile->bot == ROUTE && !countMeepleRoad_nocolor(grid,BOT)) tab[3] = 1;
-    printf("bot passé\n");
+
     if((grid->tile->middle == VILLE || grid->tile->middle == BLASON) && !nbMeepleVille_nocolor(grid,MIDDLE)) tab[4] = 1;
     else if(grid->tile->middle == ROUTE && !countMeepleRoad_nocolor(grid,MIDDLE)) tab[4] = 1;
     else if(grid->tile->middle == ABBAYES) tab[4] = 1;
-    printf("bot passé\n");
+
 
     if(grid->tile->middle==ROUTE && countMeepleRoad_nocolor(grid,MIDDLE))
     {
@@ -685,7 +694,7 @@ int* where_i_can_put(struct Grid *grid)
         if(grid->tile->bot==ROUTE) tab[3]=RIEN;
     }
 
-    if(grid->tile->middle==VILLE || grid->tile->middle==BLASON && nbMeepleVille_nocolor(grid,MIDDLE))
+    if((grid->tile->middle==VILLE || grid->tile->middle==BLASON) && nbMeepleVille_nocolor(grid,MIDDLE))
     {
         if(grid->tile->right==VILLE || grid->tile->right==BLASON) tab[0]=RIEN;
         if(grid->tile->top==VILLE || grid->tile->top==BLASON) tab[1]=RIEN;
@@ -707,7 +716,6 @@ Argument:
     -La direction de la structure à inspecter.
 */
 {
-    grille->marquer = v_marquer;
     if(is_meeple_on_tile(grille->tile) &&
        grille->tile->meeplePlace==a &&
        (where_is_meeple(VILLE,*(grille->tile)) || where_is_meeple(BLASON,*(grille->tile)))) remove_meeple(grille);
@@ -808,9 +816,8 @@ void removeMeepleVille( struct Grid *grille, enum meeplePlace origin)
     return;
 }
 
-void removeMeepleRoadStart(struct Grid *grille)
+void removeMeepleRoadStart(struct Grid *grille,enum places a)
 {
-    grille->marquer = v_marquer;
 
     if (is_meeple_on_tile(grille->tile)) {
         if (where_is_meeple(ROUTE, *(grille->tile))) {
@@ -818,19 +825,50 @@ void removeMeepleRoadStart(struct Grid *grille)
         }
     }
 
-    if (grille->tile->middle == ROUTE) {
-        if (grille->bot && grille->tile->bot == ROUTE)
-            removeMeepleRoad(grille->bot, MP_TOP);
+    switch(a)
+    {
+       case RIGHT:
+            grille->marquer=v_marquer;
+            if(grille->right!=NULL && grille->tile->right==ROUTE)
+            {
 
-        if (grille->left && grille->tile->left == ROUTE)
-            removeMeepleRoad(grille->left, MP_RIGHT);
-
-        if (grille->top && grille->tile->top == ROUTE)
-            removeMeepleRoad(grille->top, MP_BOT);
-
-        if (grille->right && grille->tile->right == ROUTE)
-            removeMeepleRoad(grille->right, MP_LEFT);
+               removeMeepleRoad(grille->right,MP_LEFT);
+            }
+           break;
+   
+        case TOP:
+           grille->marquer=v_marquer;
+           if(grille->top!=NULL && grille->tile->top==ROUTE)
+            {
+                removeMeepleRoad(grille->top,MP_BOT);
+            }
+           break;
+   
+        case LEFT:
+            grille->marquer=v_marquer;
+            if(grille->left!=NULL && grille->tile->left==ROUTE)
+            {
+                removeMeepleRoad(grille->left,MP_RIGHT);
+            }
+           break;
+               
+        case BOT:
+            grille->marquer=v_marquer;
+            if(grille->bot!=NULL && grille->tile->bot==ROUTE)
+            {
+                removeMeepleRoad(grille->bot,MP_TOP);
+            }
+            break;
+   
+        case MIDDLE:
+            if(grille->tile->middle==ROUTE)
+            {
+                removeMeepleRoad(grille,MP_MIDDLE);
+            }
+            break;
+           
     }
+    v_marquer++;
 }
 
 
@@ -903,9 +941,10 @@ Description:
     La fonction remet le meeple dans  la réserve du  joueur puis le retire du la tuile.
 */
 {
-    if (grille->tile->meeple == NULL) return;
-    grille->tile->meeple->nbMeeple += 1;
-    grille->tile->meeple = NULL;
-    grille->tile->meeplePlace = NO_MEEPLE;
+    if(grille->tile->meeplePlace !=NO_MEEPLE){
+        grille->tile->meeple->nbMeeple += 1;
+        grille->tile->meeple = NULL;
+        grille->tile->meeplePlace = NO_MEEPLE;
+    }
     return;
 }

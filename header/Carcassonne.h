@@ -15,6 +15,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
+
 enum types { ROUTE, VILLE, ABBAYES, PRE, VILLAGE, BLASON, RIEN };
 enum meeplePlace { MP_RIGHT, MP_TOP, MP_LEFT, MP_BOT, MP_MIDDLE, NO_MEEPLE};
 enum places {RIGHT, TOP, LEFT, BOT, MIDDLE};
@@ -1021,7 +1027,7 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color);//tester
         Il faut lui donner la position de la route à tester (gauche,droite,haut,bas,millieu) start = [0:4]
 */
 
-char meepleRoad(struct Grid *grille, int color); //tester avec countmeepleroad
+char meepleRoad(struct Grid *grille, int color,enum meeplePlace origin); //tester avec countmeepleroad
 /* 
     Arguments:
         struct Grid *grille : Un pointeur sur l'element de la grid
@@ -1083,13 +1089,41 @@ void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber);
 /* 
 Fonction pour retirer les  meeples
 */
-void removeMeepleRoadStart(struct Grid *grille);
+void removeMeepleRoadStart(struct Grid *grille,enum places a);
 void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin);
 void removeMeepleVilleStart(struct Grid *grille,enum places a);
 void removeMeepleVille( struct Grid *grille, enum meeplePlace origin);
+
 void removeMeepleAbbaye( struct Grid *grille);
+/* 
+Argument:
+    -la grille ou se situe l'abbaye et  le meeple à retirer.
+Retour :
+    -Void
+Description:
+    Retire le  meeple de la geille si il est situé  sur une Abbaye.
+*/
+
 void remove_meeple(struct Grid *grille);
+/* 
+Argument:
+    -Un pointeur sur la tuile  ou il faut retirer les  meeples.
+Retour:
+    -Void.
+Description:
+    La fonction remet le meeple dans  la réserve du  joueur puis le retire du la tuile.
+*/
 
 void finDuJeu(struct Grid *grille, struct list_player *list);
+/*
+Argument:
+    Un pointeur vers la dernière tuile  posée.
+    La liste des joueurs.
+Retour:
+    Void.
+Description:
+    La  fonction prend en paramètre la dernière tuile posée et compte les points que permet d'acquérir cette tuiles sur d'après la structure présente au milieu.
+    (nottament si une abbaye est présente dans les alentours).
+*/
 
 #endif // CARCASSONNE_H
