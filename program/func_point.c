@@ -372,7 +372,7 @@ Note:
        grille->tile->middle == BLASON || 
        grille->tile->middle == ABBAYES)
     {
-        *unfinished = 0;
+        //*unfinished = 0;
         return 1;
     }
     if (*unfinished == 1 && finJeu == 0)
@@ -461,10 +461,67 @@ Description:
                 give_point(list_meeple,listPlayer,point);
                 removeMeepleAbbaye(justPlaced);
             }
+
+            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
+            {
+                point = countPointRoad(justPlaced,RIGHT);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,RIGHT);
+                }
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
+            {
+                point = countPointRoad(justPlaced,TOP);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,TOP);
+                }
+            }
+
+            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
+            {
+                point = countPointRoad(justPlaced,LEFT);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,LEFT);
+                }
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
+            {
+                point = countPointRoad(justPlaced,BOT);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,BOT);
+                }
+            }
             break;
 
         case ROUTE:
             point = countPointRoad(justPlaced,MIDDLE);
+
             if(point != 0)
             {
                 for (int i=0; i < nbPlayers; i++)
@@ -815,6 +872,9 @@ Description:
                     tmp=list->player[0]->points;
 
                     pointPlacedTile(temp_y,list);
+                    printf("x=%d,y=%d\n",x,y);
+                    show_tile(temp_y->tile);
+                    show_point_and_nbmeeple(*list);
                     
                 }
             }
