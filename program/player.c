@@ -42,7 +42,6 @@ char is_meeple_on_player(struct Player *player)
         retourne le nombre de meeple sur un joueur
 */
 {
-    printf("vraiment\n");
     return player->nbMeeple;
 }
 

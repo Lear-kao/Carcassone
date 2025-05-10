@@ -18,8 +18,13 @@ int main()
     struct Stack *stack = NULL;
     int hauteur = 1;
     int largeur = 1;
-    //srand(time(NULL)); // initialisation de la seed pour l'aléatoire du jeu
-    srand(0);
+
+    int tuile=1;
+
+    int random;
+
+    srand(time(NULL)); // initialisation de la seed pour l'aléatoire du jeu
+    //srand(0);
 
     bienvenue();
 
@@ -34,6 +39,8 @@ int main()
         
         while (is_stack_not_empty(stack))
         {
+            tuile++;
+            printf("Tuile N°%d",tuile);
             char i=0;
             while(i < nbPlayers && is_stack_not_empty(stack)) 
             {
@@ -42,6 +49,7 @@ int main()
                 else
                 {
                     bot_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
+                    sleep(0.1);
                 }
                     
                 i++;
