@@ -38,7 +38,7 @@ Description:
        grille->tile->bot!=ABBAYES &&
        grille->tile->middle!=ABBAYES) return 0;
 
-    char point = 0;
+    char point = 1;
     if (grille->top->tile != NULL && !is_a_potential_tile(grille->top->tile)) point++;
     if (grille->bot->tile != NULL && !is_a_potential_tile(grille->bot->tile)) point++;
     if (grille->left->tile != NULL && !is_a_potential_tile(grille->left->tile)) point++;
@@ -48,7 +48,7 @@ Description:
     if (grille->top->left->tile != NULL && !is_a_potential_tile(grille->top->left->tile)) point++;
     if (grille->top->right->tile != NULL && !is_a_potential_tile(grille->top->right->tile)) point++;
     if (finJeu!= 0) return point;
-    if (point != 8) return 0;
+    if (point != 9) return 0;
     return point;
 }
 
