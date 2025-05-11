@@ -1083,11 +1083,16 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
         - Réinitialise le turn tracker (le joueur 1 commence)
 */
 {
-    printf("Combien de joueur : \n");
-    scanf("%d", &nbPlayers);
+    do{
+        printf("Combien de joueur : (max:8) \n");
+        scanf("%d", &nbPlayers);
+    }while(nbPlayers<1 || nbPlayers>8);
 
-    printf("Combien de bot: \n");
-    scanf("%d", &nbBot);
+    do{
+        printf("Combien de bot: (max:%d) \n",nbPlayers);
+        scanf("%d", &nbBot);
+    }while(nbBot<0 || nbBot>nbPlayers);
+
 
     if (*list_player == NULL)
     {

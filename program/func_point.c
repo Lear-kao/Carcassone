@@ -551,7 +551,7 @@ Description:
                 }
                 else
                 {
-                    if(justPlaced->tile->meeplePlace==MP_RIGHT)
+                    if(justPlaced->tile->meeplePlace==MP_RIGHT && finJeu==1)
                     {
                         listPlayer->player[justPlaced->tile->meeple->coulPlayer-1]->points+=1;
                         remove_meeple(justPlaced);
@@ -576,7 +576,7 @@ Description:
                 }
                 else
                 {
-                    if(justPlaced->tile->meeplePlace==MP_TOP)
+                    if(justPlaced->tile->meeplePlace==MP_TOP && finJeu==1)
                     {
                         listPlayer->player[justPlaced->tile->meeple->coulPlayer-1]->points+=1;
                         remove_meeple(justPlaced);
@@ -601,7 +601,7 @@ Description:
                 }
                 else
                 {
-                    if(justPlaced->tile->meeplePlace==MP_LEFT)
+                    if(justPlaced->tile->meeplePlace==MP_LEFT && finJeu==1)
                     {
                         listPlayer->player[justPlaced->tile->meeple->coulPlayer-1]->points+=1;
                         remove_meeple(justPlaced);
@@ -626,7 +626,7 @@ Description:
                 }
                 else
                 {
-                    if(justPlaced->tile->meeplePlace==MP_BOT)
+                    if(justPlaced->tile->meeplePlace==MP_BOT && finJeu==1)
                     {
                         listPlayer->player[justPlaced->tile->meeple->coulPlayer-1]->points+=1;
                         remove_meeple(justPlaced);
