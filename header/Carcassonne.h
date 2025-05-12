@@ -1089,7 +1089,30 @@ void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber);
 /* 
 Fonction pour retirer les  meeples
 */
+
+
 void removeMeepleRoadStart(struct Grid *grille,enum places a);
+/* 
+Argument:
+    -Un pointeur sur la tuile  ou il faut retirer les  meeples.
+Retour:
+    -Void.
+Description:
+    La fonction remet le meeple dans  la réserve du  joueur puis le retire du la tuile.
+*/
+
+void remove_meeple_precice(struct Grid *grille,enum places where);
+/* 
+Argument:
+    -Un pointeur sur la tuile  ou il faut retirer les  meeples.
+    -un enum meeplePlace
+Retour:
+    -Void.
+Description:
+    La fonction remet le meeple dans  la réserve du  joueur puis le retire du la tuile.
+    Elle est plus specifique que pour remove_meeple car on specifie l'endroit ou on peut poser le meeple
+*/
+
 void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin);
 void removeMeepleVilleStart(struct Grid *grille,enum places a);
 void removeMeepleVille( struct Grid *grille, enum meeplePlace origin);

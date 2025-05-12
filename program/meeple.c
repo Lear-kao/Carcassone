@@ -825,7 +825,7 @@ void removeMeepleRoadStart(struct Grid *grille,enum places a)
 
     if (is_meeple_on_tile(grille->tile)) {
         if (where_is_meeple(ROUTE, *(grille->tile))) {
-            remove_meeple(grille);
+            remove_meeple_precice(grille,a);
         }
     }
 
@@ -946,6 +946,26 @@ Description:
 */
 {
     if(grille->tile->meeplePlace !=NO_MEEPLE){
+        grille->tile->meeple->nbMeeple += 1;
+        grille->tile->meeple = NULL;
+        grille->tile->meeplePlace = NO_MEEPLE;
+    }
+    return;
+}
+
+void remove_meeple_precice(struct Grid *grille,enum places where)
+/* 
+Argument:
+    -Un pointeur sur la tuile  ou il faut retirer les  meeples.
+    -un enum meeplePlace
+Retour:
+    -Void.
+Description:
+    La fonction remet le meeple dans  la réserve du  joueur puis le retire du la tuile.
+    Elle est plus specifique que pour remove_meeple
+*/
+{
+    if(grille->tile->meeplePlace==where && grille->tile->meeplePlace !=NO_MEEPLE){
         grille->tile->meeple->nbMeeple += 1;
         grille->tile->meeple = NULL;
         grille->tile->meeplePlace = NO_MEEPLE;

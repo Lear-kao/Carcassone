@@ -38,11 +38,12 @@ int main()
         // ---------------------------
         while (is_stack_not_empty(stack))
         {
-            tuile++;
-            printf("Tuile N°%d",tuile);
+            
             char i=0;
             while(i < nbPlayers && is_stack_not_empty(stack)) 
             {
+                tuile++;
+                printf("Tuile N°%d",tuile);
                 if(p_list->player[i]->bot==0)
                     player_turn(i + 1, p_list,&stack, &leftTopGrid, &dllist, &hauteur, &largeur, p_list);
                 else
