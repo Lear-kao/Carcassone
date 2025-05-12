@@ -17,7 +17,7 @@ char searchMeeple(struct Tile tile,int where)
     return tile.meeplePlace==where;
 }
 
-struct Grid* searchAbbaye(struct Grid* grille)
+struct Grid** searchAbbaye(struct Grid* grille)
 /*
     Arguments:
         struct Grid *grille : Un pointeur sur un element de la grid
@@ -32,16 +32,20 @@ struct Grid* searchAbbaye(struct Grid* grille)
         si struct Grid *grille est deja abbayes la fonction la retourne evidemment directement
 */
 {
-    if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->tile) && is_meeple_on_tile(grille->tile)) return grille;
-    if(grille->top->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile) && is_meeple_on_tile(grille->top->tile)) return grille->top;
-    if(grille->bot->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->tile) && is_meeple_on_tile(grille->bot->tile)) return grille->bot;
-    if(grille->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->left->tile) && is_meeple_on_tile(grille->left->tile)) return grille->left;
-    if(grille->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->right->tile) && is_meeple_on_tile(grille->right->tile)) return grille->right;
-    if(grille->top->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->left->tile) && is_meeple_on_tile(grille->top->left->tile)) return grille->top->left;
-    if(grille->top->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->right->tile) && is_meeple_on_tile(grille->top->right->tile)) return grille->top->right;
-    if(grille->bot->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->left->tile) && is_meeple_on_tile(grille->bot->left->tile)) return grille->bot->left;
-    if(grille->bot->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->right->tile) && is_meeple_on_tile(grille->bot->right->tile)) return grille->bot->right;
-    return NULL;
+    struct Grid **abbaye=(struct Grid**)malloc(9*sizeof(struct Grid*));
+    for(int i=0;i<9;i++){
+        abbaye[i]=NULL;
+    }
+    if(grille->tile->middle == ABBAYES && !is_a_potential_tile(grille->tile) && is_meeple_on_tile(grille->tile)) abbaye[0]=grille;
+    if(grille->top->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->tile) && is_meeple_on_tile(grille->top->tile)) abbaye[1]=grille->top;
+    if(grille->bot->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->tile) && is_meeple_on_tile(grille->bot->tile)) abbaye[2]=grille->bot;
+    if(grille->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->left->tile) && is_meeple_on_tile(grille->left->tile)) abbaye[3]=grille->left;
+    if(grille->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->right->tile) && is_meeple_on_tile(grille->right->tile)) abbaye[4]=grille->right;
+    if(grille->top->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->left->tile) && is_meeple_on_tile(grille->top->left->tile)) abbaye[5]=grille->top->left;
+    if(grille->top->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->top->right->tile) && is_meeple_on_tile(grille->top->right->tile)) abbaye[6]=grille->top->right;
+    if(grille->bot->left->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->left->tile) && is_meeple_on_tile(grille->bot->left->tile)) abbaye[7]=grille->bot->left;
+    if(grille->bot->right->tile->middle == ABBAYES && !is_a_potential_tile(grille->bot->right->tile) && is_meeple_on_tile(grille->bot->right->tile)) abbaye[8]=grille->bot->right;
+    return abbaye;
 }
 
 char where_is_meeple(  int type, struct Tile tile)
@@ -348,7 +352,7 @@ char nbMeepleAbbaye( struct Grid *grille, int color)
         (par definition une abbaye ne peut qu'avoir un meeple)
 */
 {
-    struct Grid *temp = searchAbbaye(grille);
+    struct Grid *temp = grille;
     if(temp == NULL) return 0;
     if(is_meeple_on_tile(temp->tile))
     {
@@ -372,7 +376,7 @@ char nbMeepleAbbaye_nocolor(struct Grid *grille)
         (par definition une abbaye ne peut qu'avoir un meeple)
 */
 {
-    struct Grid *temp = searchAbbaye(grille);
+    struct Grid *temp = grille;
     if(temp == NULL) return 0;
     if(is_meeple_on_tile(temp->tile))
     {
@@ -922,7 +926,7 @@ Description:
     Retire le  meeple de la geille si il est situé  sur une Abbaye.
 */
 {
-    struct Grid *temp = searchAbbaye(grille);
+    struct Grid *temp = grille;
     if(temp == NULL) return;
     if(is_meeple_on_tile(temp->tile))
     {

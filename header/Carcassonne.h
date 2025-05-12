@@ -984,7 +984,7 @@ char what_color_is_meeple(int color, struct Tile tile);//tester
         vérifie si le meeple posée sur la  tuile est bien de la bonne couleur
 */
 
-struct Grid* searchAbbaye(struct Grid* grille); //tester (normalement)
+struct Grid** searchAbbaye(struct Grid* grille); //tester (normalement)
 /*
     Arguments:
         struct Grid *grille : Un pointeur sur un element de la grid

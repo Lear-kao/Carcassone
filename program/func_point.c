@@ -407,18 +407,21 @@ Description:
     char point;
     char unfinish_road=1;
     char list_meeple[nbPlayers];
-    struct Grid *abbaye=searchAbbaye(justPlaced);
-    if(abbaye!=NULL)
+    struct Grid **abbaye=searchAbbaye(justPlaced);
+    for(int j=0;j<9;j++)
     {
-        point=isFinishedAbbaye(abbaye);
-        if(point>0)
+        if(abbaye[j]!=NULL)
         {
-            for (int i = 0; i < nbPlayers; i++)
+            point=isFinishedAbbaye(abbaye[j]);
+            if(point>0)
             {
-                list_meeple[i] = nbMeepleAbbaye(abbaye, i+1);
+                for (int i = 0; i < nbPlayers; i++)
+                {
+                    list_meeple[i] = nbMeepleAbbaye(abbaye[j], i+1);
+                }
+                give_point(list_meeple,listPlayer,point);
+                removeMeepleAbbaye(abbaye[j]);
             }
-            give_point(list_meeple,listPlayer,point);
-            removeMeepleAbbaye(abbaye);
         }
     }
 
@@ -448,20 +451,64 @@ Description:
                 give_point(list_meeple,listPlayer,point);
                 removeMeepleVilleStart(justPlaced,MIDDLE);
             }
+            if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
+            {
+                point = countPointRoad(justPlaced,RIGHT);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,RIGHT,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,RIGHT);
+                }
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->top->tile) && countMeepleRoad_nocolor(justPlaced,TOP)>0 && justPlaced->tile->top==ROUTE)
+            {
+                point = countPointRoad(justPlaced,TOP);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,TOP,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,TOP);
+                }
+            }
+
+            else if(!is_a_potential_tile(justPlaced->left->tile) && countMeepleRoad_nocolor(justPlaced,LEFT)>0 && justPlaced->tile->left==ROUTE)
+            {
+                point = countPointRoad(justPlaced,LEFT);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,LEFT,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,LEFT);
+                }
+            }
+            
+            else if(!is_a_potential_tile(justPlaced->bot->tile) && countMeepleRoad_nocolor(justPlaced,BOT)>0 && justPlaced->tile->bot==ROUTE)
+            {
+                point = countPointRoad(justPlaced,BOT);
+                if(point>0)
+                {
+                    for (int i=0; i < nbPlayers; i++)
+                    {
+                        list_meeple[i] = countMeepleRoad(justPlaced,BOT,i+1);
+                    }
+                    give_point(list_meeple,listPlayer,point);
+                    removeMeepleRoadStart(justPlaced,BOT);
+                }
+            }
             break;
 
         case ABBAYES:
-            point = isFinishedAbbaye(justPlaced);
-            if(point != 0)
-            {
-                for (int i = 0; i < nbPlayers; i++)
-                {
-                    list_meeple[i] = nbMeepleAbbaye(justPlaced, i+1);
-                }
-                give_point(list_meeple,listPlayer,point);
-                removeMeepleAbbaye(justPlaced);
-            }
-
             if(!is_a_potential_tile(justPlaced->right->tile) && countMeepleRoad_nocolor(justPlaced,RIGHT)>0 && justPlaced->tile->right==ROUTE)
             {
                 point = countPointRoad(justPlaced,RIGHT);
