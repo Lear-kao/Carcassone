@@ -332,7 +332,20 @@ struct Grid **where_i_can_play(struct Tile *tile, struct DLList **dllist) // Th�
     return gridArrray;
 }
 
-char is_possible_tile(struct Tile *tile, struct DLList **dllist){
+char is_possible_tile(struct Tile *tile, struct DLList **dllist)
+/*
+    Arguments:
+        struct Tile *tile, un pointeur sur une tuile
+        struct DLList **dllist:un pointeur sur le début d'une liste doublement chainé
+    
+    Retour:
+        char (0 ou 1)
+    
+    Description:
+        cette fonction verifie si on peut poser la tuile sur ces 4 rotation 
+        renvoie 1 si c'est possible , 0 sinon
+*/
+{
     struct Grid **gridArray[4]={NULL,NULL,NULL,NULL};
 
     for(int i=0;i<4;i++){
@@ -522,7 +535,7 @@ void update_potential_tile(struct Grid *trueGrid, enum places place) // Théo A 
         trueGrid : La tuile qui vient d'être posé.    
         place : La position de la tuile potentielle par rapport à la tuile qui a était posé.
     Retour :
-        <nom et type du retour> : <description de ce que retourne la fonction>
+        void
 
     Description :
         Met à jour les tuiles pottentiels adjacente à la tuile qui vient d'être posé.
@@ -636,9 +649,6 @@ struct Grid *first_grid(struct Grid *grid, int *hauteur, int *largeur, struct DL
 
     Description :
         Place la première tuile et actualise la grille en conséquence.
-
-    Note :
-        <(optionnel) message pour les développeurs sur les subtilités de la fonction>  
 */
 {
     // Adaptation de la taille de la grid
@@ -682,10 +692,10 @@ void init_plateau(struct Grid **topLeftGrid, struct DLList **dllist, int *hauteu
         largeur : La largeur de la grille
 
     Retour :
-        <nom et type du retour> : <description de ce que retourne la fonction>
+        void
 
     Description :
-        <Pose la première tuile et innitialise ainsi le plateau.
+        Pose la première tuile et innitialise ainsi le plateau.
 
     Note :
         topLeftGrid doit être NULL.
@@ -769,7 +779,7 @@ struct Grid *place_tile(struct Grid **topLeftGrid, struct Coord *coord, struct T
 
     return *topLeftGrid;
 }
-// Axel ici : Je te laisse commenter le reste ça sera plus simple.
+
 void enum_to_char(enum types type, int coul)
 /*
     Arguments:
@@ -782,14 +792,13 @@ void enum_to_char(enum types type, int coul)
 {
     switch(type){
         case RIEN:
-            //printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
-            //if (coul == 0)
-            //{
-            //    printf(" Z ");
-            //}
-            //else printf(" %d ",coul);
-            //printf("\x1b[0m");
-            printf("   ");
+            printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
+            if (coul == 0)
+            {
+                printf(" Z ");
+            }
+            else printf(" %d ",coul);
+            printf("\x1b[0m");
             break;
             
         case ROUTE:
@@ -893,68 +902,60 @@ void choose_w_show(unsigned char y, struct Grid *tab)
         affiche une partie de la tuile
 */
 {
-    if(is_a_potential_tile(tab->tile)){
-        enum_to_char(RIEN,0);
-        enum_to_char(RIEN,0);
-        enum_to_char(RIEN,0);
-    }
+    switch (y)
+    {
+        case 0:
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->top == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
+            {
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == TOP){
+                enum_to_char(tab->tile->top,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->top,0);
 
-    else{
-        switch (y)
-        {
-            case 0:
-                //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->top == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
-                {
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == TOP){
-                    enum_to_char(tab->tile->top,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->top,0);
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->top == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
+            {
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
 
-                //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->top == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
-                {
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
+            break;
+        case 1:
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == LEFT){
+                enum_to_char(tab->tile->left,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->left,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == MIDDLE){
+                enum_to_char(tab->tile->middle,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->middle,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == RIGHT){
+                enum_to_char(tab->tile->right,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->right,0);
+            break;
+        case 2:
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->bot == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
+            {                    
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == BOT){
+                enum_to_char(tab->tile->bot,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->bot,0);
 
-                break;
-            case 1:
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == LEFT){
-                    enum_to_char(tab->tile->left,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->left,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == MIDDLE){
-                    enum_to_char(tab->tile->middle,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->middle,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == RIGHT){
-                    enum_to_char(tab->tile->right,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->right,0);
-                break;
-            case 2:
-                //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->bot == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
-                {                    
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == BOT){
-                    enum_to_char(tab->tile->bot,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->bot,0);
-
-                //teste pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->bot == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
-                {
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
-        }
+            //teste pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->bot == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
+            {
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
     }
     printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
@@ -1123,7 +1124,14 @@ struct Stack *start_game(struct list_player **list_player, struct Grid **grid, s
 
 void *end_game_points_counter( struct list_player list ) // à tester (Axel)
 /*
-    return : Une liste de nbPLayers éléments contenant les points du joueurs 1 jusqu'à 6
+    Arguments:
+        struct list_player list: la struct contenant la liste de joueur
+
+    Retour:
+        void
+
+    Description:
+        Affiche les points en fin de partie
 */
 {
     for( int  i = 0; i < nbPlayers ; i++)
@@ -1132,7 +1140,17 @@ void *end_game_points_counter( struct list_player list ) // à tester (Axel)
     }
 }
 
-void *show_point_and_nbmeeple(struct list_player list)
+void show_point_and_nbmeeple(struct list_player list)
+/*
+    Arguments:
+        struct list_player list: la struct contenant la liste de joueur
+
+    Retour:
+        void
+
+    Description:
+        Affiche les points et le nombre de meeple de chaque joueurs
+*/
 {
     for( int  i = 0; i < nbPlayers ; i++)
     {
