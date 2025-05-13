@@ -19,15 +19,6 @@ char isFinishedAbbaye( struct Grid *grille)
 
     Note:
         -il faut verifier si l'element de la grille (la tuile) a bien une abbaye dessus
-Arguments:
-    Un pointeur vers  la tuile de la Grille de Jeu ou se trouve l'Abbaye.
-Retour:
-    Le nombre de point pour la structure Abbaye.
-Description:
-    La  fonction va simplement parcourir les 8  tuiles autours de la tuile Abbaye et renvoyer:
-        - Les 8 points  de la structure si celle-ci est complète.
-        - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
-        - Un nombre de point correspondant au nombre de tuile autour si c'est la fin de la partie.
 */
 {
     if(grille!=NULL && 
