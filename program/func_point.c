@@ -12,7 +12,7 @@ char isFinishedAbbaye( struct Grid *grille)
         Le nombre de point pour la structure Abbaye.
     Description:
         La  fonction va simplement parcourir les 8  tuiles autours de la tuile Abbaye et renvoyer:
-            - Les 8 points  de la structure si celle-ci est complète.
+            - Les 9 points  de la structure si celle-ci est complète.
             - 0 point si la structure est incomplète et que l'on est pas en fin de partie.
         - Un nombre de point correspondant au nombre de tuile autour si c'est la fin de la partie.
 */
