@@ -782,14 +782,13 @@ void enum_to_char(enum types type, int coul)
 {
     switch(type){
         case RIEN:
-            //printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
-            //if (coul == 0)
-            //{
-            //    printf(" Z ");
-            //}
-            //else printf(" %d ",coul);
-            //printf("\x1b[0m");
-            printf("   ");
+            printf("\x1b[48;2;%d;%d;%dm",0, 0, 0);
+            if (coul == 0)
+            {
+                printf(" Z ");
+            }
+            else printf(" %d ",coul);
+            printf("\x1b[0m");
             break;
             
         case ROUTE:
@@ -893,68 +892,60 @@ void choose_w_show(unsigned char y, struct Grid *tab)
         affiche une partie de la tuile
 */
 {
-    if(is_a_potential_tile(tab->tile)){
-        enum_to_char(RIEN,0);
-        enum_to_char(RIEN,0);
-        enum_to_char(RIEN,0);
-    }
+    switch (y)
+    {
+        case 0:
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->top == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
+            {
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == TOP){
+                enum_to_char(tab->tile->top,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->top,0);
 
-    else{
-        switch (y)
-        {
-            case 0:
-                //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->top == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
-                {
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == TOP){
-                    enum_to_char(tab->tile->top,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->top,0);
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->top == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
+            {
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
 
-                //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->top == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
-                {
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
+            break;
+        case 1:
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == LEFT){
+                enum_to_char(tab->tile->left,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->left,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == MIDDLE){
+                enum_to_char(tab->tile->middle,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->middle,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == RIGHT){
+                enum_to_char(tab->tile->right,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->right,0);
+            break;
+        case 2:
+            //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->bot == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
+            {                    
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
+            if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == BOT){
+                enum_to_char(tab->tile->bot,tab->tile->meeple->coulPlayer);
+            }
+            else enum_to_char(tab->tile->bot,0);
 
-                break;
-            case 1:
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == LEFT){
-                    enum_to_char(tab->tile->left,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->left,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == MIDDLE){
-                    enum_to_char(tab->tile->middle,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->middle,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == RIGHT){
-                    enum_to_char(tab->tile->right,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->right,0);
-                break;
-            case 2:
-                //test pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->bot == VILLE && tab->tile->left == VILLE && tab->tile->middle==VILLE)
-                {                    
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
-                if(is_meeple_on_tile(tab->tile) && tab->tile->meeplePlace == BOT){
-                    enum_to_char(tab->tile->bot,tab->tile->meeple->coulPlayer);
-                }
-                else enum_to_char(tab->tile->bot,0);
-
-                //teste pour savoir si  il  faut  comble le trou avec  une ville ou un pré
-                if( tab->tile->bot == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
-                {
-                    enum_to_char(VILLE,0);
-                }
-                else enum_to_char(PRE,0);
-        }
+            //teste pour savoir si  il  faut  comble le trou avec  une ville ou un pré
+            if( tab->tile->bot == VILLE && tab->tile->right == VILLE && tab->tile->middle==VILLE)
+            {
+                enum_to_char(VILLE,0);
+            }
+            else enum_to_char(PRE,0);
     }
     printf("  ");//ligne temporaire pour aider a differencier les tuile
 }
