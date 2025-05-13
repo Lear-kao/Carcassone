@@ -226,10 +226,6 @@ void put_meeple_bot(struct Grid *grid,struct list_player *p_list, char pnumber)
                 }
             }
         }
-        
-
-        
-
     }
 }
 
