@@ -23,13 +23,10 @@ struct Grid** searchAbbaye(struct Grid* grille)
         struct Grid *grille : Un pointeur sur un element de la grid
 
     Retour:
-        struct Grid * : une grid ou il y a une abbaye (ou NULL)
+        struct Grid ** : une liste de 9 pointeur sur pointeur de grid
 
     Description:
-        cherche dans les 8 tuile autour de grid si il y a une abbaye si oui la retourne , sinon retourne NULL
-
-    Note:
-        si struct Grid *grille est deja abbayes la fonction la retourne evidemment directement
+        cherche dans les 8 tuile autour de grid + la grid si c'est une abbaye l'ajoute dans la liste
 */
 {
     struct Grid **abbaye=(struct Grid**)malloc(9*sizeof(struct Grid*));
@@ -97,12 +94,36 @@ char where_is_meeple(  int type, struct Tile tile)
 }
 
 char what_color_is_meeple(int color, struct Tile tile)
+/*
+    Arguments:
+        int color : la couleur du joueur
+        struct Tile *tile : une tuile
+
+    Retour:
+        char 0 ou 1
+
+    Description:
+        vérifie si le meeple posée sur la  tuile est bien de la bonne couleur
+*/
 {
     if (tile.meeple == NULL) return 0;
     return tile.meeple->coulPlayer == color;
 }
 
 char nbMeepleVille(struct Grid *grille, int coul_player,enum places a)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        int coul_player : la couleur du joueur
+        enum places a : une direction
+
+    Retour:
+        char res : le nombre de meeple dans la ville
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'nbMeepleVilleEncap()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 {
     char res=0;
 
@@ -232,6 +253,18 @@ char nbMeepleVilleEncap( struct Grid *grille, int coul_player, enum meeplePlace 
 }
 
 char nbMeepleVille_nocolor(struct Grid *grille,enum places a)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        enum places a : une direction
+
+    Retour:
+        char res : le nombre de meeple dans la ville
+
+    Description:
+        A appeller, elle se charge d'un cas particulier d'appel de grille avant d'appeler 'nbMeepleVille_nocolorEncap()'
+        Il faut lui donner la position de la ville à tester (gauche,droite,haut,bas,millieu) where = [0:4]
+*/
 {
     char res=0;
     if(is_meeple_on_tile(grille->tile) && 
@@ -287,6 +320,25 @@ char nbMeepleVille_nocolor(struct Grid *grille,enum places a)
 }
 
 char nbMeepleVille_nocolorEncap( struct Grid *grille,enum meeplePlace origin)
+/*
+    Arguments:
+        struct Grid *grille : Un pointeur sur un element de la grid
+        enum meeplePlace origin : un endroit sur la tuile
+
+    Retour:
+        char cmpt : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une ville
+        Elle vérifie chaque tuiles ville conntecté à celle envoyé
+        et compte le nombre de meeple sur celui ci
+
+    Note:
+        meeplePlace origin est pour un cas particulier ou il y a 2 ville non connecteur sur une tuile 
+        ex: [PPP]  ici si on vient de la gauche on ne veut pas verifier si il y a un meeple
+            [VPV]  sur la ville a droite
+            [PPP]
+*/
 {
     char cmpt = 0;
     if (grille->marquer == v_marquer) return 0;
@@ -477,7 +529,17 @@ char countMeepleRoad(struct Grid *grille, enum places start, int color)
 
 char meepleRoad(struct Grid *grille, int color,enum meeplePlace origin)
 /* 
-Compte le nombre de meeple sur une structure route en fonction de la couleur passé en paramètre.
+    Arguments:
+        struct Grid *grille : Un pointeur sur l'element de la grid
+        int color : la couleur du joueur
+
+    Retour:
+        char cmp : le nombre de meeple
+
+    Description:
+        Compter les meeple d'une couleur d'une route
+        Elle vérifie chaque tuiles route conntecté à celle envoyé,
+        et compte le nombre de meeeple sur celui ci
 */
 {
     char cmp=0;
@@ -715,9 +777,12 @@ Fonction pour enlever les meeples des structures
 */
 void removeMeepleVilleStart(struct Grid *grille,enum places a)
 /* 
-Argument:
-    -Le bout  de la  grille ou commencer la recherche de meeple.
-    -La direction de la structure à inspecter.
+    Argument:
+        -Le bout  de la  grille ou commencer la recherche de meeple.
+        -La direction de la structure à inspecter.
+
+    Description:
+        fonction initiale a appeler, elle retire les meeple d'une ville
 */
 {
     if(is_meeple_on_tile(grille->tile) &&
@@ -773,6 +838,15 @@ Argument:
 }
 
 void removeMeepleVille( struct Grid *grille, enum meeplePlace origin)
+/*
+    Arguments:
+        Un pointeur vers  la tuile de la Grille de Jeu ou se trouve la Ville a un instant t du parcour.
+        un endroit sur la tuile
+
+    Description:
+        La fonction utilise un algorithme de parcour de graph avec marqueur pour parcourir la grille , 
+        La fonction retire les meeple d'une ville
+*/
 {
     char cmpt = 0;
     if (grille->marquer == v_marquer) return;
@@ -821,6 +895,14 @@ void removeMeepleVille( struct Grid *grille, enum meeplePlace origin)
 }
 
 void removeMeepleRoadStart(struct Grid *grille,enum places a)
+/* 
+    Argument:
+        -Le bout  de la  grille ou commencer la recherche de meeple.
+        -La direction de la structure à inspecter.
+
+    Description:
+        fonction initiale a appeler, elle retire les meeple d'une route
+*/
 {
 
     if (is_meeple_on_tile(grille->tile)) {
@@ -877,6 +959,15 @@ void removeMeepleRoadStart(struct Grid *grille,enum places a)
 
 
 void removeMeepleRoad(struct Grid *grille, enum meeplePlace origin)
+/*
+    Arguments:
+        Un pointeur vers un élément de la grille
+        un endroit sur la tuile
+
+    Description:
+        La fonction utilise un algorithme de parcour de graph avec marqueur pour parcourir la grille , 
+        La fonction retire les meeple d'une route
+*/
 {
     if (grille->marquer == v_marquer) return;
     grille->marquer = v_marquer;
