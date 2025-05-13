@@ -24,7 +24,6 @@ int main()
     int random;
 
     srand(time(NULL)); // initialisation de la seed pour l'aléatoire du jeu
-    //srand(0);
 
     bienvenue();
 

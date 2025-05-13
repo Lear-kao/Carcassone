@@ -57,10 +57,12 @@ Description:
 {
     char point = 2;
     char unfinished=0;
+
     switch (a)
     {
         case RIGHT:
             grille->marquer = v_marquer;
+            if(grille->tile->right==BLASON)point+=2;
             if(grille->right != NULL && (grille->tile->right==VILLE || grille->tile->right==BLASON))
             {
                 point += isFinishedCity(grille->right, &unfinished);
@@ -70,6 +72,7 @@ Description:
         
         case TOP:
             grille->marquer = v_marquer;
+            if(grille->tile->right==BLASON)point+=2;
             if(grille->top != NULL && (grille->tile->top==VILLE || grille->tile->top==BLASON))
             {
                 point += isFinishedCity(grille->top, &unfinished);
@@ -79,6 +82,7 @@ Description:
     
         case LEFT:
             grille->marquer = v_marquer;
+            if(grille->tile->right==BLASON)point+=2;
             if(grille->left != NULL && (grille->tile->left==VILLE || grille->tile->left==BLASON))
             {
                 point += isFinishedCity(grille->left, &unfinished);
@@ -88,6 +92,7 @@ Description:
         
         case BOT:
             grille->marquer = v_marquer;
+            if(grille->tile->right==BLASON)point+=2;
             if(grille->bot != NULL && (grille->tile->bot==VILLE || grille->tile->bot==BLASON))
             {
                 point += isFinishedCity(grille->bot, &unfinished);
@@ -139,6 +144,8 @@ Note:
     }
     if (grille->marquer == v_marquer) return 0;
     char cmpt = 2;
+
+    if(grille->tile->middle==BLASON)cmpt+=2;
 
     grille->marquer = v_marquer;
     if( grille->tile->middle == VILLE || grille->tile->middle == BLASON)
@@ -888,9 +895,9 @@ Description:
                     tmp=list->player[0]->points;
 
                     pointPlacedTile(temp_y,list);
-                    printf("x=%d,y=%d\n",x,y);
-                    show_tile(temp_y->tile);
-                    show_point_and_nbmeeple(*list);
+                    //show_tile(temp_y->tile);
+                    //printf("x=%d , y=%d\n",x,y);
+                    //show_point_and_nbmeeple(*list);
                     
                 }
             }
