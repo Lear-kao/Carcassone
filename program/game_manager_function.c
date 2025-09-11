@@ -852,13 +852,23 @@ void enum_to_char(enum types type, int coul)
             break;
 
         case BLASON:
-            printf("\x1b[48;2;%d;%d;%dm",101,112,255);
+            printf("\x1b[48;2;%d;%d;%dm",110,110,110);
             if (coul == 0)
             {
-            printf(" B ");
+            printf(" ");
+            printf("\x1b[48;2;%d;%d;%dm",101,112,255);
+            printf("B");
+            printf("\x1b[48;2;%d;%d;%dm",110,110,110);
+            printf(" ");
             }
-            else printf(" %d ",coul);
+            else {
+            printf(" ");
+            printf("\x1b[48;2;%d;%d;%dm",101,112,255);
+            printf("%d",coul);
+            printf("\x1b[48;2;%d;%d;%dm",110,110,110);
+            printf(" ");
             printf("\x1b[0m");
+            }
             break;
 
         default:
